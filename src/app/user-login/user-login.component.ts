@@ -14,7 +14,7 @@ export class UserLoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private authService: AuthService) {
    this.logInForm = this.formBuilder.group({
      username: ['', Validators.required],
-     password: ['', Validators.required]
+     password: ['', Validators.required],
    });
   }
 
@@ -33,7 +33,7 @@ export class UserLoginComponent implements OnInit {
    );
   }
 
-  onSubmit(formData: UserCredentials): void {
+  onSubmit(formData: any): void {
     if (this.logInForm.invalid) {
       console.log(this.logInForm.errors);
     } else {

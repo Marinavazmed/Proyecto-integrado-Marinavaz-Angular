@@ -1,20 +1,17 @@
 <div class="login-form-container">
-    <h2>Log in</h2>
-    
-      <p>
-        
-          User name
-          
-        
-      </p>
-      <p>
-        
-          Password
-          
-        
-      </p>
-      <p>
-        <button type="submit">LOG IN</button>
-      </p>
+  <h4 class="card-header">Login</h4>
+  <div class="card-body">
+      <form [formGroup]="logInForm" (ngSubmit)="onSubmit(logInForm?.value)">
+          <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input type="text" formControlName="username" class="form-control"/>
+          </div>
+          <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" formControlName="password" class="form-control" />
+          </div>
+          <button>Log in</button>
+      </form>
+  </div>
     
    </div>
