@@ -3,6 +3,8 @@ import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
 import { IndexComponent } from './index/index.component';
 import { UserLoginComponent } from "./user-login/user-login.component";
+import { UserProfileComponent } from "./user-profile/user-profile.component";
+import { AuthGuard } from "./auth.guard";
 
 const routes: Routes = [
   //se pueden pasar parámetros a traves de la url con la sintaxis:
@@ -10,6 +12,7 @@ const routes: Routes = [
   //En el constructor del componente debo declarar el id + usar actRoute
   {path: 'principal', component: IndexComponent},
   { path: 'login', component: UserLoginComponent },
+  { path: 'user-profile/:id', component: UserProfileComponent, canActivate: [AuthGuard] },
   {path: '', component: IndexComponent},
   {path: '**', component: IndexComponent}
 ];

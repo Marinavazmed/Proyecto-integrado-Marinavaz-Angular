@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { AuthService } from "../auth.service";
 import { UserCredentials } from "../auth";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-user-login',
@@ -11,7 +12,7 @@ import { UserCredentials } from "../auth";
 })
 export class UserLoginComponent implements OnInit {
   logInForm;
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
    this.logInForm = this.formBuilder.group({
      username: ['', Validators.required],
      password: ['', Validators.required],
@@ -24,6 +25,8 @@ export class UserLoginComponent implements OnInit {
   logInUser(user: UserCredentials): void {
    this.authService.logIn(user.username, user.password).subscribe({
      next: (data) => {
+       this.authService.setLoggedInUser(data);
+       this.router.navigateByUrl(`/user-profile/${data.id}`);
        console.log(data);
      },
      error: (error) => {

@@ -15,4 +15,10 @@ export class AuthService {
        'http://127.0.0.1:8000/api-user-login/', { username, password }
        ) as Observable<any>;
    }
+
+   setLoggedInUser(userData: LoggedInUser): void {
+    if (localStorage.getItem('userData') !== JSON.stringify(userData)) {
+      localStorage.setItem('userData', JSON.stringify(userData));
+    }
+   }
 }
