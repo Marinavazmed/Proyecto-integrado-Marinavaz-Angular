@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'index',
@@ -7,5 +8,12 @@ import { Component } from '@angular/core';
   ]
 })
 export class IndexComponent {
+  constructor(public router: Router){
+  }
 
+  goToPage(pageName:string):void{
+    this.router.navigate([`${pageName}`]);
+  }
 }
+
+

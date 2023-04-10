@@ -2,16 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { UserProfileService } from "../user-profile.service";
 import { UserProfile } from "../user-profile";
+import { ServiceSalasService } from '../service-salas.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: []
+  styleUrls: [],
+  providers: [ServiceSalasService]
 })
 export class UserProfileComponent implements OnInit {
   userProfile: UserProfile|null = null;
+  public salas:Array<any>
 
-  constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute) { }
+  constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http:HttpClient, private _peticion: ServiceSalasService) { 
+    this.salas = []
+  }
 
   ngOnInit(): void {
     const userId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -25,5 +31,9 @@ export class UserProfileComponent implements OnInit {
         }
       }
     );
+    this._peticion.getSalas().subscribe(dataSalas=>{    
+      console.log(dataSalas)
+      this.salas = dataSalas;
+    })
   }
-}
+  }
