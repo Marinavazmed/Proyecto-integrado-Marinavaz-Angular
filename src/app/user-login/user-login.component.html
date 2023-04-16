@@ -1,7 +1,7 @@
 <div class="login-form-container">
   <h4 class="card-header">Login</h4>
   <div class="card-body">
-      <form [formGroup]="logInForm" (ngSubmit)="onSubmit(logInForm?.value)">
+      <form [formGroup]="logInForm" (ngSubmit)="onSubmit(logInForm.value)">
           <div class="mb-3">
               <label class="form-label">Username</label>
               <input type="text" formControlName="username" class="form-control"/>
