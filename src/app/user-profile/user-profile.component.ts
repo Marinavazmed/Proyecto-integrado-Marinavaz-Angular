@@ -4,6 +4,7 @@ import { UserProfileService } from "../user-profile.service";
 import { UserProfile } from "../user-profile";
 import { ServiceSalasService } from '../service-salas.service';
 import { HttpClient } from '@angular/common/http';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-user-profile',
@@ -15,7 +16,7 @@ export class UserProfileComponent implements OnInit {
   userProfile: UserProfile|null = null;
   public salas:Array<any>
 
-  constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http:HttpClient, private _peticion: ServiceSalasService) { 
+  constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http:HttpClient, private _peticion: ServiceSalasService, public router: Router) { 
     this.salas = []
   }
 
@@ -35,5 +36,15 @@ export class UserProfileComponent implements OnInit {
       console.log(dataSalas)
       this.salas = dataSalas;
     })
+
+    
   }
+
+  
+  goToPage(pageName:string){
+    this.router.navigate([`${pageName}`]);
   }
+
+  }
+
+  

@@ -1,17 +1,21 @@
 <div>
     <h1 class="profile-heading">User profile</h1>
-    
-      
-        {{ userProfile?.first_name }} {{ userProfile?.last_name }}
-        {{ userProfile?.username }}
-     
-     <img src="{{ userProfile?.profile_pic }}" alt="Profile photo">
-     <h2>SALAS:</h2>
-     <table>
+
+
+    {{ userProfile?.first_name }} {{ userProfile?.last_name }}
+    {{ userProfile?.username }}
+
+    <img src="{{ userProfile?.profile_pic }}" alt="Profile photo">
+    <h2>SALAS:</h2>
+    <table>
         <tr *ngFor="let sala of salas">
             <td>{{sala.nombre_sala}}</td>
         </tr>
-  </table>
-     
-    
+    </table>
+
+    <div>
+        <button (click)="router.navigate(['/crear_sala']);">
+            <span>Crear una nueva sala</span>
+         </button>
     </div>
+</div>

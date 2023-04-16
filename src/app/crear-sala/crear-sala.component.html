@@ -1,0 +1,21 @@
+<div class="login-form-container">
+    <h4 class="card-header">Inicia sesión</h4>
+    <div class="card-body">
+        <form [formGroup]="crearSalaForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+                <label class="form-label">Desarrolladores</label>
+                <input type="text" formControlName="devs" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Nombre de la sala</label>
+                <input type="text" formControlName="nombre_sala" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contraseña de la sala</label>
+                <input type="text" formControlName="pass_sala" class="form-control" />
+            </div>
+            <button>Crear una nueva sala</button>
+        </form>
+    </div>
+     
+  </div>
