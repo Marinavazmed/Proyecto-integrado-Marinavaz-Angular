@@ -14,6 +14,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { TokenInterceptor } from "./token.interceptor";
 import { UserProfileService } from './user-profile.service';
+import { UserRegistroComponent } from './user-registro/user-registro.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { UserProfileService } from './user-profile.service';
     AppComponent,
     UserLoginComponent,
     UserProfileComponent,
+    UserRegistroComponent,
   ],
   imports: [
     BrowserModule,

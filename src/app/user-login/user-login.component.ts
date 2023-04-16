@@ -12,7 +12,7 @@ import { Router } from "@angular/router";
 })
 export class UserLoginComponent implements OnInit {
   logInForm;
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, public router: Router) {
    this.logInForm = this.formBuilder.group({
      username: ['', Validators.required],
      password: ['', Validators.required],
@@ -21,6 +21,12 @@ export class UserLoginComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+
+  goToPage(pageName:string){
+    this.router.navigate([`${pageName}`]);
+  }
+
 
   logInUser(user: UserCredentials): void {
    this.authService.logIn(user.username, user.password).subscribe({

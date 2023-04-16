@@ -1,5 +1,5 @@
 <div class="login-form-container">
-  <h4 class="card-header">Login</h4>
+  <h4 class="card-header">Inicia sesión</h4>
   <div class="card-body">
       <form [formGroup]="logInForm" (ngSubmit)="onSubmit(logInForm.value)">
           <div class="mb-3">
@@ -10,8 +10,13 @@
               <label class="form-label">Password</label>
               <input type="password" formControlName="password" class="form-control" />
           </div>
-          <button>Log in</button>
+          <button>Inicia sesión</button>
       </form>
   </div>
     
-   </div>
+</div>
+<div>
+    <button (click)="router.navigate(['/registro']);">
+        <span>Registrate</span>
+     </button>
+</div>
