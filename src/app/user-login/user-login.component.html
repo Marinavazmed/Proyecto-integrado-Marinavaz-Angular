@@ -10,9 +10,13 @@
               <label class="form-label">Password</label>
               <input type="password" formControlName="password" class="form-control" />
           </div>
+          <div *ngIf="infoMessage.length > 0">
+            <span>{{ infoMessage }}</span>
+          </div>
           <button>Inicia sesión</button>
       </form>
   </div>
+
     
 </div>
 <div>

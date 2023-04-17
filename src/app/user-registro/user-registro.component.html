@@ -5,23 +5,27 @@
         <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
             <div class="mb-3">
                 <label class="form-label">Username</label>
-                <input type="text" formControlName="username" class="form-control"/>
+                <input type="text" formControlName="username" class="form-control" required/>
+                <mat-error *ngIf="registroForm.get('username')?.errors?.['serverError']"> {{registroForm.get('username')?.errors?.['serverError']}}</mat-error>
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" formControlName="password" class="form-control" />
+                <input type="password" formControlName="password" class="form-control" required/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Nombre</label>
-                <input type="text" formControlName="first_name" class="form-control" />
+                <input type="text" formControlName="first_name" class="form-control" required/>
+                <mat-error *ngIf="registroForm.get('first_name')?.errors?.['serverError']"> {{registroForm.get('firs_name')?.errors?.['serverError']}}</mat-error>
             </div>
             <div class="mb-3">
                 <label class="form-label">Apellido</label>
-                <input type="text" formControlName="last_name" class="form-control" />
+                <input type="text" formControlName="last_name" class="form-control" required/>
+                <mat-error *ngIf="registroForm.get('last_name')?.errors?.['serverError']"> {{registroForm.get('last_name')?.errors?.['serverError']}}</mat-error>
             </div>
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="text" formControlName="email" class="form-control" />
+                <input type="text" formControlName="email" name="email" class="form-control"/>
+                <mat-error *ngIf="registroForm.get('email')?.errors?.['serverError']"> {{registroForm.get('email')?.errors?.['serverError']}}</mat-error>
             </div>
             <button>Registrate</button>
         </form>

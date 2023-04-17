@@ -12,6 +12,7 @@ import { Router } from "@angular/router";
 })
 export class UserLoginComponent implements OnInit {
   logInForm;
+  infoMessage:any = "";
   constructor(private formBuilder: FormBuilder, private authService: AuthService, public router: Router) {
    this.logInForm = this.formBuilder.group({
      username: ['', Validators.required],
@@ -37,6 +38,7 @@ export class UserLoginComponent implements OnInit {
      },
      error: (error) => {
        console.log(error);
+       this.infoMessage = "Credenciales incorrectas."
      }
    }
    );
