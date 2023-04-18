@@ -9,6 +9,7 @@ import { Sala } from './crear-sala/sala';
 export class ServiceSalasService {
 
   public url:string;
+  public idUser:any;
 
   constructor(
     private _http: HttpClient
@@ -30,5 +31,15 @@ export class ServiceSalasService {
     return this._http.get<any>(url)
   }
 
+  //Función que devuelve el usuario
+  getSalasPorIDUser(id: any): Observable<any[]>{
+    return this._http.get<any[]>(`http://localhost:8000/api/v1/profile_po/?usuario=${id}`);
+  }
 
+  //Función que devuelve idpo
+  getSalasPorIDPO(id:any):Observable<any[]>{
+    return this._http.get<any[]>(`http://localhost:8000/api/v1/sala/?nombre_sala=&prod_owner=${id}`);
+  }
+
+  
 }

@@ -5,7 +5,7 @@ export class Usuario{
         public first_name:string,
         public last_name:string,
         public email:string,
-        public created_at:Date,
+        public is_premiun:boolean
     ){}
 
     public toString = () : String => {

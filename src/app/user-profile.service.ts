@@ -14,8 +14,26 @@ export class UserProfileService {
     return this.http.get(`http://127.0.0.1:8000/api/v1/user/${userId}/`);
   }
 
+  getUserProfileByName(username: any): Observable<any> {
+    return this.http.get(`http://localhost:8000/api/v1/user/?username=${username}/`);
+  }
+
   postUser(usuario:any): Observable<any> {
     const url = 'http://127.0.0.1:8000/registro/'
     return this.http.post<any>(url,usuario);
   }
+
+  public obtenerCredenciales(){
+    const userData =  localStorage.getItem('userData');
+    if (userData) {
+      try {
+        return JSON.parse(userData);
+      } catch (e) {
+        console.error('Error al analizar JSON: ', e);
+        return null;
+      }
+    }
+    return null;
+  }
+
 }
