@@ -16,6 +16,7 @@ import { TokenInterceptor } from "./token.interceptor";
 import { UserProfileService } from './user-profile.service';
 import { UserRegistroComponent } from './user-registro/user-registro.component';
 import { CrearSalaComponent } from './crear-sala/crear-sala.component';
+import { SalaMainComponent } from './sala-main/sala-main.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CrearSalaComponent } from './crear-sala/crear-sala.component';
     UserProfileComponent,
     UserRegistroComponent,
     CrearSalaComponent,
+    SalaMainComponent,
   ],
   imports: [
     BrowserModule,

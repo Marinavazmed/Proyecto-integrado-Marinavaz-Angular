@@ -63,7 +63,8 @@ export class UserRegistroComponent implements OnInit{
   }
 
 
- /* onSubmit() {
+ /* OR
+ onSubmit() {
     console.log(this.registroForm.value)
     if (this.registroForm.invalid) {
       console.log(this.registroForm.errors);
@@ -75,35 +76,6 @@ export class UserRegistroComponent implements OnInit{
 
   }*/
 
-
-    /*onSubmit() {
-    console.log(this.registroForm.value)
-    if (this.registroForm.invalid) {
-      console.log(this.registroForm.errors);
-      this.infoMessage = "Formulario no válido"
-    } else {
-      this.UserProfileService.postUser(this.registroForm.value).subscribe(x => {
-        console.log('Successfully saved person', x);
-      }, err => {
-        if (err instanceof HttpErrorResponse) {
-          const errorMessages = new Array<{ propName: string; errors: string }>();
-    
-          if(err.status === 422 || err.status===400) {
-            Object.keys(errorMessages).forEach(prop => {
-              const formControl = this.registroForm.get(prop);
-              if (formControl) {
-                formControl.setErrors({
-                  serverError: errorMessages[1]
-                });
-              }
-            });
-          }
-        }
-      });
-    }
-
-
-  }*/
 
   goToPage(pageName:string){
     this.router.navigate([`${pageName}`]);

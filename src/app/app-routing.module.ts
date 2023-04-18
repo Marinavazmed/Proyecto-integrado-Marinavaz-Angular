@@ -7,6 +7,7 @@ import { UserProfileComponent } from "./user-profile/user-profile.component";
 import { AuthGuard } from "./auth.guard";
 import { UserRegistroComponent } from './user-registro/user-registro.component';
 import { CrearSalaComponent } from './crear-sala/crear-sala.component';
+import { SalaMainComponent } from './sala-main/sala-main.component';
 
 const routes: Routes = [
   //se pueden pasar parámetros a traves de la url con la sintaxis:
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'login', component: UserLoginComponent },
   { path: 'registro', component: UserRegistroComponent},
   { path: 'user-profile/:id', component: UserProfileComponent, canActivate: [AuthGuard] },
+  { path: 'sala-main/:nombre_sala', component: SalaMainComponent},
   { path: 'crear_sala', component: CrearSalaComponent },
   {path: '', component: IndexComponent},
   {path: '**', component: IndexComponent}

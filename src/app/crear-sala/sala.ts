@@ -1,5 +1,6 @@
 export class Sala{
     constructor(
+        public id:number,
         public devs:string,
         public nombre_sala:string,
         public pass_sala:string,

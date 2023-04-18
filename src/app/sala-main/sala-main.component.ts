@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ServiceSalasService } from '../service-salas.service';
-import { Router } from "@angular/router";
-import { FormBuilder, Validators } from "@angular/forms";
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-crear-sala',
-  templateUrl: './crear-sala.component.html',
+  selector: 'app-sala-main',
+  templateUrl: './sala-main.component.html',
   styles: [
   ]
 })
-export class CrearSalaComponent implements OnInit{
+
+export class SalaMainComponent implements OnInit{
   crearSalaForm;
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router) {
     this.crearSalaForm = this.formBuilder.group({
@@ -20,12 +21,8 @@ export class CrearSalaComponent implements OnInit{
    }
 
   ngOnInit(): void {
+    //const sala= this.salaService.getSala(nombre_sala);
   }
     
-  onSubmit() {
-    this.salaService.postSala(this.crearSalaForm.value).subscribe();
-    const nombre_sala = this.crearSalaForm.get('nombre_sala')!.value;
-    this.router.navigate(['sala-main/:'+nombre_sala]);
-  }
   
 }
