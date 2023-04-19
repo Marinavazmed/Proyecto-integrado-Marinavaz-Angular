@@ -8,6 +8,7 @@ import { AuthGuard } from "./auth.guard";
 import { UserRegistroComponent } from './user-registro/user-registro.component';
 import { CrearSalaComponent } from './crear-sala/crear-sala.component';
 import { SalaMainComponent } from './sala-main/sala-main.component';
+import { CrearTareaComponent } from './crear-tarea/crear-tarea.component';
 
 const routes: Routes = [
   //se pueden pasar parámetros a traves de la url con la sintaxis:
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'registro', component: UserRegistroComponent},
   { path: 'user-profile/:id', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'sala-main/:nombre_sala', component: SalaMainComponent},
+  { path: 'crear-tarea/:nombre_sala', component: CrearTareaComponent},
   { path: 'crear_sala', component: CrearSalaComponent },
   {path: '', component: IndexComponent},
   {path: '**', component: IndexComponent}

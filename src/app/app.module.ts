@@ -17,6 +17,7 @@ import { UserProfileService } from './user-profile.service';
 import { UserRegistroComponent } from './user-registro/user-registro.component';
 import { CrearSalaComponent } from './crear-sala/crear-sala.component';
 import { SalaMainComponent } from './sala-main/sala-main.component';
+import { CrearTareaComponent } from './crear-tarea/crear-tarea.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { SalaMainComponent } from './sala-main/sala-main.component';
     UserRegistroComponent,
     CrearSalaComponent,
     SalaMainComponent,
+    CrearTareaComponent,
   ],
   imports: [
     BrowserModule,

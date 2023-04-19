@@ -17,6 +17,7 @@ export class CrearSalaComponent implements OnInit{
   userData =  this.userService.obtenerCredenciales();
   varPrueba: any = {}
   numSalasUser: any = {}
+  mensajeError = "";
  
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private userService: UserProfileService) {
     this.crearSalaForm = this.formBuilder.group({
@@ -27,6 +28,7 @@ export class CrearSalaComponent implements OnInit{
    }
 
   ngOnInit(): void {
+    
     this.userService.getUserProfile(this.userData.id).subscribe(data =>{
       this.premium = data.is_premium;
     });
@@ -41,10 +43,18 @@ export class CrearSalaComponent implements OnInit{
   }
     
   onSubmit() {
+    
     //TODO: Con premium + numSalaUser comprobar si puede o no hacer una sala con postSala
-    this.salaService.postSala(this.crearSalaForm.value).subscribe();
-    const nombre_sala = this.crearSalaForm.get('nombre_sala')!.value;
-    this.router.navigate(['sala-main/:'+nombre_sala]);
+    if(!this.premium && this.numSalasUser.length>=1){
+      this.mensajeError =`Lo sentimos, ahora mismo eres dueño de ${this.numSalasUser.length} salas.
+      Consigue la membresía premium para poder crear más salas.`
+    }else{
+      this.salaService.postSala(this.crearSalaForm.value).subscribe();
+      const nombre_sala = this.crearSalaForm.get('nombre_sala')!.value;
+      this.router.navigate(['sala-main/:'+nombre_sala]);
+    }
+    
+
   }
   
 }

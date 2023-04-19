@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ServiceSalasService } from '../service-salas.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TareasServiceService } from '../tareas-service.service';
 
 @Component({
   selector: 'app-sala-main',
@@ -11,18 +12,21 @@ import { Router } from '@angular/router';
 })
 
 export class SalaMainComponent implements OnInit{
-  crearSalaForm;
-  constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router) {
-    this.crearSalaForm = this.formBuilder.group({
-      devs: [this.formBuilder.array, Validators.required],
-      nombre_sala: ['', Validators.required],
-      pass_sala: ['', Validators.required],
-    });
-   }
-
+  nombre_sala:any;
+  sala: any;
+  tareas:any;
+  constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService) {
+  }  
+  
   ngOnInit(): void {
-    //const sala= this.salaService.getSala(nombre_sala);
+    this.nombre_sala = this.route.snapshot.paramMap.get('nombre_sala')?.replace(":", '');
+    this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data=>{    
+      this.tareas = data;
+    })
   }
-    
+
+  goToPage(pageName:string){
+    this.router.navigate([`${pageName}`]);
+  }
   
 }

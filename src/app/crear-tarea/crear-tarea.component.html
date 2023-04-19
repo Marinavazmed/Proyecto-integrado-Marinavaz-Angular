@@ -1,0 +1,28 @@
+<p>crear-tarea works!</p>
+<div class="card-body">
+    <form [formGroup]="crearTareaForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+            <label class="form-label">Nombre de la tarea</label>
+            <input type="text" formControlName="nombre_tarea" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Descripción de la tarea</label>
+            <input type="text" formControlName="desc_tarea" class="form-control" />
+        </div>
+        <!--<div class="mb-3">
+            <label class="form-label">Estado de la tarea</label>
+            <select class="form-control" [(ngModel)]="lista_estados_salas" formControlName="estado_tarea">
+                <option [value]="estado" *ngFor="let estado of lista_estados_salas">{{estado}}</option>
+            </select>
+        </div>-->
+        <div class="mb-3">
+            <label class="form-label">Tiempo estimado</label>
+            <input type="number" formControlName="tiempo_estimado" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Puntos</label>
+            <input type="number" formControlName="puntos" class="form-control" />
+        </div>
+        <button>Crear</button>
+    </form>
+</div>
