@@ -9,7 +9,7 @@
     <h2>SALAS:</h2>
     <table>
         <tr *ngFor="let sala of salas">
-            <td>{{sala.nombre_sala}}</td>
+            <td><button (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">{{sala.nombre_sala}}</button></td>
         </tr>
     </table>
 
