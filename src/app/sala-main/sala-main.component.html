@@ -1,15 +1,21 @@
 <p>sala-main works!</p>
 <table>
+    <th>Nombre de la tarea</th>
+    <th>Descripción de la tarea:</th>
+    <th>Estado de la tarea:</th>
+    <th>Tiempo estimado:</th>
+    <th>Puntos:</th>
     <tr *ngFor="let tarea of tareas">
-        <td>Nombre de la tarea:{{tarea.nombre_tarea}}</td>
-        <td>Descripción de la tarea:{{tarea.desc_tarea}}</td>
-        <td>Estado de la tarea:{{tarea.estado_tarea}}</td>
-        <td>Tiempo estimado:{{tarea.tiempo_estimado}}</td>
-        <td>Puntos:{{tarea.puntos}}</td>
+        <td>{{tarea.nombre_tarea}}</td>
+        <td>{{tarea.desc_tarea}}</td>
+        <td>{{tarea.estado_tarea}}</td>
+        <td>{{tarea.tiempo_estimado}}</td>
+        <td>{{tarea.puntos}}</td>
+        <button *ngIf="checkPO">X</button>
     </tr>
 </table>
 <div>
-    <button (click)="router.navigate(['crear-tarea/:'+ nombre_sala]);">
+    <button *ngIf="checkPO" (click)="router.navigate(['crear-tarea/:'+ nombre_sala]);">
         <span>Crear una nueva tarea</span>
      </button>
 </div>

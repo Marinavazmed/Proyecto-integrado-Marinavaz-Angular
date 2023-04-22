@@ -17,7 +17,7 @@ export class ServiceSalasService {
     this.url="http://localhost:8000/api/v1/sala/"
    }
 
-   getSalas(): Observable<any[]>{
+  getSalas(): Observable<any[]>{
 		return this._http.get<any[]>(this.url);
 	}
 
@@ -30,6 +30,12 @@ export class ServiceSalasService {
     const url = 'http://localhost:8000/api/v1/sala/?nombre_sala='+ nombre_sala;
     return this._http.get<any>(url)
   }
+
+  getSalaPromise(nombre_sala:any): Observable<any> {
+    const url = 'http://localhost:8000/api/v1/sala/?nombre_sala='+ nombre_sala;
+    return this._http.get<any>(url)
+  }
+
 
   //Función que devuelve el usuario
   getSalasPorIDUser(id: any): Observable<any[]>{

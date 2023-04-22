@@ -45,6 +45,11 @@ export class UserProfileComponent implements OnInit {
     this.router.navigate([`${pageName}`]);
   }
 
+  logOut(){
+    localStorage.removeItem('userData');
+    this.router.navigate(['/login']);
+  }
+
   }
 
   

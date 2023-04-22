@@ -33,13 +33,13 @@ export class UserRegistroComponent implements OnInit{
 
 
  onSubmit() {
-    console.log(this.registroForm.value)
     if (this.registroForm.invalid) {
       console.log(this.registroForm.errors);
       this.infoMessage = "Formulario no válido"
     } else {
       this.UserProfileService.postUser(this.registroForm.value).subscribe(x => {
         console.log('Persona registrada', x)
+        this.authService.logInUser(this.registroForm.value)
       },
         err => {
           if(err instanceof HttpErrorResponse){
@@ -62,19 +62,6 @@ export class UserRegistroComponent implements OnInit{
 
   }
 
-
- /* OR
- onSubmit() {
-    console.log(this.registroForm.value)
-    if (this.registroForm.invalid) {
-      console.log(this.registroForm.errors);
-      this.infoMessage = "Formulario no válido"
-    } else {
-      this.UserProfileService.postUser(this.registroForm.value).subscribe();
-    }
-
-
-  }*/
 
 
   goToPage(pageName:string){
