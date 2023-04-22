@@ -1,27 +1,29 @@
 <div>
-    <h1 class="profile-heading">User profile</h1>
+    <h1 class="profile-heading">Bienvenid@, {{userProfile?.first_name}} {{userProfile?.first_name}} </h1>
 
+    <p>Nombre de usuario: {{ userProfile?.username }}</p>
 
-    {{ userProfile?.first_name }} {{ userProfile?.last_name }}
-    {{ userProfile?.username }}
-
-    <img src="{{ userProfile?.profile_pic }}" alt="Profile photo">
-    <h2>SALAS:</h2>
+    <img src="" alt="Profile photo">{{ userProfile?.profile_pic }}
+    <h2>SALAS DISPONIBLES:</h2>
     <table>
         <tr *ngFor="let sala of salas">
             <td><button (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">{{sala.nombre_sala}}</button></td>
         </tr>
     </table>
-
+    <br>
     <div>
-        <button (click)="router.navigate(['/crear_sala']);">
+        <button class="btn btn-info" (click)="router.navigate(['/crear_sala']);">
             <span>Crear una nueva sala</span>
          </button>
     </div>
+    <br>
     <div>
-        <button (click)="joinSala()">
-            <span>Unirme a una sala</span>
+        <button class="btn btn-info" (click)="joinSala()">
+            <span>Unirme a una nueva sala</span>
          </button>
     </div>
-    <button (click)="logOut()">Logout</button>
+</div>
+<br>
+<div>
+    <button (click)="logOut()" class="btn btn-danger">Logout</button>
 </div>

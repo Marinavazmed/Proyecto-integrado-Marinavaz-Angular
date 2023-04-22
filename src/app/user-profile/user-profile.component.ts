@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: [],
-  providers: [ServiceSalasService]
+  providers: [ServiceSalasService, UserProfileService]
 })
 export class UserProfileComponent implements OnInit {
   userProfile: UserProfile|null = null;
