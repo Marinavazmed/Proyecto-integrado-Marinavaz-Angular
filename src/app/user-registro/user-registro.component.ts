@@ -41,6 +41,7 @@ export class UserRegistroComponent implements OnInit{
         console.log('Persona registrada', x)
         this.authService.logInUser(this.registroForm.value)
       },
+
         err => {
           if(err instanceof HttpErrorResponse){
             const ValidationErrors = err.error;
@@ -54,7 +55,6 @@ export class UserRegistroComponent implements OnInit{
             })
           }
           this.errors = err.error.message;
-          console.log(this.errors);
         }
       );
     }

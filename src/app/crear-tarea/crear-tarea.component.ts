@@ -48,5 +48,6 @@ export class CrearTareaComponent implements OnInit {
     this.crearTareaForm.controls['id_sala'].setValue(`http://localhost:8000/api/v1/sala/${this.id_sala}/`);
     console.log(this.crearTareaForm.value)
     this.tareasService.postTarea(this.crearTareaForm.value).subscribe()
+    this.router.navigateByUrl(`/sala-main/${this.route.snapshot.paramMap.get('nombre_sala')?.replace(":", "")}`);
   }
 }

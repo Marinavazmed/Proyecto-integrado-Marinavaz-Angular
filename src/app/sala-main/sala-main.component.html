@@ -11,7 +11,7 @@
         <td>{{tarea.estado_tarea}}</td>
         <td>{{tarea.tiempo_estimado}}</td>
         <td>{{tarea.puntos}}</td>
-        <button *ngIf="checkPO">X</button>
+        <button *ngIf="checkPO" (click)="borrarTarea(tarea.id)">X</button>
     </tr>
 </table>
 <div>

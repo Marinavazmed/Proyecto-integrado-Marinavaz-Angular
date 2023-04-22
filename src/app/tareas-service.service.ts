@@ -29,4 +29,9 @@ export class TareasServiceService {
     return this._http.get<any>(url)
   }
 
+  deleteTarea(id_tarea: any) {
+    this._http.delete(`http://localhost:8000/api/v1/tarea/${id_tarea}/`).subscribe(data => {
+      console.log(data);
+    });
+  }
 }

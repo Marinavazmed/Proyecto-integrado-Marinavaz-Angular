@@ -33,6 +33,8 @@ import { MdbScrollspyModule } from 'mdb-angular-ui-kit/scrollspy';
 import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { JoinSalaComponent } from './join-sala/join-sala.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,7 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
     CrearSalaComponent,
     SalaMainComponent,
     CrearTareaComponent,
+    JoinSalaComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +74,7 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
     MdbTabsModule,
     MdbTooltipModule,
     MdbValidationModule,
+    NgbModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

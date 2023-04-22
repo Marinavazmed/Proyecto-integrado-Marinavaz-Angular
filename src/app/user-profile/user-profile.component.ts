@@ -36,7 +36,6 @@ export class UserProfileComponent implements OnInit {
       console.log(dataSalas)
       this.salas = dataSalas;
     })
-
     
   }
 
@@ -44,6 +43,12 @@ export class UserProfileComponent implements OnInit {
   goToPage(pageName:string){
     this.router.navigate([`${pageName}`]);
   }
+
+
+  joinSala(){
+    this.router.navigate(['join-sala'])
+  }
+
 
   logOut(){
     localStorage.removeItem('userData');

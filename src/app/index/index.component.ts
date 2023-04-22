@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'index',
   templateUrl: './index.component.html',
-  styles: [
-  ]
+  styles: [] 
 })
 export class IndexComponent {
   constructor(public router: Router){
