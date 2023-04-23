@@ -35,6 +35,7 @@ import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JoinSalaComponent } from './join-sala/join-sala.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { JoinSalaComponent } from './join-sala/join-sala.component';
     MdbTooltipModule,
     MdbValidationModule,
     NgbModule,
+    FontAwesomeModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

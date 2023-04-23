@@ -16,6 +16,7 @@ export class UserProfileService {
     return this.http.get(`http://127.0.0.1:8000/api/v1/user/${userId}/`);
   }
 
+
   getUserProfileByName(username: any): Observable<any> {
     return this.http.get(`http://localhost:8000/api/v1/user/?username=${username}/`);
   }
@@ -24,6 +25,17 @@ export class UserProfileService {
     const url = 'http://127.0.0.1:8000/registro/'
     return this.http.post<any>(url,usuario);
   }
+
+  /*getImageFromService() {
+    let isImageLoading = true;
+    imageService.getImage(yourImageUrl).subscribe(data => {
+      this.createImageFromBlob(data);
+      this.isImageLoading = false;
+    }, error => {
+      this.isImageLoading = false;
+      console.log(error);
+    });
+  }*/
 
 
 

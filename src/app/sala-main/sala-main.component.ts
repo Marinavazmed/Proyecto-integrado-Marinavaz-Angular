@@ -18,13 +18,17 @@ export class SalaMainComponent implements OnInit{
   tareas:any;
   checkPO = false;
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService, public userService: UserProfileService) {
-  }  
-  
-  ngOnInit(): void {
     this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data=>{    
       this.tareas = data;
       console.log(this.tareas)
     })
+  }  
+  
+  ngOnInit(): void {
+    /*this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data=>{    
+      this.tareas = data;
+      console.log(this.tareas)
+    })*/
     this.compruebaSiPO()
 
   }

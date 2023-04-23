@@ -29,8 +29,8 @@ export class JoinSalaComponent implements OnInit {
 
   
   onSubmit(){
-    //añadir usuario a devs
-    this.salaService.joinSala(this.joinSalaForm.value)
-    this.router.navigate([``]);
+    this.salaService.joinSala(this.joinSalaForm.value);
+      //navega a página de usuario de pruebas(CAMBIAR)
+      this.router.navigate(['/user-profile/4']);
   }
 }

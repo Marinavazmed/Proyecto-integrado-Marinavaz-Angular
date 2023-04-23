@@ -26,6 +26,7 @@ export class UserProfileComponent implements OnInit {
         next: (data) => {
           console.log(data);
           this.userProfile = data;
+          localStorage.setItem("profile", data);
         },
         error: (error) => {
           console.log(error);
@@ -52,6 +53,7 @@ export class UserProfileComponent implements OnInit {
 
   logOut(){
     localStorage.removeItem('userData');
+    localStorage.removeItem('profile');
     this.router.navigate(['/login']);
   }
 

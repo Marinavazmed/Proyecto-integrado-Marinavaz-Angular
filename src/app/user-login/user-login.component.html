@@ -1,26 +1,45 @@
 <div class="login-form-container">
   <h4 class="card-header">Inicia sesión</h4>
   <div class="card-body">
-      <form [formGroup]="logInForm" (ngSubmit)="onSubmit(logInForm.value)">
+      <form [formGroup]="logInForm">
           <div class="mb-3">
-              <label class="form-label">Username</label>
+              <label class="form-label">Nombre de usuario</label>
               <input type="text" formControlName="username" class="form-control"/>
           </div>
           <div class="mb-3">
-              <label class="form-label">Password</label>
+              <label class="form-label">Contraseña</label>
               <input type="password" formControlName="password" class="form-control" />
+          </div>
+          <button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#exampleModalCenter">Open Modal</button>
+          <div class="modal fade text-dark" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">¡Ups!</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  {{infoMessage}}
+                </div>
+                <div class="modal-footer">
+                  <button id="btn_cierre" type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                </div>
+              </div>
+            </div>
           </div>
           <div *ngIf="infoMessage.length > 0">
             <span>{{ infoMessage }}</span>
           </div>
-          <button>Inicia sesión</button>
+          <button class="btn btn-light" (click)="onSubmit(logInForm.value)" (keypress.enter)="onSubmit(logInForm.value)">Inicia sesión</button>
       </form>
+
   </div>
 
-    
 </div>
 <div>
-    <button (click)="router.navigate(['/registro']);">
-        <span>Registrate</span>
-     </button>
+    <p>
+        <span>¿No tienes una cuenta? <u (click)="router.navigate(['/registro'])">Regístrate aquí</u></span>
+    </p>
 </div>

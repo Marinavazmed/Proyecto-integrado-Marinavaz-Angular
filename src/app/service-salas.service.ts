@@ -27,7 +27,8 @@ export class ServiceSalasService {
   }
 
   getSala(nombre_sala:any): Observable<any> {
-    const url = 'http://localhost:8000/api/v1/sala/?nombre_sala='+ nombre_sala;
+    console.log("GET sala con nombre " + nombre_sala)
+    const url = `http://localhost:8000/api/v1/sala/?nombre_sala=${nombre_sala}`;
     return this._http.get<any>(url)
   }
 
@@ -50,16 +51,16 @@ export class ServiceSalasService {
   joinSala(values:any): void{
     //1.-selecciona la sala por nombre
     this.getSala(values.nombre_sala).subscribe(data=>{
-      console.log(data[0].pass_sala)
-      console.log(typeof(data[0].devs))
           //2.-Comprueba nombre-contraseña
       if(data[0].pass_sala  == values.pass_sala){
-        values.id=data.id
-        values.prod_owner=data.prod_owner;
-          //3.-actualiza la lista devs de la sala
-        values.devs=data[0].devs.push(values.devs);
-        values.url=data.url;
-        this._http.put(`http://localhost:8000/api/v1/sala/?nombre_sala=${data.nombre_sala}`, values)
+        let url = data[0].url
+        values.id=data[0].id
+        values.prod_owner=data[0].prod_owner;
+          //3.-actualiza la lista devs de la sala añadiendo al usuario actual
+        values.devs=data[0].devs;
+        values.url=url;
+        values.pass_sala = "marina2";
+        this._http.put<any>(url, values).subscribe()
       }else{
         console.log("Esa sala no existe")
       }

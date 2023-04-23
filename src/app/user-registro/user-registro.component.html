@@ -1,15 +1,24 @@
 <div class="login-form-container">
-    <h4 class="card-header">Formulario de registro de nuevo usuario</h4>
+    <h4 class="card-header">¡Bienvenido, nuevo usuario!</h4>
     <div class="card-body">
         <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
             <div class="mb-3">
-                <label class="form-label">Username</label>
+                <label class="form-label">Nombre de usuario</label>
                 <input type="text" formControlName="username" class="form-control" required/>
                 <mat-error *ngIf="registroForm.get('username')?.errors?.['serverError']"> {{registroForm.get('username')?.errors?.['serverError']}}</mat-error>
             </div>
             <div class="mb-3">
-                <label class="form-label">Password</label>
+                <label class="form-label">Contraseña</label>
                 <input type="password" formControlName="password" class="form-control" required/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Confirma tu contraseña</label>
+                    <input id="confirmacion" type="password" class="form-control" (keyup)="checkPass(registroForm.get('password')?.value, $event)" required/>
+                    <div *ngIf="checked!=null">
+                        <p *ngIf="checked"><fa-icon [icon]="faCheck"></fa-icon> La contraseña coincide</p>
+                        <p *ngIf="!checked"><fa-icon [icon]="faError"></fa-icon> La contraseña no coincide</p>
+                    </div>
+
             </div>
             <div class="mb-3">
                 <label class="form-label">Nombre</label>
@@ -17,7 +26,7 @@
                 <mat-error *ngIf="registroForm.get('first_name')?.errors?.['serverError']"> {{registroForm.get('first_name')?.errors?.['serverError']}}</mat-error>
             </div>
             <div class="mb-3">
-                <label class="form-label">Apellido</label>
+                <label class="form-label">Apellidos</label>
                 <input type="text" formControlName="last_name" class="form-control" required/>
                 <mat-error *ngIf="registroForm.get('last_name')?.errors?.['serverError']"> {{registroForm.get('last_name')?.errors?.['serverError']}}</mat-error>
             </div>
@@ -25,14 +34,15 @@
                 <label class="form-label">Email</label>
                 <input type="text" formControlName="email" name="email" class="form-control"/>
                 <mat-error *ngIf="registroForm.get('email')?.errors?.['serverError']"> {{registroForm.get('email')?.errors?.['serverError']}}</mat-error>
+                <div *ngIf="registroForm.get('email')?.touched && registroForm.get('email')?.invalid">
+                    <p><fa-icon [icon]="faError"></fa-icon> Formato no válido</p>
+                </div>
             </div>
-            <button>Registrate</button>
+            <button class="btn btn-light">Completar el registro</button>
         </form>
     </div>
       
   </div>
 <div>
-    <button (click)="router.navigate(['/login']);">
-        <span>Inicia sesión</span>
-     </button>
+        <p>¿Tienes ya una cuenta? <u (click)="router.navigate(['/login']);">Inicia sesión aquí</u></p>
 </div>

@@ -28,7 +28,7 @@ export class CrearSalaComponent implements OnInit{
    }
 
   ngOnInit(): void {
-    
+    console.log(this.userData.id)
     this.userService.getUserProfile(this.userData.id).subscribe(data =>{
       this.premium = data.is_premium;
     });
