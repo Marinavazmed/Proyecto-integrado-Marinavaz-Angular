@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceSalasService } from '../service-salas.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserProfileService } from '../user-profile.service';
+import { compileNgModule } from '@angular/compiler';
 
 @Component({
   selector: 'app-join-sala',
@@ -25,12 +26,17 @@ export class JoinSalaComponent implements OnInit {
   } 
   
   ngOnInit(){
+    this.userService.getPDPorUserAuth().subscribe(data=>{
+      console.log("PERFIL DEV DE ESTE USUARIO:")
+      console.log(data)
+      sessionStorage.setItem("perfilDEV", JSON.stringify(data));
+    })
   }
 
   
   onSubmit(){
     this.salaService.joinSala(this.joinSalaForm.value);
       //navega a página de usuario de pruebas(CAMBIAR)
-      this.router.navigate(['/user-profile/4']);
+      this.router.navigate(['/user-profile/2']);
   }
 }

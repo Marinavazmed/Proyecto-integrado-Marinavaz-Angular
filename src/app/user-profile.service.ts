@@ -71,6 +71,10 @@ export class UserProfileService {
     return this.http.get(`http://localhost:8000/api/v1/profile_po/${idPO}/get_id_user/`);
   }
 
+  getPDPorUserAuth():Observable<any>{
+    return this.http.get('http://localhost:8000/api/v1/profile_dev/get_PO_por_user_ID/');
+  }
+
     /*Comprueba si el usuario autenticado es dueño de la sala*/
   compruebaPO(nombre_sala:any){
     let userDataId =  this.obtenerCredenciales().id;
@@ -83,6 +87,7 @@ export class UserProfileService {
 
   /*PRUEBA*/
   async compruebaPOasync(nombre_sala:any):Promise<any>{
+    console.log("ENTRA ANTES DE QUE LA SALA SE CREE")
     let userDataId =  this.obtenerCredenciales().id;
     return new Promise((resolve, reject)=>{
       this.salaService.getSala(nombre_sala).subscribe(

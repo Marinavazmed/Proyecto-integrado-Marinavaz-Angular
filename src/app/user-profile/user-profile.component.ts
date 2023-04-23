@@ -24,7 +24,6 @@ export class UserProfileComponent implements OnInit {
     const userId = this.activatedRoute.snapshot.paramMap.get('id');
     this.userProfileService.getUserProfile(userId).subscribe({
         next: (data) => {
-          console.log(data);
           this.userProfile = data;
           localStorage.setItem("profile", data);
         },
@@ -34,7 +33,6 @@ export class UserProfileComponent implements OnInit {
       }
     );
     this._peticion.getSalas().subscribe(dataSalas=>{    
-      console.log(dataSalas)
       this.salas = dataSalas;
     })
     

@@ -33,6 +33,10 @@ export class SalaMainComponent implements OnInit{
 
   }
 
+  abandonaSala(nombre_sala:any){
+    this.salaService.leaveSala(nombre_sala)
+  }
+
   borrarTarea(tarea_id:any){
     console.log("borrando tarea con id:" + tarea_id)
     this.tareasService.deleteTarea(tarea_id);
