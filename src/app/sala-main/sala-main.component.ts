@@ -4,6 +4,7 @@ import { ServiceSalasService } from '../service-salas.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TareasServiceService } from '../tareas-service.service';
 import { UserProfileService } from '../user-profile.service';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-sala-main',
@@ -17,6 +18,10 @@ export class SalaMainComponent implements OnInit{
   sala: any;
   tareas:any;
   checkPO = false;
+  //TAREAS DE EJEMPLO. Filtrar lista de tareas en grupos y mostrar
+  todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
+
+  done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService, public userService: UserProfileService) {
     this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data=>{    
       this.tareas = data;
@@ -31,6 +36,19 @@ export class SalaMainComponent implements OnInit{
     })*/
     this.compruebaSiPO()
 
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
   }
 
   abandonaSala(nombre_sala:any){

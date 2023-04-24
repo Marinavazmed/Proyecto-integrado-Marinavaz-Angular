@@ -5,6 +5,7 @@ import { UserProfile } from "../user-profile";
 import { ServiceSalasService } from '../service-salas.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from "@angular/router";
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -16,7 +17,7 @@ export class UserProfileComponent implements OnInit {
   userProfile: UserProfile|null = null;
   public salas:Array<any>
 
-  constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http:HttpClient, private _peticion: ServiceSalasService, public router: Router) { 
+  constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http:HttpClient, private _peticion: ServiceSalasService, public router: Router, public loginService: AuthService) { 
     this.salas = []
   }
 
@@ -50,9 +51,8 @@ export class UserProfileComponent implements OnInit {
 
 
   logOut(){
-    localStorage.removeItem('userData');
-    localStorage.removeItem('profile');
-    this.router.navigate(['/login']);
+    this.loginService.logOut()
+    this.router.navigate(['index'])
   }
 
   }

@@ -10,6 +10,7 @@ import { CrearSalaComponent } from './crear-sala/crear-sala.component';
 import { SalaMainComponent } from './sala-main/sala-main.component';
 import { CrearTareaComponent } from './crear-tarea/crear-tarea.component';
 import { JoinSalaComponent } from './join-sala/join-sala.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 const routes: Routes = [
   //se pueden pasar parámetros a traves de la url con la sintaxis:
@@ -28,7 +29,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}), DragDropModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

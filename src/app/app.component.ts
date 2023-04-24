@@ -1,21 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styles: []
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnChanges{
   title = 'PI';
   checkUser:any;
+  constructor(public loginService: AuthService){
 
-  ngOnInit(): void {
+  }
+
+  ngOnChanges(): void {
     this.checkUser=localStorage.getItem("userData");
   }
 
   
   logOut(){
-    localStorage.removeItem('profile');
-    localStorage.removeItem('userData');
+    this.loginService.logOut()
   }
 }

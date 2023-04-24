@@ -21,12 +21,14 @@ export class UserRegistroComponent implements OnInit{
   checked:any;
   faCheck = faCheck;
   faError = faXmark;
+  selectedFile:any;
   constructor(private formBuilder: FormBuilder, private UserProfileService: UserProfileService, public router: Router, private authService: AuthService) {
     this.registroForm = this.formBuilder.group({
       username: ['' as string | null, Validators.required],
       password:  ['' as string | null, Validators.required],
       first_name:  ['' as string | null, Validators.required],
       last_name:  ['' as string | null, Validators.required],
+      //profile_pic: ['', Validators.required],
       email:  ['', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
       created_at: new Date(),
     });
@@ -45,15 +47,6 @@ export class UserRegistroComponent implements OnInit{
       this.checked=true;
     }
   }
-
-  /*
-  checkPass(){
-    let password = this.registroForm.get('password')?.value;
-    let confirmacion = (<HTMLInputElement>document.getElementById('confirmacion'))?.value;
-    console.log(password)
-    console.log(confirmacion)
-  }
-  */
 
 
  onSubmit() {

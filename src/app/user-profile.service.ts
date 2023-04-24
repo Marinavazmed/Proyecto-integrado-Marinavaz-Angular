@@ -26,18 +26,6 @@ export class UserProfileService {
     return this.http.post<any>(url,usuario);
   }
 
-  /*getImageFromService() {
-    let isImageLoading = true;
-    imageService.getImage(yourImageUrl).subscribe(data => {
-      this.createImageFromBlob(data);
-      this.isImageLoading = false;
-    }, error => {
-      this.isImageLoading = false;
-      console.log(error);
-    });
-  }*/
-
-
 
 
   /*Obtiene las credenciales del usuario logado*/

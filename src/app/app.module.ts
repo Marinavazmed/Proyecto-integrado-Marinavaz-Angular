@@ -36,6 +36,7 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JoinSalaComponent } from './join-sala/join-sala.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MdbValidationModule,
     NgbModule,
     FontAwesomeModule,
+    DragDropModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
