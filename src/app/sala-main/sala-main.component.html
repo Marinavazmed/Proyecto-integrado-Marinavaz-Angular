@@ -1,19 +1,32 @@
-<p>sala-main works!</p>
-<table>
-    <th>Nombre de la tarea</th>
-    <th>Descripción de la tarea:</th>
-    <th>Estado de la tarea:</th>
-    <th>Tiempo estimado:</th>
-    <th>Puntos:</th>
-    <tr *ngFor="let tarea of tareas">
-        <td>{{tarea.nombre_tarea}}</td>
-        <td>{{tarea.desc_tarea}}</td>
-        <td>{{tarea.estado_tarea}}</td>
-        <td>{{tarea.tiempo_estimado}}</td>
-        <td>{{tarea.puntos}}</td>
-        <button *ngIf="checkPO" (click)="borrarTarea(tarea.id)">X</button>
-    </tr>
-</table>
+<p>{{nombre_sala}}</p>
+
+<div class="example-container">
+    <h2>To do</h2>
+
+    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="tareas_TODO" [cdkDropListConnectedTo]="[wipList, doneList]"
+        class="example-list" (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let tarea of tareas_TODO" cdkDrag>{{tarea}}</div>
+    </div>
+</div>
+
+<div class="example-container">
+    <h2>WIP</h2>
+
+    <div cdkDropList #wipList="cdkDropList" [cdkDropListData]="tareas_WIP" [cdkDropListConnectedTo]="[doneList]"
+        class="example-list" (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let tarea of tareas_WIP" cdkDrag>{{tarea}}</div>
+    </div>
+</div>
+
+<div class="example-container">
+    <h2>Done</h2>
+
+    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="tareas_DONE" [cdkDropListConnectedTo]="[]"
+        class="example-list" (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let tarea of tareas_DONE" cdkDrag>{{tarea}}</div>
+    </div>
+</div>
+
 <div>
     <button *ngIf="checkPO" (click)="router.navigate(['crear-tarea/:'+ nombre_sala]);">
         <span>Crear una nueva tarea</span>
@@ -22,32 +35,4 @@
     <button *ngIf="!checkPO" (click)="abandonaSala(nombre_sala)">
         <span>Abandonar esta sala</span>
     </button>
-</div>
-
-
-<div class="example-container">
-    <h2>To do</h2>
-
-    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" [cdkDropListConnectedTo]="[doneList]"
-        class="example-list" (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
-    </div>
-</div>
-
-<div class="example-container">
-    <h2>WIP</h2>
-
-    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
-        class="example-list" (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
-    </div>
-</div>
-
-<div class="example-container">
-    <h2>Done</h2>
-
-    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
-        class="example-list" (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
-    </div>
 </div>

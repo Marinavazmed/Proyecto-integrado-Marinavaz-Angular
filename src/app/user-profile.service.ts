@@ -75,7 +75,6 @@ export class UserProfileService {
 
   /*PRUEBA*/
   async compruebaPOasync(nombre_sala:any):Promise<any>{
-    console.log("ENTRA ANTES DE QUE LA SALA SE CREE")
     let userDataId =  this.obtenerCredenciales().id;
     return new Promise((resolve, reject)=>{
       this.salaService.getSala(nombre_sala).subscribe(
