@@ -1,30 +1,30 @@
-<nav class="nav">
-    <div class="container">
-        <div class="logo">
-            <a (click)="goToProfile()">LOGO</a>
+<div class="home w-100 h-100 mt-0">
+    <nav class="nav d-block">
+        <div class="container">
+            <div class="logo">
+                <a (click)="goToProfile()">LOGO</a>
+            </div>
+            <div id="mainListDiv" class="main_list">
+                <ul class="navlinks">
+                    <li *ngIf="loginService.isLoggedIn"><a href="http://localhost:4200/login" (click)="logOut()">Log
+                            out</a></li>
+                    <li *ngIf="loginService.isLoggedIn"><a (click)="goToSalas();">Salas</a></li>
+                    <li *ngIf="!loginService.isLoggedIn"><a href="http://localhost:4200/login">Log in</a></li>
+                    <li *ngIf="!loginService.isLoggedIn"><a href="http://localhost:4200/registro">Registro</a></li>
+                    <li><a href="#">Subscripción*</a></li>
+                    <li><a href="#">Otros*</a></li>
+                </ul>
+            </div>
+            <span class="navTrigger">
+                <i></i>
+                <i></i>
+                <i></i>
+            </span>
         </div>
-        <div id="mainListDiv" class="main_list">
-            <ul class="navlinks">
-                <li *ngIf="loginService.isLoggedIn"><a href="http://localhost:4200/login" (click)="logOut()">Log out</a></li>
-                <li *ngIf="loginService.isLoggedIn"><a (click)="goToSalas();">Salas</a></li>
-                <li *ngIf="!loginService.isLoggedIn"><a href="http://localhost:4200/login">Log in</a></li>
-                <li *ngIf="!loginService.isLoggedIn"><a href="http://localhost:4200/registro">Registro</a></li>
-                <li><a href="#">Subscripción*</a></li>
-                <li><a href="#">Otros*</a></li>
-            </ul>
+        <div class="position-absolute top-100 start-0">
+            <router-outlet></router-outlet>
         </div>
-        <span class="navTrigger">
-            <i></i>
-            <i></i>
-            <i></i>
-        </span>
-    </div>
-</nav>
-<section class="home">
-    <div class="wrapper">
-        <router-outlet></router-outlet>
-    </div>
-</section>
-<div style="height: 1000px">
-    <!-- just to make scrolling effect possible -->
+    </nav>
+
+
 </div>

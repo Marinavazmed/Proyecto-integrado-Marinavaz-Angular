@@ -6,6 +6,7 @@ import { TareasServiceService } from '../tareas-service.service';
 import { UserProfileService } from '../user-profile.service';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Tarea } from './tarea';
+import { faCheck, faXmark, faBan, faPenToSquare, faPen } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sala-main',
@@ -19,6 +20,10 @@ export class SalaMainComponent implements OnInit{
   sala: any;
   tareas:any;
   checkPO = false;
+  faCheck = faCheck;
+  faError = faXmark;
+  faDelete = faBan;
+  faEdit = faPenToSquare;
   tareas_obj : Array<Tarea> = [];
   tareas_TODO : Array <Tarea> = [];
   tareas_WIP : Array <Tarea> = [];
