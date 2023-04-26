@@ -30,7 +30,7 @@ export class SalaMainComponent implements OnInit{
       this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; url: string; }) => {
         this.tareas_obj.push(new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url))
       });
-      this.tareas_TODO = this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="SPRINT")
+      this.tareas_TODO = this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="BACKLOG")
       this.tareas_WIP= this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="WIP")
       this.tareas_DONE= this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="DONE")
 

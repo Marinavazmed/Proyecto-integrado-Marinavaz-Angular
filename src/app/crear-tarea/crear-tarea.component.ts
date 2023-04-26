@@ -45,9 +45,12 @@ export class CrearTareaComponent implements OnInit {
 }
 
   onSubmit(){
+    let url = `/sala-main/${this.route.snapshot.paramMap.get('nombre_sala')?.replace(":", "")}`
     this.crearTareaForm.controls['id_sala'].setValue(`http://localhost:8000/api/v1/sala/${this.id_sala}/`);
-    console.log(this.crearTareaForm.value)
     this.tareasService.postTarea(this.crearTareaForm.value).subscribe()
-    this.router.navigateByUrl(`/sala-main/${this.route.snapshot.paramMap.get('nombre_sala')?.replace(":", "")}`);
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate([url]);
+    });
+    //this.router.navigateByUrl(`/sala-main/${this.route.snapshot.paramMap.get('nombre_sala')?.replace(":", "")}`);
   }
 }

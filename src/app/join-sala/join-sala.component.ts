@@ -41,6 +41,9 @@ export class JoinSalaComponent implements OnInit {
   
   onSubmit(){
     this.salaService.joinSala(this.joinSalaForm.value);
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate(['/user-profile/'+this.urlSalas]);
+    });
+    //  this.router.navigate(['/user-profile/'+this.urlSalas]);
   }
 }

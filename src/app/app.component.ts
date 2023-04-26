@@ -32,6 +32,12 @@ export class AppComponent implements OnChanges, OnInit{
     this.loginService.logOut()
   }
 
+  goToProfile():void{
+    //en un futuro, cambiar por vista diferenciada de perfil
+    this.checkUser=localStorage.getItem("userData");
+    this.urlSalas = "/user-profile/"+ JSON.parse(this.checkUser)?.id;
+    this.router.navigate([`${this.urlSalas}`]);
+  }
   goToSalas():void{
     this.checkUser=localStorage.getItem("userData");
     this.urlSalas = "/user-profile/"+ JSON.parse(this.checkUser)?.id;
