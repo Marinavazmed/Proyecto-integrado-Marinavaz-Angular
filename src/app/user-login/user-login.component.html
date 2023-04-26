@@ -1,7 +1,7 @@
 <div class="login-form-container">
   <h4 class="card-header">Inicia sesión</h4>
   <div class="card-body">
-      <form [formGroup]="logInForm">
+      <form [formGroup]="logInForm" (submit)="onSubmit(logInForm.value)">
           <div class="mb-3">
               <label class="form-label">Nombre de usuario</label>
               <input type="text" formControlName="username" class="form-control"/>
@@ -10,13 +10,13 @@
               <label class="form-label">Contraseña</label>
               <input type="password" formControlName="password" class="form-control" />
           </div>
-          <button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#exampleModalCenter">Open Modal</button>
-          <div class="modal fade text-dark" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <button id="openModalButton" type="button" [hidden]="true" data-toggle="modal" data-target="#exampleModalCenter">Open Modal</button>
+          <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLongTitle">¡Ups!</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -24,7 +24,7 @@
                   {{infoMessage}}
                 </div>
                 <div class="modal-footer">
-                  <button id="btn_cierre" type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                  <button id="btn_cierre" class="btn btn-secondary" data-dismiss="modal">OK</button>
                 </div>
               </div>
             </div>
@@ -32,7 +32,7 @@
           <div *ngIf="infoMessage.length > 0">
             <span>{{ infoMessage }}</span>
           </div>
-          <button class="btn btn-light" (click)="onSubmit(logInForm.value)" (keypress.enter)="onSubmit(logInForm.value)">Inicia sesión</button>
+          <button type="submit" class="btn btn-light"  (click) = "onSubmit(logInForm.value)">Inicia sesión</button>
       </form>
 
   </div>

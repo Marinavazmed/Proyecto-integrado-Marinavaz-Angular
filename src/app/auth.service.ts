@@ -11,7 +11,6 @@ export class AuthService {
   isLoggedIn = false;
   constructor(private http: HttpClient, private router: Router) { }
    logIn(username: any, password: any ): Observable<any> {
-    this.isLoggedIn = true;
      return this.http.post(
        'http://127.0.0.1:8000/api-user-login/', { username, password }
        ) as Observable<any>;
@@ -20,6 +19,7 @@ export class AuthService {
    setLoggedInUser(userData: LoggedInUser): void {
     if (localStorage.getItem('userData') !== JSON.stringify(userData)) {
       localStorage.setItem('userData', JSON.stringify(userData));
+      this.isLoggedIn=true;
     }
    }
 
@@ -38,8 +38,8 @@ export class AuthService {
   }
 
   public logOut(){
-    this.isLoggedIn = false;
     localStorage.removeItem('profile');
     localStorage.removeItem('userData');
+    this.isLoggedIn = false;
   }
 }

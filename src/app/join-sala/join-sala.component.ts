@@ -14,7 +14,12 @@ import { compileNgModule } from '@angular/compiler';
 export class JoinSalaComponent implements OnInit {
   joinSalaForm;
   sala: any;
+  urlSalas: any;
+  checkUser:any;
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private userService:UserProfileService) {
+    this.checkUser=localStorage.getItem("userData");
+    this.urlSalas = JSON.parse(this.checkUser).id;
+
     this.joinSalaForm = this.formBuilder.group({
       id:['', Validators.required],
       prod_owner: ['', Validators.required],
@@ -23,6 +28,7 @@ export class JoinSalaComponent implements OnInit {
       pass_sala: ['', Validators.required],
       url: ['', Validators.required]
     });
+
   } 
   
   ngOnInit(){
@@ -32,11 +38,9 @@ export class JoinSalaComponent implements OnInit {
       sessionStorage.setItem("perfilDEV", JSON.stringify(data));
     })
   }
-
   
   onSubmit(){
     this.salaService.joinSala(this.joinSalaForm.value);
-      //navega a página de usuario de pruebas(CAMBIAR)
-      this.router.navigate(['/user-profile/2']);
+      this.router.navigate(['/user-profile/'+this.urlSalas]);
   }
 }
