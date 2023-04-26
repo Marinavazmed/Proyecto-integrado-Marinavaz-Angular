@@ -15,10 +15,14 @@ import { AuthService } from '../auth.service';
 })
 export class UserProfileComponent implements OnInit {
   userProfile: UserProfile|null = null;
+  userId :any;
   public salas:Array<any>
+  public salas_PO:Array<any>
 
   constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http:HttpClient, private _peticion: ServiceSalasService, public router: Router, public loginService: AuthService) { 
     this.salas = []
+    this.salas_PO = []
+    this.userId = this.userProfileService.obtenerCredenciales().id
   }
 
   ngOnInit(): void {
@@ -33,9 +37,14 @@ export class UserProfileComponent implements OnInit {
         }
       }
     );
+    this._peticion.getSalasParticipante().subscribe(dataSalas=>{    
+      this.salas = dataSalas;
+    })
+    /*
     this._peticion.getSalas().subscribe(dataSalas=>{    
       this.salas = dataSalas;
     })
+    */
     
   }
 

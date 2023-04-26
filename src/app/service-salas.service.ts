@@ -24,6 +24,10 @@ export class ServiceSalasService {
     return this._http.get<any[]>(this.url);
   }
 
+  getSalasParticipante(): Observable<any[]> {
+    return this._http.get<any[]>("http://localhost:8000/api/v1/sala/get_sala_participante/");
+  }
+
   postSala(sala: any): Observable<any> {
     const url = 'http://localhost:8000/api/v1/sala/'
     return this._http.post<any>(url, sala);

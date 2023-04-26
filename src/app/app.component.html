@@ -1,32 +1,14 @@
-<nav *ngIf="loginService.isLoggedIn" class="nav">
+<nav class="nav">
     <div class="container">
         <div class="logo">
             <a href="#">LOGO</a>
         </div>
         <div id="mainListDiv" class="main_list">
             <ul class="navlinks">
-                <li><a href="http://localhost:4200/login" (click)="logOut()">Log out</a></li>
-                <li><a href="http://localhost:4200/registro">Salas</a></li>
-                <li><a href="#">Subscripción*</a></li>
-                <li><a href="#">Otros*</a></li>
-            </ul>
-        </div>
-        <span class="navTrigger">
-            <i></i>
-            <i></i>
-            <i></i>
-        </span>
-    </div>
-</nav>
-<nav *ngIf="!loginService.isLoggedIn" class="nav">
-    <div class="container">
-        <div class="logo">
-            <a href="#">LOGO</a>
-        </div>
-        <div id="mainListDiv" class="main_list">
-            <ul class="navlinks">
-                <li><a href="http://localhost:4200/login">Log in</a></li>
-                <li><a href="http://localhost:4200/registro">Registro</a></li>
+                <li *ngIf="loginService.isLoggedIn"><a href="http://localhost:4200/login" (click)="logOut()">Log out</a></li>
+                <li *ngIf="loginService.isLoggedIn"><a (click)="goToSalas();">Salas</a></li>
+                <li *ngIf="!loginService.isLoggedIn"><a href="http://localhost:4200/login">Log in</a></li>
+                <li *ngIf="!loginService.isLoggedIn"><a href="http://localhost:4200/registro">Registro</a></li>
                 <li><a href="#">Subscripción*</a></li>
                 <li><a href="#">Otros*</a></li>
             </ul>

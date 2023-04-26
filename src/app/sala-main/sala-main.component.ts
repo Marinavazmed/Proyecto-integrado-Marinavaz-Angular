@@ -24,7 +24,7 @@ export class SalaMainComponent implements OnInit{
   tareas_WIP : Array <Tarea> = [];
   tareas_DONE : Array <Tarea> = [];
 
-  constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService, public userService: UserProfileService) {
+  constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService, public userService: UserProfileService, private tareaService: TareasServiceService) {
     this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data=>{    
       this.tareas = data;
       this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; url: string; }) => {
@@ -44,6 +44,7 @@ export class SalaMainComponent implements OnInit{
 
   drop(event: CdkDragDrop<Tarea[]>) {
     if(this.confirma(event.container)){
+      this.cambiaEstadoTarea();
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       } else {
@@ -60,6 +61,10 @@ export class SalaMainComponent implements OnInit{
 
   confirma(eventcontainer:any): boolean{
     return confirm("¿Está seguro de que desea cambiar el estado de la tarea " + eventcontainer.data + " ?" );
+  }
+
+  cambiaEstadoTarea(){
+    //peticion server estado tarea
   }
 
   abandonaSala(nombre_sala:any){

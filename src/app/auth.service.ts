@@ -24,6 +24,7 @@ export class AuthService {
    }
 
    public logInUser(user: any): void{
+    this.isLoggedIn = true;
     this.logIn(user.username, user.password).subscribe({
         next: (data) => {
           this.setLoggedInUser(data);
