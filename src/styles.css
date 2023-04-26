@@ -421,3 +421,12 @@ body {
     font-family: 'Roboto Mono', monospace;
     font-size: 3em;
   }
+
+
+  .background{
+    background-image: url(src/images/298130722328.jpg);
+    background-size: cover;
+    opacity: 0.75;
+  }
+  .background-superior{
+  }
