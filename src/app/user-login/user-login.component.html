@@ -1,17 +1,45 @@
-<div class="login-form-container">
-  <h4 class="card-header">Inicia sesión</h4>
-  <div class="card-body">
-      <form [formGroup]="logInForm" (submit)="onSubmit(logInForm.value)">
+<div class="vw-100 vh-100 mt-5 pt-5">
+  <div class="login-form-container d-flex justify-content-center align-items-center flex-column">
+
+    <!--
+    <form [formGroup]="logInForm" (submit)="onSubmit(logInForm.value)" class="get-in-touch">
+      <h1 class="title">Inicia sesión</h1>
+      <form class="contact-form row">
+        <div class="form-field col-lg-6">
+          <input class="input-text js-input" type="text" formControlName="username" required>
+          <label class="label" for="username">Nombre de usuario</label>
+        </div>
+        <div class="form-field col-lg-6 ">
+          <input id="pass" class="input-text js-input" type="password" formControlName="password" required>
+          <label class="label" for="pass">Contraseña</label>
+        </div>
+        <div class="form-field col-lg-12">
+          <input class="submit-btn" type="submit" value="Submit">
+        </div>
+      </form>
+    </form>
+    -->
+
+    <div class="card">
+      <h4 class="card-header">Inicia sesión</h4>
+      <div class="card-body m-2">
+
+          <form [formGroup]="logInForm" (submit)="onSubmit(logInForm.value)">
           <div class="mb-3">
-              <label class="form-label">Nombre de usuario</label>
-              <input type="text" formControlName="username" class="form-control"/>
+            <label class="form-label">Nombre de usuario</label>
+            <input type="text" formControlName="username" class="form-control" />
           </div>
+
+
           <div class="mb-3">
-              <label class="form-label">Contraseña</label>
-              <input type="password" formControlName="password" class="form-control" />
+            <label class="form-label">Contraseña</label>
+            <input type="password" formControlName="password" class="form-control" />
           </div>
-          <button id="openModalButton" type="button" [hidden]="true" data-toggle="modal" data-target="#exampleModalCenter">Open Modal</button>
-          <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+
+          <button id="openModalButton" type="button" [hidden]="true" data-toggle="modal"
+            data-target="#exampleModalCenter">Open Modal</button>
+          <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -32,14 +60,15 @@
           <div *ngIf="infoMessage.length > 0">
             <span>{{ infoMessage }}</span>
           </div>
-          <button type="submit" class="btn btn-light"  (click) = "onSubmit(logInForm.value)">Inicia sesión</button>
-      </form>
+          <button type="submit" class="btn btn-light" (click)="onSubmit(logInForm.value)">Inicia sesión</button>
+        </form>
 
+      </div>
+      <div class="card-footer">
+        <p>
+          <span>¿No tienes una cuenta? <u (click)="router.navigate(['/registro'])">Regístrate aquí</u></span>
+        </p>
+      </div>
+    </div>
   </div>
-
-</div>
-<div>
-    <p>
-        <span>¿No tienes una cuenta? <u (click)="router.navigate(['/registro'])">Regístrate aquí</u></span>
-    </p>
 </div>
