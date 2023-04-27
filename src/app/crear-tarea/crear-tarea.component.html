@@ -1,22 +1,27 @@
-<p>crear-tarea works!</p>
-<div class="card-body">
-    <form [formGroup]="crearTareaForm" (ngSubmit)="onSubmit()">
-        <div class="mb-3">
-            <label class="form-label">Nombre de la tarea</label>
-            <input type="text" formControlName="nombre_tarea" class="form-control" />
+<div class="vw-100 vh-100 mt-5 pt-5 text-dark">
+    <div class="d-flex justify-content-center align-items-center flex-column">
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="crearTareaForm" (ngSubmit)="onSubmit()">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre de la tarea</label>
+                        <input type="text" formControlName="nombre_tarea" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descripción de la tarea</label>
+                        <input type="text" formControlName="desc_tarea" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tiempo estimado</label>
+                        <input type="number" formControlName="tiempo_estimado" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Puntos</label>
+                        <input type="number" formControlName="puntos" class="form-control" />
+                    </div>
+                    <button class="btn btn-lg btn-primary">Crear</button>
+                </form>
+            </div>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Descripción de la tarea</label>
-            <input type="text" formControlName="desc_tarea" class="form-control" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Tiempo estimado</label>
-            <input type="number" formControlName="tiempo_estimado" class="form-control" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Puntos</label>
-            <input type="number" formControlName="puntos" class="form-control" />
-        </div>
-        <button>Crear</button>
-    </form>
+    </div>
 </div>

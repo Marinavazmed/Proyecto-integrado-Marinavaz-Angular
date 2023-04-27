@@ -1,18 +1,27 @@
-<div class="login-form-container">
-    <h4 class="card-header">Creación de sala</h4>
-    <div class="card-body">
-        <form [formGroup]="crearSalaForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-                <label class="form-label">Nombre de la sala</label>
-                <input type="text" formControlName="nombre_sala" class="form-control" />
+<div class="vw-100 vh-100 mt-5 pt-5">
+    <div class="d-flex justify-content-center align-items-center flex-column">
+
+        <div class="login-form-container">
+            <div class="card">
+                <h4 class="card-header">Creación de sala</h4>
+                <div class="card-body">
+                    <form [formGroup]="crearSalaForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre de la sala</label>
+                            <input type="text" formControlName="nombre_sala" class="form-control" />
+                            <mat-error *ngIf="crearSalaForm.get('nombre_sala')?.errors?.['serverError']">
+                                {{crearSalaForm.get('nombre_sala')?.errors?.['serverError']}}</mat-error>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña de la sala</label>
+                            <input type="text" formControlName="pass_sala" class="form-control" />
+                        </div>
+                        <button class="btn btn-primary btn-lg">Crear una nueva sala</button>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div *ngIf="this.mensajeError">{{this.mensajeError}}</div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Contraseña de la sala</label>
-                <input type="text" formControlName="pass_sala" class="form-control" />
-            </div>
-            <button>Crear una nueva sala</button>
-        </form>
+        </div>
     </div>
-    <div *ngIf="this.mensajeError">{{this.mensajeError}}</div>
-     
-  </div>

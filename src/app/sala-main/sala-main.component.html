@@ -9,7 +9,7 @@
             <div class="example-box" *ngFor="let tarea of tareas_TODO" cdkDrag>{{tarea}} <span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span></div>
         </div>
         <div *ngIf="tareas_TODO.length==0">
-            <div class="example-box" cdkDrag><i>¡Vaya! ¡No tienes tarea pendiente!</i></div>
+            <div class="example-box text-black-50" cdkDrag><i>¡Vaya! ¡No tienes tarea pendiente!</i></div>
         </div>
 
     </div>
@@ -24,7 +24,7 @@
             <div class="example-box" *ngFor="let tarea of tareas_WIP" cdkDrag>{{tarea}}<span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span></div>
         </div>
         <div *ngIf="tareas_WIP.length==0">
-            <div class="example-box" cdkDrag><i>Arrastra aquí la tarea que quieras adjudicarte.</i></div>
+            <div class="example-box text-black-50" cdkDrag><i>Arrastra aquí la tarea que quieras adjudicarte.</i></div>
         </div>
     </div>
 </div>
@@ -37,7 +37,7 @@
             <div class="example-box" *ngFor="let tarea of tareas_DONE" cdkDrag>{{tarea}}<span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span></div>
         </div>
         <div *ngIf="tareas_DONE.length==0">
-            <div class="example-box" cdkDrag><i>¿Primera tarea finalizada? Colócala aquí</i></div>
+            <div class="example-box text-black-50" cdkDrag><i>¿Primera tarea finalizada? Colócala aquí</i></div>
         </div>
     </div>
 </div>

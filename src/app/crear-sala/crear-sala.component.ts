@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { FormBuilder, Validators } from "@angular/forms";
 import { UserProfileService } from '../user-profile.service';
 import { Usuario } from '../user-login/usuario';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-crear-sala',
@@ -52,13 +53,31 @@ export class CrearSalaComponent implements OnInit {
   }
 
   onSubmit() {
-
-    //TODO: Con premium + numSalaUser comprobar si puede o no hacer una sala con postSala
+    //Comprueba si tiene la membresía para poder crear otra sala, en caso de que tenga ya una creada
     if (!this.premium && this.numSalasUser.length >= 1) {
       this.mensajeError = `Lo sentimos, ahora mismo eres dueño de ${this.numSalasUser.length} salas.
       Consigue la membresía premium para poder crear más salas.`
     } else {
-      this.salaService.postSala(this.crearSalaForm.value).subscribe();
+
+    //Realiza la petición al servidor. En caso de que devuelva un error de validación, recoje el mensaje de error para mostrarlo en el formulario.
+      this.salaService.postSala(this.crearSalaForm.value).subscribe(x=>{}, err=>{
+        if(err instanceof HttpErrorResponse){
+          const ValidationErrors = err.error;
+          Object.keys(ValidationErrors).forEach(prop=>{
+            const formControl = this.crearSalaForm.get(prop);
+            if(formControl){
+              formControl.setErrors({
+                serverError: ValidationErrors[prop]
+              })
+            }
+          })
+        }
+        this.mensajeError = err.error.message;
+      });
+    }
+
+    //Redirecciona a la sala creada si no ha habido ningún error
+    if(this.mensajeError.length==0){
       const nombre_sala = this.crearSalaForm.get('nombre_sala')!.value;
       this.router.navigate(['sala-main/:' + nombre_sala]);
     }
