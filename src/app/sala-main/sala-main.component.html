@@ -3,13 +3,24 @@
 <div class="example-container">
     <h2>To do</h2>
 
-    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="tareas_TODO" [cdkDropListConnectedTo]="[wipList, doneList]"
-        class="example-list" (cdkDropListDropped)="drop($event)">
+    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="tareas_TODO"
+        [cdkDropListConnectedTo]="[wipList, doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
         <div *ngIf="tareas_TODO.length!=0">
-            <div class="example-box" *ngFor="let tarea of tareas_TODO" cdkDrag>{{tarea}} <span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span></div>
+            <div class="example-box" *ngFor="let tarea of tareas_TODO" cdkDrag>
+                <table>
+                    <tr><u>{{tarea.nombre_tarea}}</u></tr>
+                    <tr><i>{{tarea.desc_tarea}}</i></tr>
+                    <tr><b>{{tarea.puntos}}p</b></tr>
+                    <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
+                        <i>{{tarea.dev_asignado}}</i>
+                    </tr>
+                    <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
+                </table>
+                <span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span>
+            </div>
         </div>
         <div *ngIf="tareas_TODO.length==0">
-            <div class="example-box text-black-50" cdkDrag><i>¡Vaya! ¡No tienes tarea pendiente!</i></div>
+            <div class="example-box text-dark text-opacity-50" cdkDrag><i>¡Vaya! ¡No tienes tarea pendiente!</i></div>
         </div>
 
     </div>
@@ -21,10 +32,21 @@
     <div cdkDropList #wipList="cdkDropList" [cdkDropListData]="tareas_WIP" [cdkDropListConnectedTo]="[doneList]"
         class="example-list" (cdkDropListDropped)="drop($event)">
         <div *ngIf="tareas_WIP.length!=0">
-            <div class="example-box" *ngFor="let tarea of tareas_WIP" cdkDrag>{{tarea}}<span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span></div>
+            <div class="example-box" *ngFor="let tarea of tareas_WIP" cdkDrag>
+                <table>
+                    <tr><u>{{tarea.nombre_tarea}}</u></tr>
+                    <tr><i>{{tarea.desc_tarea}}</i></tr>
+                    <tr><b>{{tarea.puntos}}p</b></tr>
+                    <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
+                        <i>{{tarea.dev_asignado}}</i>
+                    </tr>
+                    <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
+                </table>
+                <span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span>
+            </div>
         </div>
         <div *ngIf="tareas_WIP.length==0">
-            <div class="example-box text-black-50" cdkDrag><i>Arrastra aquí la tarea que quieras adjudicarte.</i></div>
+            <div class="example-box text-dark text-opacity-50" cdkDrag><i>Arrastra aquí la tarea que quieras adjudicarte.</i></div>
         </div>
     </div>
 </div>
@@ -34,10 +56,21 @@
     <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="tareas_DONE" [cdkDropListConnectedTo]="[]"
         class="example-list" (cdkDropListDropped)="drop($event)">
         <div *ngIf="tareas_DONE.length!=0">
-            <div class="example-box" *ngFor="let tarea of tareas_DONE" cdkDrag>{{tarea}}<span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span></div>
+            <div class="example-box" *ngFor="let tarea of tareas_DONE" cdkDrag>
+                <table>
+                    <tr><u>{{tarea.nombre_tarea}}</u></tr>
+                    <tr><i>{{tarea.desc_tarea}}</i></tr>
+                    <tr><b>{{tarea.puntos}}p</b></tr>
+                    <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
+                        <i>{{tarea.dev_asignado}}</i>
+                    </tr>
+                    <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
+                </table>
+                <span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span>
+            </div>
         </div>
         <div *ngIf="tareas_DONE.length==0">
-            <div class="example-box text-black-50" cdkDrag><i>¿Primera tarea finalizada? Colócala aquí</i></div>
+            <div class="example-box text-dark text-opacity-50" cdkDrag><i>¿Primera tarea finalizada? Colócala aquí</i></div>
         </div>
     </div>
 </div>
