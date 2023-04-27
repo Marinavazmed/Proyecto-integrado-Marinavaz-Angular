@@ -323,6 +323,7 @@ body {
 .affix {
     padding: 0;
     background-color: #111;
+    z-index: +1;
 }
 
 
@@ -412,21 +413,21 @@ body {
     }
 
 
-  .wrapper_landing{
-    border: solid green 3px;
-    /*background-image: url(https://timeular.com/wp-content/uploads/2022/06/best-productivity-blogs.png);*/
-  }
-
   .start div{
     font-family: 'Roboto Mono', monospace;
     font-size: 3em;
   }
 
+  .font{
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.5em;
+  }
+
 
   .background{
     background-image: url(src/images/298130722328.jpg);
+    background-position: center;
     background-size: cover;
     opacity: 0.75;
-  }
-  .background-superior{
+    color:black;
   }

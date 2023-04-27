@@ -1,5 +1,5 @@
 <div class="home w-100 h-100 mt-0">
-    <nav class="nav d-block">
+    <nav class="nav">
         <div class="container">
             <div class="logo">
                 <a (click)="goToProfile()">LOGO</a>
@@ -21,10 +21,11 @@
                 <i></i>
             </span>
         </div>
-        <div class="position-absolute top-100 start-0">
-            <router-outlet></router-outlet>
-        </div>
     </nav>
+
+    <div class="d-flex mt-5 pt-5">
+        <router-outlet></router-outlet>
+    </div>
 
 
 </div>
