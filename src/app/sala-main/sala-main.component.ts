@@ -7,6 +7,8 @@ import { UserProfileService } from '../user-profile.service';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Tarea } from './tarea';
 import { faCheck, faXmark, faBan, faPenToSquare, faPen } from '@fortawesome/free-solid-svg-icons';
+import { Desarrollador } from './desarrollador';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sala-main',
@@ -20,6 +22,7 @@ export class SalaMainComponent implements OnInit{
   sala: any;
   tareas:any;
   checkPO = false;
+  perfilDEV:any;
   faCheck = faCheck;
   faError = faXmark;
   faDelete = faBan;
@@ -43,13 +46,15 @@ export class SalaMainComponent implements OnInit{
   }  
   
   ngOnInit(): void {
-    this.compruebaSiPO()
-
+    this.compruebaSiPO().then( x=>{
+      if(!this.checkPO){
+        this.perfilDEV = this.getPerfilDEV();
+      }
+    })
   }
 
   drop(event: CdkDragDrop<Tarea[]>) {
     if(this.confirma(event.container)){
-      this.cambiaEstadoTarea();
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       } else {
@@ -60,6 +65,8 @@ export class SalaMainComponent implements OnInit{
           event.currentIndex,
         );
       }
+      //CUIDADO: Si el usuario NO ES PERFIL DEV fallará
+      this.cambiaEstadoTarea(event.container.data[0], this.perfilDEV,event.previousContainer.id, event.container.id);
     }
 
   }
@@ -68,8 +75,24 @@ export class SalaMainComponent implements OnInit{
     return confirm("¿Está seguro de que desea cambiar el estado de la tarea " + eventcontainer.data + " ?" );
   }
 
-  cambiaEstadoTarea(){
+  cambiaEstadoTarea(tarea:any, dev:any, id_prev_container:any, id_curr_container:any){
     //peticion server estado tarea
+    if(id_prev_container = "cdk-drop-list-0"){
+      tarea.dev=dev.url
+    }
+
+    switch(id_curr_container){
+      case "cdk-drop-list-1":
+        tarea.estado_tarea = "WIP"
+        break;
+      case "cdk-drop-list-2":
+        tarea.estado_tarea = "DONE"
+        break;
+      default:
+        console.log("No se ha podido identificar el estado de la tarea")
+    }
+
+    this.tareaService.putTarea(tarea).subscribe()
   }
 
   abandonaSala(nombre_sala:any){
@@ -95,6 +118,15 @@ export class SalaMainComponent implements OnInit{
     let prueba = await this.userService.compruebaPOasync(this.nombre_sala);
     if(prueba){
       this.checkPO=true
+      console.log("Este usuario es PO")
     }
+  }
+
+  getPerfilDEV():Desarrollador{
+    this.userService.getPDEVporUserId().subscribe(data=>{
+      console.log("Este usuario es desarrollador")
+      return new Desarrollador(data.id, data.usuario, data.url, data.puntuacion)
+    })
+    return new Desarrollador("", "", "", 0);
   }
 }

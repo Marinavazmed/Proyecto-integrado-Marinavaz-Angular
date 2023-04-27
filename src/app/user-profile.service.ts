@@ -73,6 +73,10 @@ export class UserProfileService {
       });
   }
 
+  getPDEVporUserId():Observable<any>{
+    return this.http.get('http://localhost:8000/api/v1/profile_dev/get_DEV_por_user_ID/')
+  }
+
   /*PRUEBA*/
   async compruebaPOasync(nombre_sala:any):Promise<any>{
     let userDataId =  this.obtenerCredenciales().id;

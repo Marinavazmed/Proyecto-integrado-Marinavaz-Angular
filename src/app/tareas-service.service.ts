@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Tarea } from './sala-main/tarea';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,11 @@ export class TareasServiceService {
     this._http.delete(`http://localhost:8000/api/v1/tarea/${id_tarea}/`).subscribe(data => {
       console.log(data);
     });
+  }
+
+  putTarea(tarea:any):Observable<any>{
+    //hay que modificar 1.- el estado de la tarea 2.- el dev (en caso de que esté recién asignada)
+    let tarea_put = new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url)
+    return this._http.put<any>('//localhost:8000/api/v1/tarea/'+ tarea.id, tarea_put )
   }
 }
