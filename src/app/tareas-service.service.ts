@@ -36,9 +36,9 @@ export class TareasServiceService {
     });
   }
 
-  putTarea(tarea:any):Observable<any>{
+  putTarea(tarea:any):void{
     //hay que modificar 1.- el estado de la tarea 2.- el dev (en caso de que esté recién asignada)
     let tarea_put = new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url)
-    return this._http.put<any>('//localhost:8000/api/v1/tarea/'+ tarea.id, tarea_put )
+    this._http.put<any>(tarea.url, tarea_put).subscribe()
   }
 }

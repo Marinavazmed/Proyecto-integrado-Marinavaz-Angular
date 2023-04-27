@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Sala } from './crear-sala/sala';
-import { keyframes } from '@angular/animations';
 import { po } from 'src/po';
 import { sala } from './sala-main/sala';
 

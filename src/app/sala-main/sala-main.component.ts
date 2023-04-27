@@ -47,9 +47,9 @@ export class SalaMainComponent implements OnInit{
   
   ngOnInit(): void {
     this.compruebaSiPO().then( x=>{
-      if(!this.checkPO){
-        this.perfilDEV = this.getPerfilDEV();
-      }
+        this.getPerfilDEV();
+        console.log("desarrollador:")
+        console.log(this.perfilDEV)
     })
   }
 
@@ -67,6 +67,7 @@ export class SalaMainComponent implements OnInit{
       }
       //CUIDADO: Si el usuario NO ES PERFIL DEV fallará
       this.cambiaEstadoTarea(event.container.data[0], this.perfilDEV,event.previousContainer.id, event.container.id);
+
     }
 
   }
@@ -77,10 +78,7 @@ export class SalaMainComponent implements OnInit{
 
   cambiaEstadoTarea(tarea:any, dev:any, id_prev_container:any, id_curr_container:any){
     //peticion server estado tarea
-    if(id_prev_container = "cdk-drop-list-0"){
-      tarea.dev=dev.url
-    }
-
+    tarea.dev_asignado=dev.url
     switch(id_curr_container){
       case "cdk-drop-list-1":
         tarea.estado_tarea = "WIP"
@@ -91,8 +89,7 @@ export class SalaMainComponent implements OnInit{
       default:
         console.log("No se ha podido identificar el estado de la tarea")
     }
-
-    this.tareaService.putTarea(tarea).subscribe()
+    this.tareaService.putTarea(tarea)
   }
 
   abandonaSala(nombre_sala:any){
@@ -122,11 +119,11 @@ export class SalaMainComponent implements OnInit{
     }
   }
 
-  getPerfilDEV():Desarrollador{
+  getPerfilDEV():void{
     this.userService.getPDEVporUserId().subscribe(data=>{
       console.log("Este usuario es desarrollador")
-      return new Desarrollador(data.id, data.usuario, data.url, data.puntuacion)
+      let desarrollador = new Desarrollador(data.id, data.usuario, data.url, data.puntuacion)
+      this.perfilDEV = desarrollador;
     })
-    return new Desarrollador("", "", "", 0);
   }
 }

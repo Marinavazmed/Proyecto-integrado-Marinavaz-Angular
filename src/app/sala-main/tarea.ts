@@ -2,7 +2,7 @@ export class Tarea{
     constructor(
         public id:string,
         public id_sala:string,
-        public dev_asignado:any,
+        public dev_asignado:string,
         public nombre_tarea:string,
         public desc_tarea:string,
         public estado_tarea:string,
