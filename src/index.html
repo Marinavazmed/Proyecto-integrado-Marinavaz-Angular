@@ -37,8 +37,13 @@
     $(window).scroll(function () {
       if ($(document).scrollTop() > 50) {
         $('.nav').addClass('affix');
+        $('a').removeClass('negro');
+        $('a').addClass('blanco');
+
       } else {
         $('.nav').removeClass('affix');
+        $('a').removeClass('blanco');
+        $('a').addClass('negro');
       }
     });
   </script>

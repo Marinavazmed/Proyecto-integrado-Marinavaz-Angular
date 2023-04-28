@@ -7,7 +7,6 @@ body {
     font-family: "Quicksand", sans-serif;
     font-size: 62.5%;
     font-size: 10px;
-    color: #fff;
 }
 
 
@@ -27,14 +26,13 @@ body {
 }
 
 .nav div.logo a {
-    text-decoration: none;
-    color: #fff;
     font-size: 2.5rem;
 }
 
-.nav div.logo a:hover {
-    color: #00E676;
+.logo:hover {
+    color:#4a70f8;
 }
+
 
 .nav div.main_list {
     height: 65px;
@@ -55,18 +53,32 @@ body {
     height: 65px;
     padding: 0;
     padding-right: 3rem;
+
 }
 
 .nav div.main_list ul li a {
     text-decoration: none;
-    color: #fff;
     line-height: 65px;
     font-size: 2.4rem;
 }
 
-.nav div.main_list ul li a:hover {
-    color: #00E676;
+.nav div.main_list ul li a:hover{
+    color:#4a70f8;
 }
+
+.negro{
+    text-decoration: none;
+    color:black;
+}
+
+.blanco{
+    text-decoration: none;
+    color: white;
+}
+
+
+
+
 
 
 .navTrigger {
@@ -324,8 +336,13 @@ body {
     padding: 0;
     background-color: #111;
     z-index: +1;
+    color:white;
 }
 
+.affix a{
+    text-decoration: none;
+    color:white;
+}
 
 
 
@@ -406,10 +423,12 @@ body {
   .home {
     margin-top: 5%;
     border: solid white 3px;
-    background-image: url(https://images.saymedia-content.com/.image/t_share/MTkyOTkyMzE2OTQ3MDQ3NjQ1/website-background-templates.png);
+    /*background-image: url(https://images.saymedia-content.com/.image/t_share/MTkyOTkyMzE2OTQ3MDQ3NjQ1/website-background-templates.png);*/
+    background-image: url(src/images/298130722328.jpg);
     background-position: center top;
 	background-size:cover;
     border: solid white 3px;
+    height: 1250px;
     }
 
 
@@ -425,11 +444,13 @@ body {
 
 
   .background{
-    background-image: url(src/images/298130722328.jpg);
+    /*background-image: url(https://images.saymedia-content.com/.image/t_share/MTkyOTkyMzE2OTQ3MDQ3NjQ1/website-background-templates.png);*/
+    background-image: url(src/images/wave_azul.svg);
     background-position: center;
     background-size: cover;
-    opacity: 0.75;
+    /*opacity: 0.65;*/
     color:black;
+    height: 55%;
   }
 
   .login-form-container{
