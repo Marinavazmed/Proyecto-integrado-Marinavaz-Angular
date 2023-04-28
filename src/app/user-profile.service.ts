@@ -77,7 +77,7 @@ export class UserProfileService {
     return this.http.get('http://localhost:8000/api/v1/profile_dev/get_DEV_por_user_ID/')
   }
 
-  /*PRUEBA*/
+  /*PRUEBA. Da error al crear la sala, pues la sala NO EXISTE y no puede comprobar si el usuario es PO. Debe ejecutarse tras la creación de sala.*/
   async compruebaPOasync(nombre_sala:any):Promise<any>{
     let userDataId =  this.obtenerCredenciales().id;
     return new Promise((resolve, reject)=>{

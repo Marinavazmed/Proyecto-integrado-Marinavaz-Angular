@@ -120,8 +120,7 @@ export class SalaMainComponent implements OnInit{
   }
 
   getPerfilDEV():void{
-    this.userService.getPDEVporUserId().subscribe(data=>{
-      console.log("Este usuario es desarrollador")
+    this.userService.getPDPorUserAuth().subscribe(data=>{
       let desarrollador = new Desarrollador(data.id, data.usuario, data.url, data.puntuacion)
       this.perfilDEV = desarrollador;
     })
