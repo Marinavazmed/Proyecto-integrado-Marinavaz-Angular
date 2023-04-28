@@ -37,7 +37,7 @@ export class TareasServiceService {
   }
 
   putTarea(tarea:any):void{
-    let tarea_put = new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, "prubea", tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url)
+    let tarea_put = new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url)
     this._http.put<any>(tarea.url, tarea_put).subscribe()
   }
 }

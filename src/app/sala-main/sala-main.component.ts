@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ServiceSalasService } from '../service-salas.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
   ]
 })
 
-export class SalaMainComponent implements OnInit{
+export class SalaMainComponent implements OnInit, AfterViewInit{
   nombre_sala = this.route.snapshot.paramMap.get('nombre_sala')?.replace(":", '');
   sala: any;
   tareas:any;
@@ -43,8 +43,6 @@ export class SalaMainComponent implements OnInit{
       this.tareas_TODO = this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="SPRINT")
       this.tareas_WIP= this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="WIP")
       this.tareas_DONE= this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="DONE")
-      this.perfilDEV = null;
-
     })
   }  
   
@@ -52,6 +50,9 @@ export class SalaMainComponent implements OnInit{
     this.compruebaSiPO().then( x=>{
         this.getPerfilDEV();
     })
+  }
+
+  ngAfterViewInit():void{
   }
 
   drop(event: CdkDragDrop<Tarea[]>) {
@@ -133,9 +134,10 @@ export class SalaMainComponent implements OnInit{
     }
   }
 
-  getPerfilDEV():void{
+  getPerfilDEV(){
+    let desarrollador:any;
     this.userService.getPDPorUserAuth().subscribe(data=>{
-      let desarrollador = new Desarrollador(data.id, data.usuario, data.url, data.puntuacion)
+      desarrollador = new Desarrollador(data.id, data.usuario, data.url, data.puntuacion)
       this.perfilDEV = desarrollador;
     })
   }
