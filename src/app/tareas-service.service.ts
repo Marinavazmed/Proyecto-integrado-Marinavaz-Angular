@@ -37,8 +37,7 @@ export class TareasServiceService {
   }
 
   putTarea(tarea:any):void{
-    //hay que modificar 1.- el estado de la tarea 2.- el dev (en caso de que esté recién asignada)
-    let tarea_put = new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url)
+    let tarea_put = new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, "prubea", tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url)
     this._http.put<any>(tarea.url, tarea_put).subscribe()
   }
 }

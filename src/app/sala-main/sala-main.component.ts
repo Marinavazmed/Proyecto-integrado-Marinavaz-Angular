@@ -22,7 +22,7 @@ export class SalaMainComponent implements OnInit{
   sala: any;
   tareas:any;
   checkPO = false;
-  perfilDEV:any;
+  perfilDEV: any;
   faCheck = faCheck;
   faError = faXmark;
   faDelete = faBan;
@@ -43,6 +43,7 @@ export class SalaMainComponent implements OnInit{
       this.tareas_TODO = this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="SPRINT")
       this.tareas_WIP= this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="WIP")
       this.tareas_DONE= this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="DONE")
+      this.perfilDEV = null;
 
     })
   }  
@@ -50,13 +51,12 @@ export class SalaMainComponent implements OnInit{
   ngOnInit(): void {
     this.compruebaSiPO().then( x=>{
         this.getPerfilDEV();
-        console.log("desarrollador:")
-        console.log(this.perfilDEV)
     })
   }
 
   drop(event: CdkDragDrop<Tarea[]>) {
-    console.log(event.container.id)
+
+
     if(this.confirma(event.container)){
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -69,19 +69,28 @@ export class SalaMainComponent implements OnInit{
         );
       }
       //CUIDADO: Si el usuario NO ES PERFIL DEV fallará
-      this.cambiaEstadoTarea(event.container.data[0], this.perfilDEV,event.previousContainer.id, event.container.id);
+      let perfilCAMBIO = this.perfilDEV;
+      if(this.checkPO){
+        perfilCAMBIO = [];
+      }
+
+      //ERROR: event.container.data[0] SOLO TOMA LA PRIMERA TAREA DE LA LISTA.
+      this.cambiaEstadoTarea(event.container.data[event.currentIndex], perfilCAMBIO,event.previousContainer.id, event.container.id);
 
     }
 
   }
 
   confirma(eventcontainer:any): boolean{
-    return confirm("¿Está seguro de que desea cambiar el estado de la tarea " + eventcontainer.data + " ?" );
+    return confirm("¿Está seguro de que desea cambiar el estado de la tarea ?" );
   }
 
   cambiaEstadoTarea(tarea:any, dev:any, id_prev_container:any, id_curr_container:any){
     //peticion server estado tarea
-    tarea.dev_asignado=dev.url
+    if(!this.checkPO){
+      tarea.dev_asignado=dev.url
+    }
+
     switch(id_curr_container){
       case "cdk-drop-list-0":
         tarea.estado_tarea = "SPRINT"
@@ -121,7 +130,6 @@ export class SalaMainComponent implements OnInit{
     let prueba = await this.userService.compruebaPOasync(this.nombre_sala);
     if(prueba){
       this.checkPO=true
-      console.log("Este usuario es PO")
     }
   }
 
