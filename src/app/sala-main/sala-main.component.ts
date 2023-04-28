@@ -28,6 +28,7 @@ export class SalaMainComponent implements OnInit{
   faDelete = faBan;
   faEdit = faPenToSquare;
   tareas_obj : Array<Tarea> = [];
+  tareas_BACKLOG : Array <Tarea> = [];
   tareas_TODO : Array <Tarea> = [];
   tareas_WIP : Array <Tarea> = [];
   tareas_DONE : Array <Tarea> = [];
@@ -38,7 +39,8 @@ export class SalaMainComponent implements OnInit{
       this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; url: string; }) => {
         this.tareas_obj.push(new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url))
       });
-      this.tareas_TODO = this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="BACKLOG")
+      this.tareas_BACKLOG = this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="BACKLOG")
+      this.tareas_TODO = this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="SPRINT")
       this.tareas_WIP= this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="WIP")
       this.tareas_DONE= this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="DONE")
 
@@ -54,6 +56,7 @@ export class SalaMainComponent implements OnInit{
   }
 
   drop(event: CdkDragDrop<Tarea[]>) {
+    console.log(event.container.id)
     if(this.confirma(event.container)){
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -80,6 +83,9 @@ export class SalaMainComponent implements OnInit{
     //peticion server estado tarea
     tarea.dev_asignado=dev.url
     switch(id_curr_container){
+      case "cdk-drop-list-0":
+        tarea.estado_tarea = "SPRINT"
+        break;
       case "cdk-drop-list-1":
         tarea.estado_tarea = "WIP"
         break;
