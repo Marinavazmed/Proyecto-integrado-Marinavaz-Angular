@@ -49,7 +49,7 @@
                 <input #imageInput type="file" accept="image/*" formControlName="profile_pic" name="profile_pic" class="form-control" (change)="onFileChange($event)"/>
                 <mat-error *ngIf="registroForm.get('profile_pic')?.errors?.['serverError']"> {{registroForm.get('profile_pic')?.errors?.['serverError']}}</mat-error>
             </div>-->
-                    <button class="btn btn-light">Completar el registro</button>
+                    <button class="btn btn-dark btn-lg">Completar el registro</button>
                 </form>
                 <div class="card-footer">
                     <p>¿Tienes ya una cuenta? <u (click)="router.navigate(['/login']);">Inicia sesión aquí</u></p>
