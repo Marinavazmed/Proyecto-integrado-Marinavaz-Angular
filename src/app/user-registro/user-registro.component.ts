@@ -28,7 +28,7 @@ export class UserRegistroComponent implements OnInit{
       password:  ['' as string | null, Validators.required],
       first_name:  ['' as string | null, Validators.required],
       last_name:  ['' as string | null, Validators.required],
-      //profile_pic: ['', Validators.required],
+      //profile_pic: [File, Validators.required],
       email:  ['', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
       created_at: new Date(),
     });

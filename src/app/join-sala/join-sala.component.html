@@ -1,12 +1,19 @@
-<p>join-sala works!</p>
-<form [formGroup]="joinSalaForm" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-        <label class="form-label">Nombre de la sala:</label>
-        <input type="text" formControlName="nombre_sala" class="form-control" />
+<div class="vw-100 vh-100 mt-5 pt-5">
+    <div class="login-form-container d-flex justify-content-center align-items-center flex-column">
+        <div class="card">
+            <h4 class="card-header">Únete a una sala</h4>
+            <div class="card-body m-2">
+                <form [formGroup]="joinSalaForm" (ngSubmit)="onSubmit()">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre de la sala:</label>
+                        <input type="text" formControlName="nombre_sala" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contraseña de la sala</label>
+                        <input type="text" formControlName="pass_sala" class="form-control" />
+                    </div>
+                    <button>Unirme a la sala</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label class="form-label">Contraseña de la sala</label>
-        <input type="text" formControlName="pass_sala" class="form-control" />
-    </div>
-    <button>Unirme a la sala</button>
-</form>
