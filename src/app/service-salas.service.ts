@@ -92,32 +92,47 @@ export class ServiceSalasService {
   leaveSala(nombre_sala: any): void {
     //Selecciona la sala por nombre
     this.getSala(nombre_sala).subscribe(data => {
-      let arraydevs = []
       let url = data[0].url
-      let values = new sala("", "", [], "", "", "")
-      values.id = data[0].id
-      values.nombre_sala = data[0].nombre_sala
-      values.pass_sala = data[0].pass_sala
-      values.prod_owner = data[0].prod_owner;
-      values.url = url;
+      let sala_put = new sala("", "", [], "", "", "")
+      sala_put.id = data[0].id
+      sala_put.nombre_sala = data[0].nombre_sala
+      sala_put.pass_sala = data[0].pass_sala
+      sala_put.prod_owner = data[0].prod_owner;
+      sala_put.url = url;
+
 
       //Crea obj perfil con credenciales de logeo
       let perfilDEV = JSON.parse(sessionStorage.getItem("perfilDEV")!);
       let perfil = new po(perfilDEV.id, perfilDEV.usuario, perfilDEV.url, perfilDEV.puntuacion)
 
-      //Montar arrays de datos
+      let arraydevs= [];
       for (let i = 0; i < data[0].devs; i++) {
         let dev = new po(data[0].devs[i].id, data[0].devs[i].usuario, data[0].devs[i].url, data[0].devs[i].puntuacion)
+        console.log(dev)
         arraydevs.push(dev)
       }
+
+      arraydevs = arraydevs.filter(function( obj ) {
+        return obj.id !== perfil.id;
+      });
+
       //Filtrado del perfil del array
-      arraydevs.filter(dev => dev.id != perfil.id)
-      values.devs = arraydevs
+      sala_put.devs = arraydevs
 
       //petición put con nuevos valores
-      this._http.put<any>(url, values).subscribe()
+      this._http.put<any>(url, sala_put).subscribe()
     })
 
+  }
+
+  deleteSala(nombre_sala:any):void{
+    let url:any;
+
+    this.getSala(nombre_sala).subscribe(data=>{
+      console.log(data[0].id)
+      url=`http://localhost:8000/api/v1/sala/${data[0].id}/`
+      this._http.delete(url).subscribe()
+    })
   }
 
 

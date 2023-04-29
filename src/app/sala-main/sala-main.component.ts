@@ -112,6 +112,14 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
     this.salaService.leaveSala(nombre_sala)
   }
 
+  eliminaSala(nombre_sala:any){
+    if(confirm("¿Estás seguro de que deseas eliminar esta sala?")){
+      this.salaService.deleteSala(nombre_sala)
+      this.router.navigate([`/user-profile/${this.userService.obtenerCredenciales().id}`]);
+    }
+
+  }
+
   borrarTarea(tarea_id:any){
     console.log("borrando tarea con id:" + tarea_id)
     this.tareasService.deleteTarea(tarea_id);
