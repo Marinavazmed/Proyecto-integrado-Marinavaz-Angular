@@ -3,19 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { po } from 'src/po';
 import { sala } from './sala-main/sala';
+import { getURLs } from './utils';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceSalasService {
 
-  public url: string;
   public idUser: any;
+  public url = getURLs()
 
   constructor(
     private _http: HttpClient
   ) {
-    this.url = "http://localhost:8000/api/v1/sala/"
   }
 
   getSalas(): Observable<any[]> {
@@ -23,33 +23,33 @@ export class ServiceSalasService {
   }
 
   getSalasParticipante(): Observable<any[]> {
-    return this._http.get<any[]>("http://localhost:8000/api/v1/sala/get_sala_participante/");
+    return this._http.get<any[]>(this.url + "api/v1/sala/get_sala_participante/");
   }
 
   postSala(sala: any): Observable<any> {
-    const url = 'http://localhost:8000/api/v1/sala/'
+    const url = this.url + "api/v1/sala/"
     return this._http.post<any>(url, sala);
   }
 
   getSala(nombre_sala: any): Observable<any> {
-    const url = `http://localhost:8000/api/v1/sala/?nombre_sala=${nombre_sala}`;
+    const url = this.url + `api/v1/sala/?nombre_sala=${nombre_sala}`;
     return this._http.get<any>(url)
   }
 
   getSalaPromise(nombre_sala: any): Observable<any> {
-    const url = 'http://localhost:8000/api/v1/sala/?nombre_sala=' + nombre_sala;
+    const url = this.url + 'api/v1/sala/?nombre_sala=' + nombre_sala;
     return this._http.get<any>(url)
   }
 
 
   //Función que devuelve el usuario
   getSalasPorIDUser(id: any): Observable<any[]> {
-    return this._http.get<any[]>(`http://localhost:8000/api/v1/profile_po/?usuario=${id}`);
+    return this._http.get<any[]>(this.url + `api/v1/profile_po/?usuario=${id}`);
   }
 
   //Función que devuelve idpo
   getSalasPorIDPO(id: any): Observable<any[]> {
-    return this._http.get<any[]>(`http://localhost:8000/api/v1/sala/?nombre_sala=&prod_owner=${id}`);
+    return this._http.get<any[]>(this.url + `api/v1/sala/?nombre_sala=&prod_owner=${id}`);
   }
 
 
@@ -130,7 +130,7 @@ export class ServiceSalasService {
 
     this.getSala(nombre_sala).subscribe(data=>{
       console.log(data[0].id)
-      url=`http://localhost:8000/api/v1/sala/${data[0].id}/`
+      url=this.url + `api/v1/sala/${data[0].id}/`
       this._http.delete(url).subscribe()
     })
   }

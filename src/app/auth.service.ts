@@ -3,16 +3,19 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { LoggedInUser } from "./auth";
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { getURLs } from './utils';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   isLoggedIn = false;
+  url = getURLs()
   constructor(private http: HttpClient, private router: Router) { }
    logIn(username: any, password: any ): Observable<any> {
      return this.http.post(
-       'http://127.0.0.1:8000/api-user-login/', { username, password }
+       this.url + 'api-user-login/', { username, password }
        ) as Observable<any>;
    }
 

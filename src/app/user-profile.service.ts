@@ -4,25 +4,26 @@ import { HttpClient } from "@angular/common/http";
 import { Usuario } from "src/app/user-login/usuario";
 import { ServiceSalasService } from './service-salas.service';
 import { IfStmt } from '@angular/compiler';
+import { getURLs } from './utils';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileService {
-
+  public url = getURLs()
   constructor(private http: HttpClient, private salaService: ServiceSalasService) { }
 
   getUserProfile(userId: string|null): Observable<any> {
-    return this.http.get(`http://127.0.0.1:8000/api/v1/user/${userId}/`);
+    return this.http.get(this.url + `api/v1/user/${userId}/`);
   }
 
 
   getUserProfileByName(username: any): Observable<any> {
-    return this.http.get(`http://localhost:8000/api/v1/user/?username=${username}/`);
+    return this.http.get(this.url + `api/v1/user/?username=${username}/`);
   }
 
   postUser(usuario:any): Observable<any> {
-    const url = 'http://127.0.0.1:8000/registro/'
+    const url = this.url + 'registro/'
     return this.http.post<any>(url,usuario);
   }
 
@@ -43,12 +44,12 @@ export class UserProfileService {
   }
 
   getUserPorIdSala(idSala: any):Observable<any>{
-    return this.http.get(`http://localhost:8000/api/v1/sala/${idSala}/get_id_POUser/`);
+    return this.http.get(this.url + `api/v1/sala/${idSala}/get_id_POUser/`);
   }
 
 
   async getUserPorIdSalaAsync(idSala: any):Promise<any>{
-    return await this.http.get(`http://localhost:8000/api/v1/sala/${idSala}/get_id_POUser/`).toPromise().then(valor => {
+    return await this.http.get(this.url + `api/v1/sala/${idSala}/get_id_POUser/`).toPromise().then(valor => {
       console.log(valor)
       return valor
     })
@@ -56,11 +57,11 @@ export class UserProfileService {
   }
 
   getUserPorIDPO(idPO: any):Observable<any>{
-    return this.http.get(`http://localhost:8000/api/v1/profile_po/${idPO}/get_id_user/`);
+    return this.http.get(this.url + `api/v1/profile_po/${idPO}/get_id_user/`);
   }
 
   getPDPorUserAuth():Observable<any>{
-    return this.http.get('http://localhost:8000/api/v1/profile_dev/get_PO_por_user_ID/');
+    return this.http.get(this.url + 'api/v1/profile_dev/get_PO_por_user_ID/');
   }
 
     /*Comprueba si el usuario autenticado es dueño de la sala*/
@@ -74,7 +75,7 @@ export class UserProfileService {
   }
 
   getPDEVporUserId():Observable<any>{
-    return this.http.get('http://localhost:8000/api/v1/profile_dev/get_DEV_por_user_ID/')
+    return this.http.get(this.url + 'api/v1/profile_dev/get_DEV_por_user_ID/')
   }
 
   /*PRUEBA. Da error al crear la sala, pues la sala NO EXISTE y no puede comprobar si el usuario es PO. Debe ejecutarse tras la creación de sala.*/

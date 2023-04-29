@@ -2,18 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Tarea } from './sala-main/tarea';
+import { getURLs } from './utils';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TareasServiceService {
-  public url:string;
+  public url = getURLs()
   public idUser:any;
 
   constructor(
     private _http: HttpClient
   ) {
-    this.url="http://localhost:8000/api/v1/tarea/"
    }
 
   getTareas(): Observable<any[]>{
@@ -21,17 +21,17 @@ export class TareasServiceService {
 	}
 
   postTarea(tarea:any): Observable<any> {
-    const url = 'http://localhost:8000/api/v1/tarea/'
+    const url = this.url + 'api/v1/tarea/'
     return this._http.post<any>(url,tarea);
   }
 
   getTareasPorNombreSala(nombre_sala:any): Observable<any> {
-    const url = 'http://localhost:8000/api/v1/tarea/?id_sala__nombre_sala='+ nombre_sala;
+    const url = this.url + 'api/v1/tarea/?id_sala__nombre_sala='+ nombre_sala;
     return this._http.get<any>(url)
   }
 
   deleteTarea(id_tarea: any) {
-    this._http.delete(`http://localhost:8000/api/v1/tarea/${id_tarea}/`).subscribe(data => {
+    this._http.delete(this.url + `api/v1/tarea/${id_tarea}/`).subscribe(data => {
       console.log(data);
     });
   }
