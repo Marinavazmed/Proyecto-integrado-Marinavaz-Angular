@@ -6,11 +6,11 @@
             </div>
             <div id="mainListDiv" class="main_list">
                 <ul class="navlinks">
-                    <li *ngIf="loginService.isLoggedIn"><a class="negro" href="http://localhost:4200/login" (click)="logOut()">Log
+                    <li><a class="negro" href="http://localhost:4200/login">Log in</a></li>
+                    <li><a class="negro" href="http://localhost:4200/" (click)="logOut()">Log
                             out</a></li>
-                    <li *ngIf="loginService.isLoggedIn"><a class="negro" (click)="goToSalas();">Salas</a></li>
-                    <li *ngIf="!loginService.isLoggedIn"><a class="negro" href="http://localhost:4200/login">Log in</a></li>
-                    <li *ngIf="!loginService.isLoggedIn"><a class="negro" href="http://localhost:4200/registro">Registro</a></li>
+                    <li><a class="negro" (click)="goToSalas();">Salas</a></li>
+                    <li><a class="negro" href="http://localhost:4200/registro">Registro</a></li>
                     <li><a class="negro" href="#">Subscripción*</a></li>
                     <li><a class="negro" href="#">Otros*</a></li>
                 </ul>

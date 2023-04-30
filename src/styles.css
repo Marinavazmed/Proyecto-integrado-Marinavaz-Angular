@@ -629,4 +629,10 @@ body {
 }
 */
 
+.iconoPop:hover{
+    color:#4a70f8;
+}
 
+.iconoPopDelete:hover{
+    color:red;
+}

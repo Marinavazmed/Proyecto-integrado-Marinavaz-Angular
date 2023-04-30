@@ -18,7 +18,7 @@
                     </tr>
                     <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
                 </table>
-                <span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span>
+                <span *ngIf="checkPO"><fa-icon [icon]="faEdit" class="iconoPop"></fa-icon><fa-icon [icon]="faDelete" class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
             </div>
         </div>
         <div *ngIf="tareas_BACKLOG.length==0">
@@ -49,7 +49,7 @@
                     </tr>
                     <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
                 </table>
-                <span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span>
+                <span *ngIf="checkPO"><fa-icon [icon]="faEdit" class="iconoPop"></fa-icon><fa-icon [icon]="faDelete" class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
             </div>
         </div>
         <div *ngIf="tareas_TODO.length==0">
@@ -75,7 +75,7 @@
                         </tr>
                         <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
                     </table>
-                <span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span>
+                <span *ngIf="checkPO"><fa-icon [icon]="faEdit" class="iconoPop"></fa-icon><fa-icon [icon]="faDelete" class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
             </div>
         </div>
         <div *ngIf="tareas_WIP.length==0">
@@ -100,7 +100,7 @@
                         </tr>
                         <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
                     </table>
-                <span *ngIf="checkPO"><fa-icon [icon]="faEdit"></fa-icon><fa-icon [icon]="faDelete"></fa-icon></span>
+                <span *ngIf="checkPO"><fa-icon [icon]="faEdit" (click)="editTarea()" class="iconoPop"></fa-icon><fa-icon [icon]="faDelete" class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
             </div>
         </div>
         <div *ngIf="tareas_DONE.length==0">

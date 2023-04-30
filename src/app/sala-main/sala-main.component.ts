@@ -120,13 +120,21 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
 
   }
 
+  editTarea(){
+    console.log("ENTRA EN EDIT")
+  }
+
+
   borrarTarea(tarea_id:any){
     console.log("borrando tarea con id:" + tarea_id)
-    this.tareasService.deleteTarea(tarea_id);
-    this.tareas = this.tareas.filter(compruebaTarea);
-
-    function compruebaTarea(tarea:any){
-      return tarea.id!=tarea_id;
+    if(confirm("¿Estás seguro de que deseas eliminar esta tarea?")){
+      this.tareasService.deleteTarea(tarea_id);
+      this.tareas = this.tareas.filter(compruebaTarea);
+  
+      function compruebaTarea(tarea:any){
+        return tarea.id!=tarea_id;
+      }
+      window.location.reload()
     }
   }
 
