@@ -53,7 +53,8 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
       desc_tarea: ['', Validators.required],
       estado_tarea:[formBuilder.array, Validators.required],
       tiempo_estimado: ['', Validators.required],
-      puntos: ['', Validators.required]
+      puntos: ['', Validators.required],
+      url: ['', Validators.required]
     });
   }  
   
@@ -67,8 +68,6 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
   }
 
   drop(event: CdkDragDrop<Tarea[]>) {
-
-
     if(this.confirma(event.container)){
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -85,8 +84,6 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
       if(this.checkPO){
         perfilCAMBIO = [];
       }
-
-      //ERROR: event.container.data[0] SOLO TOMA LA PRIMERA TAREA DE LA LISTA.
       this.cambiaEstadoTarea(event.container.data[event.currentIndex], perfilCAMBIO,event.previousContainer.id, event.container.id);
 
     }
@@ -132,9 +129,28 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
   }
 
   editTarea(){
-    console.log("ENTRA EN EDIT")
+    /*TODO: Editar método update en serializador en BACKEND para hacer de sólo lectura los campos id, id_sala, y url. Esto esta hardcodeado y esta to feo*/
+    let tarea_put = new Tarea(this.editarTareaForm.get('id').value,this.editarTareaForm.get('id_sala').value,this.editarTareaForm.get('dev_asignado').value,
+    this.editarTareaForm.get('nombre_tarea').value,this.editarTareaForm.get('desc_tarea').value,this.editarTareaForm.get('estado_tarea').value,
+    this.editarTareaForm.get('tiempo_estimado').value,this.editarTareaForm.get('puntos').value, this.editarTareaForm.get('url').value)
+
+    this.tareaService.putTarea(tarea_put);
+
+    window.location.reload()
   }
 
+  setValuesFormEdit(tarea:any){
+    /*TODO: Editar método update en serializador en BACKEND para hacer de sólo lectura los campos id, id_sala, y url. Esto esta hardcodeado y esta to feo*/
+    this.editarTareaForm.controls['id'].setValue(tarea.id)
+    this.editarTareaForm.controls['id_sala'].setValue(tarea.id_sala)
+    this.editarTareaForm.controls['dev_asignado'].setValue(tarea.dev_asignado)
+    this.editarTareaForm.controls['nombre_tarea'].setValue(tarea.nombre_tarea)
+    this.editarTareaForm.controls['desc_tarea'].setValue(tarea.desc_tarea)
+    this.editarTareaForm.controls['estado_tarea'].setValue(tarea.estado_tarea)
+    this.editarTareaForm.controls['tiempo_estimado'].setValue(tarea.tiempo_estimado)
+    this.editarTareaForm.controls['puntos'].setValue(tarea.puntos)
+    this.editarTareaForm.controls['url'].setValue(tarea.url)
+  }
 
   borrarTarea(tarea_id:any){
     console.log("borrando tarea con id:" + tarea_id)
