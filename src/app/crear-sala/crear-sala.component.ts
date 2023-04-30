@@ -60,7 +60,9 @@ export class CrearSalaComponent implements OnInit {
     } else {
 
     //Realiza la petición al servidor. En caso de que devuelva un error de validación, recoje el mensaje de error para mostrarlo en el formulario.
-      this.salaService.postSala(this.crearSalaForm.value).subscribe(x=>{}, err=>{
+      this.salaService.postSala(this.crearSalaForm.value).subscribe(x=>{
+        this.redireccionFormValido(x.nombre_sala)
+      }, err=>{
         if(err instanceof HttpErrorResponse){
           const ValidationErrors = err.error;
           Object.keys(ValidationErrors).forEach(prop=>{
@@ -76,13 +78,12 @@ export class CrearSalaComponent implements OnInit {
       });
     }
 
-    //Redirecciona a la sala creada si no ha habido ningún error
-    if(this.mensajeError.length==0){
-      const nombre_sala = this.crearSalaForm.get('nombre_sala')!.value;
-      this.router.navigate(['sala-main/:' + nombre_sala]);
-    }
 
 
+  }
+
+  redireccionFormValido(nombre_sala:any){
+    this.router.navigate(['sala-main/:' + nombre_sala]);
   }
 
 }
