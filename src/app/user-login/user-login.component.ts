@@ -33,7 +33,8 @@ export class UserLoginComponent implements OnInit {
   }
 
 
-  //Llamada al servicio y validacion en servidor del formulario de inicio de sesion 
+  //Llamada al servicio y validacion en servidor del formulario de inicio de sesion.
+  //Abre el modal de aviso en caso de error de validacion en servidor.
   logInUser(user: UserCredentials): void {
     this.authService.logIn(user.username, user.password).subscribe({
       next: (data) => {

@@ -95,7 +95,8 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
   }
 
   cambiaEstadoTarea(tarea:any, dev:any, id_prev_container:any, id_curr_container:any){
-    //peticion server estado tarea
+    //Atribuye la tarea arrastrada al usuario logeado en caso de que sea DEV.
+    //Comprueba y cambia el nuevo estado de la tarea antes de hacer el put
     if(!this.checkPO){
       tarea.dev_asignado=dev.url
     }
@@ -169,8 +170,8 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
     this.router.navigate([`${pageName}`]);
   }
 
-  //Devuelve true o false si el usuario = perfil admin de una sala
   async compruebaSiPO(){
+    //Devuelve true o false si el usuario = perfil admin de una sala. Asincrono (prioridad en ciclo de vida)
     let prueba = await this.userService.compruebaPOasync(this.nombre_sala);
     if(prueba){
       this.checkPO=true
@@ -178,6 +179,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
   }
 
   getPerfilDEV(){
+    //Mete en la variable perfilDEV del componente un objeto Desarrollador con los datos del Profile_DEV obtenidos a partir del usuario logeado en el momento de carga.
     let desarrollador:any;
     this.userService.getPDPorUserAuth().subscribe(data=>{
       desarrollador = new Desarrollador(data.id, data.usuario, data.url, data.puntuacion)

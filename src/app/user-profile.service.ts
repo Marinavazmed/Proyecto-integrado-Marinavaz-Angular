@@ -29,7 +29,7 @@ export class UserProfileService {
 
 
 
-  /*Obtiene las credenciales del usuario logado*/
+  /*Obtiene las credenciales del usuario logado a traves de localStorage + parsea */
   public obtenerCredenciales(){
     const userData =  localStorage.getItem('userData');
     if (userData) {
@@ -48,23 +48,26 @@ export class UserProfileService {
   }
 
 
+  //Peticion asincrona (para parar el resto de procesos cuando se esta ejecutando)
+  //Devuelve una promesa (cuidado casteos posteriores) con el PO de la sala que se le pasa por id.
+  //Sirve para comprobar si el usuario que ha entrado en la sala es o no es PO de la misma.
   async getUserPorIdSalaAsync(idSala: any):Promise<any>{
     return await this.http.get(this.url + `api/v1/sala/${idSala}/get_id_POUser/`).toPromise().then(valor => {
-      console.log(valor)
       return valor
     })
-//`http://localhost:8000/api/v1/sala/${idSala}/get_id_POUser/`*/
   }
 
+  //Devuelve el usuario correspondiente al id del PO
   getUserPorIDPO(idPO: any):Observable<any>{
     return this.http.get(this.url + `api/v1/profile_po/${idPO}/get_id_user/`);
   }
 
+  //Devuelve el DEV correspondiente al usuario autenticado
   getPDPorUserAuth():Observable<any>{
     return this.http.get(this.url + 'api/v1/profile_dev/get_PO_por_user_ID/');
   }
 
-    /*Comprueba si el usuario autenticado es dueño de la sala*/
+  /*Comprueba si el usuario autenticado es dueno de la sala*/
   compruebaPO(nombre_sala:any){
     let userDataId =  this.obtenerCredenciales().id;
      this.salaService.getSala(nombre_sala).subscribe(data=>{
@@ -78,7 +81,8 @@ export class UserProfileService {
     return this.http.get(this.url + 'api/v1/profile_dev/get_DEV_por_user_ID/')
   }
 
-  /*PRUEBA. Da error al crear la sala, pues la sala NO EXISTE y no puede comprobar si el usuario es PO. Debe ejecutarse tras la creación de sala.*/
+  /*PRUEBA. Da error al crear la sala, pues la sala NO EXISTE y no puede comprobar si el usuario es PO.*/
+  /*TODO: Debe ejecutarse tras la creación de sala (comprobar nulos).*/
   async compruebaPOasync(nombre_sala:any):Promise<any>{
     let userDataId =  this.obtenerCredenciales().id;
     return new Promise((resolve, reject)=>{

@@ -18,7 +18,9 @@ export class CrearTareaComponent implements OnInit {
   lista_estados_salas:string[];
 
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService) {
+    
     this.lista_estados_salas = ['BACKLOG','SPRINT','DEPLOYED', 'WIP', 'DONE'];
+
     this.crearTareaForm = this.formBuilder.group({
       id_sala: ['', Validators.required],
       dev_asignado: ['', Validators.required],
@@ -45,12 +47,12 @@ export class CrearTareaComponent implements OnInit {
 }
 
   onSubmit(){
+    //TODO: quitar hardcode en refactorizacion
     let url = `/sala-main/${this.route.snapshot.paramMap.get('nombre_sala')?.replace(":", "")}`
     this.crearTareaForm.controls['id_sala'].setValue(`http://localhost:8000/api/v1/sala/${this.id_sala}/`);
     this.tareasService.postTarea(this.crearTareaForm.value).subscribe()
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([url]);
     });
-    //this.router.navigateByUrl(`/sala-main/${this.route.snapshot.paramMap.get('nombre_sala')?.replace(":", "")}`);
   }
 }

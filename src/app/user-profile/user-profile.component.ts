@@ -40,11 +40,6 @@ export class UserProfileComponent implements OnInit {
     this._peticion.getSalasParticipante().subscribe(dataSalas=>{    
       this.salas = dataSalas;
     })
-    /*
-    this._peticion.getSalas().subscribe(dataSalas=>{    
-      this.salas = dataSalas;
-    })
-    */
     
   }
 

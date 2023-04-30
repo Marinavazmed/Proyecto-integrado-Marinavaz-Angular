@@ -28,6 +28,7 @@ export class UserRegistroComponent implements OnInit{
       password:  ['' as string | null, Validators.required],
       first_name:  ['' as string | null, Validators.required],
       last_name:  ['' as string | null, Validators.required],
+      //TODO: Add imagenes de perfil al formulario de registro
       //profile_pic: [File, Validators.required],
       email:  ['', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
       created_at: new Date(),
@@ -38,6 +39,8 @@ export class UserRegistroComponent implements OnInit{
 
   }
 
+  //Comprueban que las password encajen en tiempo real. 
+  //TODO: No es una validacion ya que no es un requisito que encajen para mandar peticion
   checkPass(pass: any, $event:any){
     if(pass!=$event?.target?.value){
       console.log("No encajan")
@@ -49,6 +52,7 @@ export class UserRegistroComponent implements OnInit{
   }
 
 
+  //Manda peticion post + Recoge errores de validacion de servidor si los hay.
  onSubmit() {
     if (this.registroForm.invalid) {
       console.log(this.registroForm.errors);
@@ -83,7 +87,6 @@ export class UserRegistroComponent implements OnInit{
 
   goToPage(pageName:string){
     this.router.navigate([`${pageName}`]);
-
   }
 
 }

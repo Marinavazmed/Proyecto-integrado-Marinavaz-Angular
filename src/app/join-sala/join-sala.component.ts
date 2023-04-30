@@ -33,17 +33,15 @@ export class JoinSalaComponent implements OnInit {
   
   ngOnInit(){
     this.userService.getPDPorUserAuth().subscribe(data=>{
-      console.log("PERFIL DEV DE ESTE USUARIO:")
-      console.log(data)
       sessionStorage.setItem("perfilDEV", JSON.stringify(data));
     })
   }
   
   onSubmit(){
+    //TODO: Add validaciones (pruebas de union de sala erronea, credenciales no validas, etc.)
     this.salaService.joinSala(this.joinSalaForm.value);
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate(['/user-profile/'+this.urlSalas]);
     });
-    //  this.router.navigate(['/user-profile/'+this.urlSalas]);
   }
 }

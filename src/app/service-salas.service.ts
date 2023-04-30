@@ -42,12 +42,12 @@ export class ServiceSalasService {
   }
 
 
-  //Función que devuelve el usuario
+  //Función que devuelve las salas por id de usuario
   getSalasPorIDUser(id: any): Observable<any[]> {
     return this._http.get<any[]>(this.url + `api/v1/profile_po/?usuario=${id}`);
   }
 
-  //Función que devuelve idpo
+  //Función que devuelve las salas del po cuyo id se le pase
   getSalasPorIDPO(id: any): Observable<any[]> {
     return this._http.get<any[]>(this.url + `api/v1/sala/?nombre_sala=&prod_owner=${id}`);
   }
