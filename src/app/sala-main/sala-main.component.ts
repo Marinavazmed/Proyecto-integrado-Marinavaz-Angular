@@ -27,6 +27,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
   faError = faXmark;
   faDelete = faBan;
   faEdit = faPenToSquare;
+  editarTareaForm:any;
   tareas_obj : Array<Tarea> = [];
   tareas_BACKLOG : Array <Tarea> = [];
   tareas_TODO : Array <Tarea> = [];
@@ -43,7 +44,17 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
       this.tareas_TODO = this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="SPRINT")
       this.tareas_WIP= this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="WIP")
       this.tareas_DONE= this.tareas_obj.filter((tarea)=> tarea.estado_tarea=="DONE")
-    })
+    }),
+    this.editarTareaForm = this.formBuilder.group({
+      id: ['', Validators.required],
+      id_sala: ['', Validators.required],
+      dev_asignado: ['', Validators.required],
+      nombre_tarea: ['', Validators.required],
+      desc_tarea: ['', Validators.required],
+      estado_tarea:[formBuilder.array, Validators.required],
+      tiempo_estimado: ['', Validators.required],
+      puntos: ['', Validators.required]
+    });
   }  
   
   ngOnInit(): void {
