@@ -134,6 +134,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
       //Crea un objeto sala con todos los desarrolladores menos el dev logeado:
       let sala_put = new sala_put_service(data[0].id, data[0].prod_owner, arraydevs, data[0].nombre_sala, data[0].pass_sala, data[0].url)
       this.salaService.leaveSala(sala_put)
+      this.router.navigate([`/user-profile/${this.userService.obtenerCredenciales().id}`]);
     }) 
 
 
