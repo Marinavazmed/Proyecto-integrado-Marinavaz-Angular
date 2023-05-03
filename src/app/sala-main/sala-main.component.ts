@@ -9,6 +9,8 @@ import { Tarea } from './tarea';
 import { faCheck, faXmark, faBan, faPenToSquare, faPen } from '@fortawesome/free-solid-svg-icons';
 import { Desarrollador } from './desarrollador';
 import { Observable } from 'rxjs';
+import { po } from 'src/po';
+import { sala_put_service } from './sala-put-service';
 
 @Component({
   selector: 'app-sala-main',
@@ -118,7 +120,24 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
   }
 
   abandonaSala(nombre_sala:any){
-    this.salaService.leaveSala(nombre_sala)
+    this.salaService.getSala(nombre_sala).subscribe(data => {
+      //Crea obj perfil con credenciales de logeo
+      let perfilDEV = JSON.parse(sessionStorage.getItem("perfilDEV")!);
+      let perfil = new po(perfilDEV.id, perfilDEV.usuario, perfilDEV.url, perfilDEV.puntuacion)
+      let arraydevs= [];
+      for (let i = 0; i < data[0].devs.length; i++) {
+        let dev = new po(data[0].devs[i].id, data[0].devs[i].usuario, data[0].devs[i].url, data[0].devs[i].puntuacion)
+        if(dev.id!=perfil.id){
+          arraydevs.push(dev)
+        }
+      }
+      //Crea un objeto sala con todos los desarrolladores menos el dev logeado:
+      let sala_put = new sala_put_service(data[0].id, data[0].prod_owner, arraydevs, data[0].nombre_sala, data[0].pass_sala, data[0].url)
+      this.salaService.leaveSala(sala_put)
+    }) 
+
+
+
   }
 
   eliminaSala(nombre_sala:any){

@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { po } from 'src/po';
 import { sala } from './sala-main/sala';
 import { getURLs } from './utils';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Tarea } from './sala-main/tarea';
+import { Sala } from './crear-sala/sala';
+import { sala_put_service } from './sala-main/sala-put-service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +18,11 @@ export class ServiceSalasService {
   public url = getURLs()
 
   constructor(
-    private _http: HttpClient
-  ) {
+    private _http: HttpClient) {
   }
+
+
+
 
   getSalas(): Observable<any[]> {
     return this._http.get<any[]>(this.url);
@@ -89,41 +95,14 @@ export class ServiceSalasService {
   }
 
 
-  leaveSala(nombre_sala: any): void {
-    //Selecciona la sala por nombre
-    this.getSala(nombre_sala).subscribe(data => {
-      let url = data[0].url
-      let sala_put = new sala("", "", [], "", "", "")
-      sala_put.id = data[0].id
-      sala_put.nombre_sala = data[0].nombre_sala
-      sala_put.pass_sala = data[0].pass_sala
-      sala_put.prod_owner = data[0].prod_owner;
-      sala_put.url = url;
 
-
-      //Crea obj perfil con credenciales de logeo
-      let perfilDEV = JSON.parse(sessionStorage.getItem("perfilDEV")!);
-      let perfil = new po(perfilDEV.id, perfilDEV.usuario, perfilDEV.url, perfilDEV.puntuacion)
-
-      let arraydevs= [];
-      for (let i = 0; i < data[0].devs; i++) {
-        let dev = new po(data[0].devs[i].id, data[0].devs[i].usuario, data[0].devs[i].url, data[0].devs[i].puntuacion)
-        console.log(dev)
-        arraydevs.push(dev)
-      }
-
-      arraydevs = arraydevs.filter(function( obj ) {
-        return obj.id !== perfil.id;
-      });
-
-      //Filtrado del perfil del array
-      sala_put.devs = arraydevs
-
-      //petición put con nuevos valores
-      this._http.put<any>(url, sala_put).subscribe()
-    })
-
+  leaveSala(sala_put: any): void {
+    let url = this.url + `api/v1/sala/${sala_put.id}/`
+    this._http.put<any>(url, sala_put).subscribe()
   }
+
+
+
 
   deleteSala(nombre_sala:any):void{
     let url:any;

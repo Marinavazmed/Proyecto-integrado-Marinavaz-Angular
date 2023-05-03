@@ -307,7 +307,7 @@
         <span>Eliminar esta sala</span>
     </button>
 
-    <button *ngIf="!checkPO">
+    <button *ngIf="!checkPO" (click)="abandonaSala(nombre_sala)">
         <span>Abandonar esta sala</span>
     </button>
 </div>

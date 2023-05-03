@@ -30,6 +30,7 @@ export class AppComponent implements OnChanges, OnInit{
   
   logOut(){
     this.loginService.logOut()
+    sessionStorage.setItem("perfilDEV", JSON.stringify(""));
   }
 
   goToProfile():void{
