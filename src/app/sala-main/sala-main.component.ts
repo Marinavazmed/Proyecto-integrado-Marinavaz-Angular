@@ -154,11 +154,13 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
     let tarea_put = new Tarea(this.editarTareaForm.get('id').value,this.editarTareaForm.get('id_sala').value,this.editarTareaForm.get('dev_asignado').value,
     this.editarTareaForm.get('nombre_tarea').value,this.editarTareaForm.get('desc_tarea').value,this.editarTareaForm.get('estado_tarea').value,
     this.editarTareaForm.get('tiempo_estimado').value,this.editarTareaForm.get('puntos').value, this.editarTareaForm.get('url').value)
-
-    this.tareaService.putTarea(tarea_put);
-
-    window.location.reload()
+    this.tareaService.putTarea(tarea_put)
+    document.getElementById("btn_cierre")?.click()
+    this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
+      this.router.navigate([`sala-main/${this.nombre_sala}`]);
+  });
   }
+
 
   setValuesFormEdit(tarea:any){
     /*TODO: Editar método update en serializador en BACKEND para hacer de sólo lectura los campos id, id_sala, y url. Esto esta hardcodeado y esta to feo*/
@@ -182,7 +184,9 @@ export class SalaMainComponent implements OnInit, AfterViewInit{
       function compruebaTarea(tarea:any){
         return tarea.id!=tarea_id;
       }
-      window.location.reload()
+      this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
+        this.router.navigate([`sala-main/${this.nombre_sala}`]);
+    });
     }
   }
 
