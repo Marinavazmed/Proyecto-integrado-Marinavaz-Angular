@@ -30,14 +30,22 @@ export class TareasServiceService {
     return this._http.get<any>(url)
   }
 
-  deleteTarea(id_tarea: any) {
-    this._http.delete(this.url + `api/v1/tarea/${id_tarea}/`).subscribe(data => {
-      console.log(data);
-    });
+  deleteTarea(id_tarea: any):Observable<any> {
+    return this._http.delete(this.url + `api/v1/tarea/${id_tarea}/`)
   }
 
   putTarea(tarea:any):void{
     let tarea_put = new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url)
     this._http.put<any>(tarea.url, tarea_put).subscribe()
   }
+
+  putTareaObservable(tarea:any):Observable<any>{
+    let tarea_put = new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url)
+    return this._http.put<any>(tarea.url, tarea_put)
+  }
+
+  getTarea(id_tarea: any):Observable<any> {
+    return this._http.get(this.url + `api/v1/tarea/${id_tarea}/`)
+  }
+
 }

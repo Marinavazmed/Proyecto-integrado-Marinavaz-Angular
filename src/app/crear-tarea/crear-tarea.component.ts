@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TareasServiceService } from '../tareas-service.service';
 import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
 import { ThisReceiver } from '@angular/compiler';
+import { getURLs } from '../utils';
 
 @Component({
   selector: 'app-crear-tarea',
@@ -44,12 +45,13 @@ export class CrearTareaComponent implements OnInit {
         this.id_sala = data[0].id
       }
     )
-}
+ }
 
   onSubmit(){
     //TODO: quitar hardcode en refactorizacion
     let url = `/sala-main/${this.route.snapshot.paramMap.get('nombre_sala')?.replace(":", "")}`
-    this.crearTareaForm.controls['id_sala'].setValue(`http://localhost:8000/api/v1/sala/${this.id_sala}/`);
+    let root = getURLs()
+    this.crearTareaForm.controls['id_sala'].setValue(`${root}api/v1/sala/${this.id_sala}/`);
     this.tareasService.postTarea(this.crearTareaForm.value).subscribe()
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([url]);
