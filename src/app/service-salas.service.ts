@@ -106,7 +106,6 @@ export class ServiceSalasService {
 
   deleteSala(nombre_sala:any):void{
     let url:any;
-
     this.getSala(nombre_sala).subscribe(data=>{
       console.log(data[0].id)
       url=this.url + `api/v1/sala/${data[0].id}/`

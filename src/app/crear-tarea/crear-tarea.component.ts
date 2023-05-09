@@ -13,6 +13,8 @@ import { getURLs } from '../utils';
   styles: [
   ]
 })
+
+/*Este componente, que sólo contenía una vista con un formulario, ha sido introducido en sala-main dentro de varios modales de creación de tareas. Eliminar*/
 export class CrearTareaComponent implements OnInit {
   crearTareaForm;
   public id_sala = "";

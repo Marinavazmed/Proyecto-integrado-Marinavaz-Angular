@@ -39,6 +39,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   tareas_DONE: Array<Tarea> = [];
   id_sala: any;
 
+  /*En el constructor: Llama a todas las tareas, las pasa a objeto y las organiza. Un formulario para la edicion y otro para la creacion de tareas*/
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService, public userService: UserProfileService, private tareaService: TareasServiceService) {
     this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data => {
       this.tareas = data;
@@ -76,6 +77,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
 
   }
 
+  /*Al cargar la pagina comprueba si el usuario autenticado es el PO de la sala. Tras ello toma tambien su perfil de DEV y el id de la sala*/
   ngOnInit(): void {
     this.compruebaSiPO().then(x => {
       this.getPerfilDEV();
@@ -87,6 +89,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     )
   }
 
+  /*Util para usos posteriores y react*/
   ngAfterViewInit(): void {
   }
 
@@ -94,6 +97,8 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
 
   }
 
+  /*evento de la libreria. el container contiene los datos del objeto, la posicion previa y actual en el contenedor. 
+  antes de hacer el put comprueba si es PO para no adjudicarle la tareaen caso de que lo sea*/
   drop(event: CdkDragDrop<Tarea[]>) {
     if (this.confirma(event.container)) {
       if (event.previousContainer === event.container) {
@@ -106,7 +111,6 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
           event.currentIndex,
         );
       }
-      //CUIDADO: Si el usuario NO ES PERFIL DEV fallará
       let perfilCAMBIO = this.perfilDEV;
       if (this.checkPO) {
         perfilCAMBIO = [];
@@ -125,9 +129,6 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     //Comprueba y cambia el nuevo estado de la tarea antes de hacer el put
     if (!this.checkPO) {
       tarea.dev_asignado = dev.url
-    }
-    if(tarea.estado_tarea=undefined){
-      tarea.estado_tarea="BACKLOG"
     }
     switch (id_curr_container) {
       case "cdk-drop-list-0":
@@ -232,6 +233,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     document.getElementById("btn_cierre")?.click()
   }
 
+  /*Pruebas para refactorizar y remodelar el array del contenedor CDK cuando se realiza un cambio en la tarea*/
   actualizaCDKafterPut(lista:any, tarea_put:any):Array<Tarea>{
     let objIndex = lista.findIndex(((obj: { id: any; }) => obj.id == tarea_put.id));
     lista[objIndex].nombre_tarea = tarea_put.nombre_tarea;

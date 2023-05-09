@@ -31,6 +31,7 @@ export class JoinSalaComponent implements OnInit {
 
   } 
   
+  /*Esta funcion toma los datos de desarrollador del user autenticado y los almacena en session antes de que se introduzca en una nueva sala.*/
   ngOnInit(){
     this.userService.getPDPorUserAuth().subscribe(data=>{
       sessionStorage.setItem("perfilDEV", JSON.stringify(data));

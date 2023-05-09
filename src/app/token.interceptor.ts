@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+/*Intercepta las peticiones y mete en los headers el token de autentificacion para que yo no tenga que meterlo cada vez que hago una peticion*/
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 

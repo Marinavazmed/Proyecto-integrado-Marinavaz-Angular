@@ -19,6 +19,7 @@ export class AuthService {
        ) as Observable<any>;
    }
 
+   /*actualiza userData y la variable isLoggedIn que va a ser usada para comprobar el estado del usuario (barra de navegacion)TODO*/
    setLoggedInUser(userData: LoggedInUser): void {
     if (localStorage.getItem('userData') !== JSON.stringify(userData)) {
       localStorage.setItem('userData', JSON.stringify(userData));
@@ -26,6 +27,7 @@ export class AuthService {
     }
    }
 
+   /*peticion + actualizacion de variable isLoggedIn + redireccion a pagina de perfil*/
    public logInUser(user: any): void{
     this.isLoggedIn = true;
     this.logIn(user.username, user.password).subscribe({
@@ -40,6 +42,7 @@ export class AuthService {
     );
   }
 
+    /*TODO: Eliminar tambien resto de storage. Revisar la necesidad de almacenamiento: profile no se usa y resulta muy util para ahorrar codigo*/
   public logOut(){
     localStorage.removeItem('profile');
     localStorage.removeItem('userData');

@@ -25,6 +25,7 @@ export class UserProfileComponent implements OnInit {
     this.userId = this.userProfileService.obtenerCredenciales().id
   }
 
+  /*Guarda en el local el perfil*/
   ngOnInit(): void {
     const userId = this.activatedRoute.snapshot.paramMap.get('id');
     this.userProfileService.getUserProfile(userId).subscribe({
