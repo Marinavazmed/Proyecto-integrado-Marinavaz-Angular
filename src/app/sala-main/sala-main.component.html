@@ -4,8 +4,8 @@
 
     <h2>Backlog</h2>
 
-    <div cdkDropList #backlogList="cdkDropList" [cdkDropListData]="tareas_BACKLOG"
-        [cdkDropListConnectedTo]="[todoList, wipList, doneList]" class="example-list"
+    <div id="contenedor_backlog" cdkDropList #backlogList="cdkDropList" [cdkDropListData]="tareas_BACKLOG"
+        [cdkDropListConnectedTo]="[todoList, wipList, doneList]" class="example-list backlog"
         (cdkDropListDropped)="drop($event)">
         <div *ngIf="tareas_BACKLOG.length!=0">
             <div class="example-box" *ngFor="let tarea of tareas_BACKLOG" cdkDrag>
@@ -86,7 +86,7 @@
 
     <h2>To do</h2>
 
-    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="tareas_TODO"
+    <div id="contenedor_todo" cdkDropList #todoList="cdkDropList" [cdkDropListData]="tareas_TODO"
         [cdkDropListConnectedTo]="[wipList, doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
         <div *ngIf="tareas_TODO.length!=0">
             <div class="example-box" *ngFor="let tarea of tareas_TODO" cdkDrag>
@@ -159,7 +159,7 @@
 <div class="example-container">
     <h2>WIP</h2>
 
-    <div cdkDropList #wipList="cdkDropList" [cdkDropListData]="tareas_WIP" [cdkDropListConnectedTo]="[doneList]"
+    <div id="contenedor_wip" cdkDropList #wipList="cdkDropList" [cdkDropListData]="tareas_WIP" [cdkDropListConnectedTo]="[doneList]"
         class="example-list" (cdkDropListDropped)="drop($event)">
         <div *ngIf="tareas_WIP.length!=0">
             <div class="example-box" *ngFor="let tarea of tareas_WIP" cdkDrag>
@@ -231,7 +231,7 @@
 
 <div class="example-container">
     <h2>Done</h2>
-    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="tareas_DONE" [cdkDropListConnectedTo]="[]"
+    <div id="contenedor_done" cdkDropList #doneList="cdkDropList" [cdkDropListData]="tareas_DONE" [cdkDropListConnectedTo]="[]"
         class="example-list" (cdkDropListDropped)="drop($event)">
         <div *ngIf="tareas_DONE.length!=0">
             <div class="example-box" *ngFor="let tarea of tareas_DONE" cdkDrag>

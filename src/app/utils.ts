@@ -4,4 +4,4 @@ export function getURLs():string{
     let PRO = "http://100.24.111.122:9001/"
     return PRE;
 }
-/*Cambiar antes de subir a pro */
+/*Cambiar antes de subir a pro! */

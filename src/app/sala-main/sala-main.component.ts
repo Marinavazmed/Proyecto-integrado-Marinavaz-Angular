@@ -42,6 +42,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   /*En el constructor: Llama a todas las tareas, las pasa a objeto y las organiza. Un formulario para la edicion y otro para la creacion de tareas*/
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService, public userService: UserProfileService, private tareaService: TareasServiceService) {
     this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data => {
+      this.tareas_obj=[];
       this.tareas = data;
       this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; url: string; }) => {
         this.tareas_obj.push(new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url))
@@ -87,7 +88,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
         this.id_sala = data[0].id
       }
     )
-  }
+}
 
   /*Util para usos posteriores y react*/
   ngAfterViewInit(): void {
@@ -115,6 +116,8 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
       if (this.checkPO) {
         perfilCAMBIO = [];
       }
+      console.log("AQUI")
+      console.log(event.container.id)
       this.cambiaEstadoTarea(event.container.data[event.currentIndex], perfilCAMBIO, event.previousContainer.id, event.container.id);
     }
 
@@ -131,13 +134,16 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
       tarea.dev_asignado = dev.url
     }
     switch (id_curr_container) {
-      case "cdk-drop-list-0":
+      case "contenedor_backlog":
+        tarea.estado_tarea = "BACKLOG"
+        break;
+      case "contenedor_todo":
         tarea.estado_tarea = "SPRINT"
         break;
-      case "cdk-drop-list-1":
+      case "contenedor_wip":
         tarea.estado_tarea = "WIP"
         break;
-      case "cdk-drop-list-2":
+      case "contenedor_done":
         tarea.estado_tarea = "DONE"
         break;
       default:
