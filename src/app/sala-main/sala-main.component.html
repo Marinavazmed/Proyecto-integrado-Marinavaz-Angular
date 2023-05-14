@@ -1,5 +1,5 @@
 <p>{{nombre_sala}}</p>
-
+<div cdkDropListGroup>
 <div class="example-container" *ngIf="checkPO">
 
     <h2>Backlog</h2>
@@ -301,7 +301,7 @@
     </div>
 </div>
 
-
+</div>
 <div>
     <!--<button *ngIf="checkPO" (click)="router.navigate(['crear-tarea/:'+ nombre_sala]);">
         <span>Crear una nueva tarea</span>

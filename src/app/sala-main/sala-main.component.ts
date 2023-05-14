@@ -132,6 +132,8 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     //Comprueba y cambia el nuevo estado de la tarea antes de hacer el put
     if (!this.checkPO) {
       tarea.dev_asignado = dev.url
+    }else{
+      tarea.dev_asignado = null;
     }
     switch (id_curr_container) {
       case "contenedor_backlog":
