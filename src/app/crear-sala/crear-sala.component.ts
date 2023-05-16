@@ -37,7 +37,6 @@ export class CrearSalaComponent implements OnInit {
 
     this.salaService.getSalasPorIDUser(this.userData.id).subscribe(data => {
       this.varPrueba = data;
-
       //comprobamos en caso de que no tenga ninguna sala
       if (data.length != 0) {
         this.salaService.getSalasPorIDPO(this.varPrueba[0].id).subscribe(data => {

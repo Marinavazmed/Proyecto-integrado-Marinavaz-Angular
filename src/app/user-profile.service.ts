@@ -67,6 +67,11 @@ export class UserProfileService {
     return this.http.get(this.url + 'api/v1/profile_dev/get_PO_por_user_ID/');
   }
 
+    //Devuelve el PO correspondiente al usuario autenticado
+    getPOPorUserAuth():Observable<any>{
+      return this.http.get(this.url + 'api/v1/profile_po/get_Prod_owner_por_user_ID/');
+    }
+
   /*Comprueba si el usuario autenticado es dueno de la sala*/
   compruebaPO(nombre_sala:any){
     let userDataId =  this.obtenerCredenciales().id;

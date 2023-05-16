@@ -11,6 +11,7 @@ import { SalaMainComponent } from './sala-main/sala-main.component';
 import { CrearTareaComponent } from './crear-tarea/crear-tarea.component';
 import { JoinSalaComponent } from './join-sala/join-sala.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { PagoComponent } from './pago/pago.component';
 
 const routes: Routes = [
   //se pueden pasar parámetros a traves de la url con la sintaxis:
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'crear-tarea/:nombre_sala', component: CrearTareaComponent},
   {path: 'join-sala', component: JoinSalaComponent},
   { path: 'crear_sala', component: CrearSalaComponent },
+  { path: 'pago', component:PagoComponent },
   {path: '', component: IndexComponent},
   {path: '**', component: IndexComponent}
 ];

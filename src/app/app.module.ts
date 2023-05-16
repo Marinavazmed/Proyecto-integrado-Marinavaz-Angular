@@ -37,6 +37,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JoinSalaComponent } from './join-sala/join-sala.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DragDropModule} from '@angular/cdk/drag-drop';
+import { PagoComponent } from './pago/pago.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { DragDropModule} from '@angular/cdk/drag-drop';
     SalaMainComponent,
     CrearTareaComponent,
     JoinSalaComponent,
+    PagoComponent,
   ],
   imports: [
     BrowserModule,
