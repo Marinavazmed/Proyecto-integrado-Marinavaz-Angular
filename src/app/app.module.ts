@@ -38,6 +38,7 @@ import { JoinSalaComponent } from './join-sala/join-sala.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DragDropModule} from '@angular/cdk/drag-drop';
 import { PagoComponent } from './pago/pago.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { PagoComponent } from './pago/pago.component';
     CrearTareaComponent,
     JoinSalaComponent,
     PagoComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,

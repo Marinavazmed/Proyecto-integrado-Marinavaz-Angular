@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PagoService } from '../pago.service';
 import { Router } from '@angular/router';
+import { PaypalService } from '../paypal.service';
 
 @Component({
   selector: 'app-pago',
@@ -9,10 +10,13 @@ import { Router } from '@angular/router';
   ]
 })
 export class PagoComponent {
-  constructor(private pagoService: PagoService, public router: Router) {
+  constructor(private pagoService: PagoService, private paypalservice: PaypalService, public router: Router) {
   }
 
   PayPal(): void {
-    this.pagoService.iniciarPago()
+    this.paypalservice.postCreaOrder().subscribe(data=>{
+      console.log(data)
+      window.location.href = data.approval_url;
+    })
   }
 }
