@@ -64,32 +64,34 @@ export class ServiceSalasService {
   joinSala(values: any): void {
     //1.-selecciona la sala por nombre
     this.getSala(values.nombre_sala).subscribe(data => {
-
-      //2.-Comprueba nombre-contraseña
-      if (data[0].pass_sala == values.pass_sala) {
-        let url = data[0].url
-        values.id = data[0].id
-        values.prod_owner = data[0].prod_owner;
-
-        //3.-actualiza la lista devs de la sala añadiendo al usuario actual. El dev debe ser el usuario autenticado bajo
-        //un perfil Profile_DEV
-        let perfilDEV = JSON.parse(sessionStorage.getItem("perfilDEV")!);
-        let perfil = new po(perfilDEV.id, perfilDEV.usuario, perfilDEV.url, perfilDEV.puntuacion)
-        let arraydevs = []
-        arraydevs.push(perfil)
-        for (let i = 0; i < data[0].devs; i++) {
-          let dev = new po(data[0].devs[i].id, data[0].devs[i].usuario, data[0].devs[i].url, data[0].devs[i].puntuacion)
-          console.log(dev)
-          arraydevs.push(dev)
+      if(data.length!=0){
+        //Si existe la sala comprueba las credenciales
+        if (data[0].pass_sala == values.pass_sala && data[0].nombre_sala == values.nombre_sala) {
+          let url = data[0].url
+          values.id = data[0].id
+          values.prod_owner = data[0].prod_owner;
+  
+          //2.-actualiza la lista devs de la sala añadiendo al usuario actual. El dev debe ser el usuario autenticado bajo
+          //un perfil Profile_DEV
+          let perfilDEV = JSON.parse(sessionStorage.getItem("perfilDEV")!);
+          let perfil = new po(perfilDEV.id, perfilDEV.usuario, perfilDEV.url, perfilDEV.puntuacion)
+          let arraydevs = []
+          arraydevs.push(perfil)
+          for (let i = 0; i < data[0].devs.length; i++) {
+            let dev = new po(data[0].devs[i].id, data[0].devs[i].usuario, data[0].devs[i].url, data[0].devs[i].puntuacion)
+            console.log(dev)
+            arraydevs.push(dev)
+          }
+          values.devs = arraydevs
+          values.url = url;
+          //petición put con nuevos valores de devs
+          this._http.put<any>(url, values).subscribe()
         }
-        values.devs = arraydevs
-        values.url = url;
-
-        //petición put con nuevos valores
-        this._http.put<any>(url, values).subscribe()
-      } else {
-        console.log("Las credenciales para unirte a la sala son incorrectas.")
+      }else{
+        console.log("Las credenciales son incorrectas.")
+        alert("Las credenciales son incorrectas.")
       }
+
     })
 
   }

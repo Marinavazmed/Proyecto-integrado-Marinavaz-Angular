@@ -51,10 +51,12 @@ export class UserProfileComponent implements OnInit {
   filtraSalas():void{
     this.userProfileService.getPOPorUserAuth().subscribe({
       next: (data)=>{
-        this.url_user_PO = data.url;
-        this.salas_PO=this.salas.filter((sala)=>sala.prod_owner==this.url_user_PO)
-        this.salas=this.salas.filter((sala)=>sala.prod_owner!=this.url_user_PO)
-        //Puede sacar id para mejor busqueda
+        if(data){
+          this.url_user_PO = data.url;
+          this.salas_PO=this.salas.filter((sala)=>sala.prod_owner==this.url_user_PO)
+          this.salas=this.salas.filter((sala)=>sala.prod_owner!=this.url_user_PO)
+          //Puede sacar id para mejor busqueda
+        }
       }
     })
   }
