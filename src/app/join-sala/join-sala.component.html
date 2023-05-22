@@ -12,6 +12,9 @@
                         <label class="form-label">Contraseña de la sala</label>
                         <input type="password" formControlName="pass_sala" class="form-control" />
                     </div>
+                    <div *ngIf="credenciales_error!=null">
+                        <p>{{credenciales_error}}</p>
+                    </div>
                     <button>Unirme a la sala</button>
                 </form>
             </div>

@@ -22,6 +22,11 @@
                             <p *ngIf="checked"><fa-icon [icon]="faCheck"></fa-icon> La contraseña coincide</p>
                             <p *ngIf="!checked"><fa-icon [icon]="faError"></fa-icon> La contraseña no coincide</p>
                         </div>
+                        <div *ngIf="pass_valid!=null">
+                            <p *ngIf="!pass_valid"><fa-icon [icon]="faError"></fa-icon> La contraseña debe tener más de
+                                8 caracteres</p>
+                        </div>
+
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
@@ -44,11 +49,9 @@
                             <p><fa-icon [icon]="faError"></fa-icon> Formato no válido</p>
                         </div>
                     </div>
-                    <!--<div class="mb-3">
-                <label class="form-label">Imagen de perfil</label>
-                <input #imageInput type="file" accept="image/*" formControlName="profile_pic" name="profile_pic" class="form-control" (change)="onFileChange($event)"/>
-                <mat-error *ngIf="registroForm.get('profile_pic')?.errors?.['serverError']"> {{registroForm.get('profile_pic')?.errors?.['serverError']}}</mat-error>
-            </div>-->
+                    <div *ngIf="this.infoMessage!=null">
+                        <p>{{infoMessage}}</p>
+                    </div>
                     <button class="btn btn-dark btn-lg">Completar el registro</button>
                 </form>
                 <div class="card-footer">

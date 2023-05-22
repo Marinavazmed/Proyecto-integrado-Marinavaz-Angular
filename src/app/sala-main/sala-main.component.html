@@ -40,24 +40,36 @@
                                     <div class="mb-3">
                                         <label class="form-label">Nombre de la tarea</label>
                                         <input type="text" formControlName="nombre_tarea" class="form-control"
-                                            value="{{tarea.nombre_tarea}}" />
+                                            value="{{tarea.nombre_tarea}}" maxlength="100" minlength="1"/>
+                                            <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Descripción de la tarea</label>
                                         <input type="text" formControlName="desc_tarea" class="form-control"
-                                            value="{{tarea.desc_tarea}}" />
+                                            value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
+                                            <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Tiempo estimado</label>
                                         <input type="number" formControlName="tiempo_estimado" class="form-control"
                                             value="{{tarea.tiempo_estimado}}" />
+                                            <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Puntos</label>
                                         <input type="number" formControlName="puntos" class="form-control"
                                             value="{{tarea.puntos}}" />
+                                            <div *ngIf="editarTareaForm.controls['puntos'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                     </div>
-                                    <button class="btn btn-lg btn-dark" type="submit">Modificar tarea</button>
+                                    <button class="btn btn-lg btn-dark" type="submit" [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar tarea</button>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -320,24 +332,36 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form [formGroup]="crearTareaForm" (ngSubmit)="creaTarea()">
+                    <form [formGroup]="crearTareaForm" (submit)="creaTarea()">
                         <div class="mb-3">
                             <label class="form-label">Nombre de la tarea</label>
-                            <input type="text" formControlName="nombre_tarea" class="form-control" />
+                            <input type="text" formControlName="nombre_tarea" class="form-control" maxlength="100" minlength="1"/>
+                            <div *ngIf="crearTareaForm.controls['nombre_tarea'].touched && crearTareaForm.controls['nombre_tarea'].errors">
+                                Campo obligatorio.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Descripción de la tarea</label>
-                            <input type="text" formControlName="desc_tarea" class="form-control" />
+                            <input type="text" formControlName="desc_tarea" class="form-control" maxlength="300" minlength="1" />
+                            <div *ngIf="crearTareaForm.controls['desc_tarea'].touched && crearTareaForm.controls['desc_tarea'].errors">
+                                Campo obligatorio.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tiempo estimado</label>
-                            <input type="number" formControlName="tiempo_estimado" class="form-control" />
+                            <input type="number" formControlName="tiempo_estimado" class="form-control"/>
+                            <div *ngIf="crearTareaForm.controls['tiempo_estimado'].touched && crearTareaForm.controls['tiempo_estimado'].errors">
+                                Campo obligatorio.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Puntos</label>
-                            <input type="number" formControlName="puntos" class="form-control" />
+                            <input type="number" formControlName="puntos" class="form-control"/>
+                            <div *ngIf="crearTareaForm.controls['puntos'].touched && crearTareaForm.controls['puntos'].errors">
+                                Campo obligatorio.
+                            </div>
                         </div>
-                        <button class="btn btn-lg btn-dark" type="submit">Crear tarea</button>
+                        <button class="btn btn-lg btn-dark" [disabled]="!crearTareaForm.get('nombre_tarea').valid || !crearTareaForm.get('desc_tarea').valid || !crearTareaForm.get('tiempo_estimado').valid || !crearTareaForm.get('puntos').valid" type="submit">Crear tarea</button>
                     </form>
                 </div>
                 <div class="modal-footer">

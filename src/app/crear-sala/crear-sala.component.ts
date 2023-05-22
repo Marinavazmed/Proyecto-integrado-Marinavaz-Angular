@@ -23,8 +23,14 @@ export class CrearSalaComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private userService: UserProfileService) {
     this.crearSalaForm = this.formBuilder.group({
       devs: [this.formBuilder.array, Validators.required],
-      nombre_sala: ['', Validators.required],
-      pass_sala: ['', Validators.required],
+      nombre_sala: ['' as string | null, Validators.compose([
+        Validators.required,
+        Validators.pattern('^[_0-9a-zA-Z./w]{1,100}$')
+      ])],
+      pass_sala: ['' as string | null, Validators.compose([
+        Validators.required,
+        Validators.pattern('^[_0-9a-zA-Z./w]{1,100}$')
+      ])],
     });
   }
 

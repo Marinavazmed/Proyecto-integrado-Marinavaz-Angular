@@ -14,26 +14,38 @@ import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
   ]
 })
 
-export class UserRegistroComponent implements OnInit{
+export class UserRegistroComponent implements OnInit {
   registroForm;
   infoMessage = "";
   errors = [];
-  checked:any;
+  checked: any;
   faCheck = faCheck;
   faError = faXmark;
-  selectedFile:any;
+  selectedFile: any;
+  pass_valid: any;
+  file: string = "";
   constructor(private formBuilder: FormBuilder, private UserProfileService: UserProfileService, public router: Router, private authService: AuthService) {
     this.registroForm = this.formBuilder.group({
-      username: ['' as string | null, Validators.required],
-      password:  ['' as string | null, Validators.required],
-      first_name:  ['' as string | null, Validators.required],
-      last_name:  ['' as string | null, Validators.required],
-      //TODO: Add imagenes de perfil al formulario de registro
-      //profile_pic: [File, Validators.required],
-      email:  ['', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
+      username: ['' as string | null, Validators.compose([
+        Validators.required,
+        Validators.pattern('^[_0-9a-zA-Z./w]{1,50}$')
+      ])],
+      password: ['' as string | null, Validators.compose([
+        Validators.required,
+        Validators.pattern('^[_0-9a-zA-Z./w]{8,}$')
+      ])],
+      first_name: ['' as string | null, Validators.compose([
+        Validators.required,
+        Validators.pattern('^[_0-9a-zA-Z./w]{1,50}$')
+      ])],
+      last_name: ['' as string | null, Validators.compose([
+        Validators.required,
+        Validators.pattern('^[_0-9a-zA-Z./w]{1,50}$')
+      ])],
+      email: ['', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
       created_at: new Date(),
     });
-   }
+  }
 
   ngOnInit(): void {
 
@@ -41,19 +53,24 @@ export class UserRegistroComponent implements OnInit{
 
   //Comprueban que las password encajen en tiempo real. 
   //TODO: No es una validacion ya que no es un requisito que encajen para mandar peticion
-  checkPass(pass: any, $event:any){
-    if(pass!=$event?.target?.value){
+  checkPass(pass: any, $event: any) {
+    if (pass.length < 8) {
+      this.pass_valid = false;
+    } else {
+      this.pass_valid = true;
+    }
+    if (pass != $event?.target?.value) {
       console.log("No encajan")
-      this.checked=false;
-    }else{
+      this.checked = false;
+    } else {
       console.log("encajan")
-      this.checked=true;
+      this.checked = true;
     }
   }
 
 
   //Manda peticion post + Recoge errores de validacion de servidor si los hay.
- onSubmit() {
+  onSubmit() {
     if (this.registroForm.invalid) {
       console.log(this.registroForm.errors);
       this.infoMessage = "Formulario no válido"
@@ -64,11 +81,11 @@ export class UserRegistroComponent implements OnInit{
       },
 
         err => {
-          if(err instanceof HttpErrorResponse){
+          if (err instanceof HttpErrorResponse) {
             const ValidationErrors = err.error;
-            Object.keys(ValidationErrors).forEach(prop=>{
+            Object.keys(ValidationErrors).forEach(prop => {
               const formControl = this.registroForm.get(prop);
-              if(formControl){
+              if (formControl) {
                 formControl.setErrors({
                   serverError: ValidationErrors[prop]
                 })
@@ -83,9 +100,28 @@ export class UserRegistroComponent implements OnInit{
 
   }
 
+  onFileChange(event:any){}
+
+  /*onFileChange(event: any) {
+    const files = event.target.files as FileList;
+
+    if (files.length > 0) {
+      const _file = URL.createObjectURL(files[0]);
+      this.file = _file;
+      this.resetInput();
+    }
+
+  }
+
+  resetInput() {
+    const input = document.getElementById('avatar-input-file') as HTMLInputElement;
+    if (input) {
+      input.value = "";
+    }
+  }*/
 
 
-  goToPage(pageName:string){
+  goToPage(pageName: string) {
     this.router.navigate([`${pageName}`]);
   }
 

@@ -15,13 +15,14 @@ export class JoinSalaComponent implements OnInit {
   joinSalaForm;
   sala: any;
   urlSalas: any;
-  checkUser:any;
-  constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private userService:UserProfileService) {
-    this.checkUser=localStorage.getItem("userData");
+  checkUser: any;
+  credenciales_error = "";
+  constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private userService: UserProfileService) {
+    this.checkUser = localStorage.getItem("userData");
     this.urlSalas = JSON.parse(this.checkUser).id;
 
     this.joinSalaForm = this.formBuilder.group({
-      id:['', Validators.required],
+      id: ['', Validators.required],
       prod_owner: ['', Validators.required],
       devs: [formBuilder.array, Validators.required],
       nombre_sala: ['', Validators.required],
@@ -29,20 +30,36 @@ export class JoinSalaComponent implements OnInit {
       url: ['', Validators.required]
     });
 
-  } 
-  
+  }
+
   /*Esta funcion toma los datos de desarrollador del user autenticado y los almacena en session antes de que se introduzca en una nueva sala.*/
-  ngOnInit(){
-    this.userService.getPDPorUserAuth().subscribe(data=>{
+  ngOnInit() {
+    this.userService.getPDPorUserAuth().subscribe(data => {
       sessionStorage.setItem("perfilDEV", JSON.stringify(data));
     })
   }
-  
+
   onSubmit(){
     //TODO: Add validaciones (pruebas de union de sala erronea, credenciales no validas, etc.)
     this.salaService.joinSala(this.joinSalaForm.value);
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      this.router.navigate(['/user-profile/'+this.urlSalas]);
+      this.router.navigate(['/user-profile/'+this.urlSalas])
     });
   }
+
+  /*onSubmit() {
+    this.salaService.joinSalaSubscribe(this.joinSalaForm.value)
+    this.salaService.joinedSala.subscribe(
+      (next) => {
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['/user-profile/' + this.urlSalas]);
+        })
+      }
+    )
+  }*/
+
+
+
+
+
 }

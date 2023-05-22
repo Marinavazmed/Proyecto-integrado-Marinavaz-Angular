@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { po } from 'src/po';
@@ -16,12 +16,11 @@ export class ServiceSalasService {
 
   public idUser: any;
   public url = getURLs()
+  joinedSala = new EventEmitter<void>();
 
   constructor(
     private _http: HttpClient) {
   }
-
-
 
 
   getSalas(): Observable<any[]> {
@@ -64,13 +63,13 @@ export class ServiceSalasService {
   joinSala(values: any): void {
     //1.-selecciona la sala por nombre
     this.getSala(values.nombre_sala).subscribe(data => {
-      if(data.length!=0){
+      if (data.length != 0) {
         //Si existe la sala comprueba las credenciales
         if (data[0].pass_sala == values.pass_sala && data[0].nombre_sala == values.nombre_sala) {
           let url = data[0].url
           values.id = data[0].id
           values.prod_owner = data[0].prod_owner;
-  
+
           //2.-actualiza la lista devs de la sala añadiendo al usuario actual. El dev debe ser el usuario autenticado bajo
           //un perfil Profile_DEV
           let perfilDEV = JSON.parse(sessionStorage.getItem("perfilDEV")!);
@@ -86,17 +85,12 @@ export class ServiceSalasService {
           values.url = url;
           //petición put con nuevos valores de devs
           this._http.put<any>(url, values).subscribe()
+        } else {
+          console.log("Credenciales de la sala incorrectas")
         }
-      }else{
-        console.log("Las credenciales son incorrectas.")
-        alert("Las credenciales son incorrectas.")
       }
-
     })
-
   }
-
-
 
   leaveSala(sala_put: any): void {
     let url = this.url + `api/v1/sala/${sala_put.id}/`
@@ -106,14 +100,18 @@ export class ServiceSalasService {
 
 
 
-  deleteSala(nombre_sala:any):void{
-    let url:any;
-    this.getSala(nombre_sala).subscribe(data=>{
+  deleteSala(nombre_sala: any): void {
+    let url: any;
+    this.getSala(nombre_sala).subscribe(data => {
       console.log(data[0].id)
-      url=this.url + `api/v1/sala/${data[0].id}/`
+      url = this.url + `api/v1/sala/${data[0].id}/`
       this._http.delete(url).subscribe()
     })
   }
 
 
 }
+function complete(): ((error: any) => void) | null | undefined {
+  throw new Error('Function not implemented.');
+}
+

@@ -39,6 +39,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DragDropModule} from '@angular/cdk/drag-drop';
 import { PagoComponent } from './pago/pago.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
     NgbModule,
     FontAwesomeModule,
     DragDropModule,
+    MatIconModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

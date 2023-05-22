@@ -38,6 +38,11 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   tareas_WIP: Array<Tarea> = [];
   tareas_DONE: Array<Tarea> = [];
   id_sala: any;
+  /*create_form_nombre_tarea:any;
+  create_form_desc_tarea: any;
+  create_form_tiempo_estimado:any;
+  create_form_puntos: any;*/
+
 
   /*En el constructor: Llama a todas las tareas, las pasa a objeto y las organiza. Un formulario para la edicion y otro para la creacion de tareas*/
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService, public userService: UserProfileService, private tareaService: TareasServiceService) {
@@ -56,11 +61,11 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
         id: ['', Validators.required],
         id_sala: ['', Validators.required],
         dev_asignado: ['', Validators.required],
-        nombre_tarea: ['', Validators.required],
-        desc_tarea: ['', Validators.required],
+        nombre_tarea: [null, Validators.required],
+        desc_tarea: [null, Validators.required],
         estado_tarea: [formBuilder.array, Validators.required],
-        tiempo_estimado: ['', Validators.required],
-        puntos: ['', Validators.required],
+        tiempo_estimado: [null, Validators.required],
+        puntos: [null, Validators.required],
         url: ['', Validators.required]
       }),
 
@@ -68,11 +73,11 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
         id: ['', Validators.required],
         id_sala: ['', Validators.required],
         dev_asignado: ['', Validators.required],
-        nombre_tarea: ['', Validators.required],
-        desc_tarea: ['', Validators.required],
+        nombre_tarea: [null, Validators.required],
+        desc_tarea: [null, Validators.required],
         estado_tarea: [formBuilder.array, Validators.required],
-        tiempo_estimado: ['', Validators.required],
-        puntos: ['', Validators.required],
+        tiempo_estimado: [null, Validators.required],
+        puntos: [null, Validators.required],
         url: ['', Validators.required]
       });
 
