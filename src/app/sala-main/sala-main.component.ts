@@ -6,7 +6,7 @@ import { TareasServiceService } from '../tareas-service.service';
 import { UserProfileService } from '../user-profile.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Tarea } from './tarea';
-import { faCheck, faXmark, faBan, faPenToSquare, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faBan, faPenToSquare, faPen, faLandmark } from '@fortawesome/free-solid-svg-icons';
 import { Desarrollador } from './desarrollador';
 import { Observable } from 'rxjs';
 import { po } from 'src/po';
@@ -30,6 +30,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   faError = faXmark;
   faDelete = faBan;
   faEdit = faPenToSquare;
+  faNotes = faLandmark;
   editarTareaForm: any;
   crearTareaForm: any;
   tareas_obj: Array<Tarea> = [];
@@ -49,8 +50,12 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data => {
       this.tareas_obj=[];
       this.tareas = data;
-      this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; url: string; }) => {
-        this.tareas_obj.push(new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url))
+      this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; datos_user_dev: string, history: string, url: string; }) => {
+        this.tareas_obj.push(new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url, tarea.datos_user_dev, tarea.history))
+        if(this.tareas_obj[this.tareas_obj.length-1].datos_user_dev){
+          console.log(this.tareas_obj[this.tareas_obj.length-1].datos_user_dev.username)
+        }
+
       });
       this.tareas_BACKLOG = this.tareas_obj.filter((tarea) => tarea.estado_tarea == "BACKLOG")
       this.tareas_TODO = this.tareas_obj.filter((tarea) => tarea.estado_tarea == "SPRINT")
@@ -121,9 +126,16 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
       if (this.checkPO) {
         perfilCAMBIO = [];
       }
-      console.log("AQUI")
       console.log(event.container.id)
-      this.cambiaEstadoTarea(event.container.data[event.currentIndex], perfilCAMBIO, event.previousContainer.id, event.container.id);
+      /*console.log("AQUI")
+      console.log(event.currentIndex) //es 1 (el indice que toma en el contenedor recibidor)
+      console.log(event.container.data[0]) //es la tarea a traspasar*/
+      if(event.container.data[event.currentIndex] == undefined){
+        this.cambiaEstadoTarea(event.container.data[0], perfilCAMBIO, event.previousContainer.id, event.container.id);
+      }else{
+        this.cambiaEstadoTarea(event.container.data[event.currentIndex], perfilCAMBIO, event.previousContainer.id, event.container.id);
+      }
+
     }
 
   }
@@ -135,10 +147,12 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   cambiaEstadoTarea(tarea: any, dev: any, id_prev_container: any, id_curr_container: any) {
     //Atribuye la tarea arrastrada al usuario logeado en caso de que sea DEV.
     //Comprueba y cambia el nuevo estado de la tarea antes de hacer el put
-    if (!this.checkPO) {
-      tarea.dev_asignado = dev.url
-    }else{
+    if (this.checkPO && id_curr_container=="contenedor_backlog") {
       tarea.dev_asignado = null;
+    }else if(this.checkPO){
+      tarea.dev_asignado = tarea.dev_asignado
+    }else{
+      tarea.dev_asignado=dev.url
     }
     switch (id_curr_container) {
       case "contenedor_backlog":

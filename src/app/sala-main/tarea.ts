@@ -8,7 +8,9 @@ export class Tarea{
         public estado_tarea:string,
         public tiempo_estimado: string,
         public puntos : number,
-        public url: string
+        public url: string,
+        public datos_user_dev?:any,
+        public history?:any
     ){}
 
     public toString = () : String => {

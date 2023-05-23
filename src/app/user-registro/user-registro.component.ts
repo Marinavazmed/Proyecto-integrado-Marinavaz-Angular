@@ -28,19 +28,19 @@ export class UserRegistroComponent implements OnInit {
     this.registroForm = this.formBuilder.group({
       username: ['' as string | null, Validators.compose([
         Validators.required,
-        Validators.pattern('^[_0-9a-zA-Z./w]{1,50}$')
+        Validators.pattern('^[ _0-9a-zA-Z./w]{1,50}$')
       ])],
       password: ['' as string | null, Validators.compose([
         Validators.required,
-        Validators.pattern('^[_0-9a-zA-Z./w]{8,}$')
+        Validators.pattern('^[ _0-9a-zA-Z./w]{8,}$')
       ])],
       first_name: ['' as string | null, Validators.compose([
         Validators.required,
-        Validators.pattern('^[_0-9a-zA-Z./w]{1,50}$')
+        Validators.pattern('^[ _0-9a-zA-Z./w]{1,50}$')
       ])],
       last_name: ['' as string | null, Validators.compose([
         Validators.required,
-        Validators.pattern('^[_0-9a-zA-Z./w]{1,50}$')
+        Validators.pattern('^[ _0-9a-zA-Z./w]{1,50}$')
       ])],
       email: ['', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
       created_at: new Date(),

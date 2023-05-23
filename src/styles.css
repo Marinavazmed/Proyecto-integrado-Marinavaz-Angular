@@ -677,6 +677,10 @@ a:hover:after {
     color: red;
 }
 
+.iconoPopHistory:hover{
+    color:lightgreen;
+}
+
 /*SUBIDA DE IMAGEN PERFIL*/
 .avatar-container {
     position: relative;
