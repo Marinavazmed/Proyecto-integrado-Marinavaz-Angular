@@ -33,6 +33,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   faNotes = faLandmark;
   editarTareaForm: any;
   crearTareaForm: any;
+  tarea_history:any;
   tareas_obj: Array<Tarea> = [];
   tareas_BACKLOG: Array<Tarea> = [];
   tareas_TODO: Array<Tarea> = [];
@@ -319,5 +320,22 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
       this.tareas_DONE = this.tareas_obj.filter((tarea) => tarea.estado_tarea == "DONE")
     })
   }
+
+  historico_tarea(id:any){
+    this.tareaService.getTarea(id).subscribe({
+      next: (data) => {
+        this.tarea_history=data.history;
+      },
+      error: (error) => {
+      },
+      complete: (()=>{
+        //abre modal
+        document.getElementById("btn_historial_modal")?.click()
+      })
+    });
+  }
+
+  
+
 
 }
