@@ -10,9 +10,14 @@
             <div *ngIf="tareas_BACKLOG.length!=0">
                 <div class="example-box" *ngFor="let tarea of tareas_BACKLOG" cdkDrag>
                     <table>
-                        <tr><u>{{tarea.nombre_tarea}}</u></tr>
-                        <tr><i>{{tarea.desc_tarea}}</i></tr>
-                        <tr><b>{{tarea.puntos}}p</b></tr>
+                        <tr>
+                            <p class="header_tarea">{{tarea.nombre_tarea}}</p>
+                            <figcaption class="blockquote-footer">
+                                {{tarea.tiempo_estimado}} horas estimadas. <i class="text-muted"> {{tarea.puntos}} puntos</i>
+                            </figcaption>
+                        </tr>
+
+                        <tr><p>{{tarea.desc_tarea}}</p></tr>
                         <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
                             <!--<i>{{tarea.dev_asignado}}</i>-->
                             <i>{{tarea.datos_user_dev?.username}}</i>

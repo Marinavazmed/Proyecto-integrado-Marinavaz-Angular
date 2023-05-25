@@ -5,6 +5,7 @@ import { UserCredentials } from "../auth";
 import { Router } from "@angular/router";
 import { ElementRef, ViewChild } from '@angular/core';
 import { ModalDirective } from "ngx-bootstrap/modal";
+import { UserProfileService } from '../user-profile.service';
 
 @Component({
   selector: 'app-user-login',
@@ -16,7 +17,7 @@ export class UserLoginComponent implements OnInit {
   logInForm;
   infoMessage: any = "";
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, public router: Router) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, public router: Router, public userService: UserProfileService) {
     this.logInForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -45,11 +46,14 @@ export class UserLoginComponent implements OnInit {
         this.infoMessage = "Credenciales incorrectas."
         document.getElementById("openModalButton")?.click();
         this.logInForm.reset();
-      }
+      },
+      complete: (()=>{
+        this.userService.getPDPorUserAuth().subscribe(data => {
+          sessionStorage.setItem("perfilDEV", JSON.stringify(data));
+        })
+      })
     }
-
     );
-
   }
 
 

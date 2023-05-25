@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PaypalService } from '../paypal.service';
 
 @Component({
@@ -10,26 +10,36 @@ import { PaypalService } from '../paypal.service';
 })
 export class CheckoutComponent {
 
-  constructor(private route: ActivatedRoute, private paypalservice: PaypalService) { 
+  constructor(private route: ActivatedRoute, private paypalservice: PaypalService, private router: Router) {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.route.queryParams
-    .subscribe(params => {
-      let payerID = params['PayerID']
-      let token = params['token']
-    })
+      .subscribe(params => {
+        let payerID = params['PayerID']
+        let token = params['token']
+      })
   }
 
-  completaPago(){
+  completaPago() {
     this.route.queryParams
-    .subscribe(params => {
-      let payerID = params['PayerID']
-      let token = params['token']
-      this.paypalservice.captureOrder(payerID, token).subscribe(data=>{console.log(data)});
-    })
+      .subscribe(params => {
+        let payerID = params['PayerID']
+        let token = params['token']
+        this.paypalservice.captureOrder(payerID, token).subscribe(data => {
+          console.log(data)
+          document.getElementById("btn_modal_confirmacion")?.click()
+        });
+      })
 
+  }
+
+  btnSalas() {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      let id = JSON.parse(localStorage.getItem("userData")!).id
+      this.router.navigate(['/user-profile/:'+id]);
+    });
   }
 
 }

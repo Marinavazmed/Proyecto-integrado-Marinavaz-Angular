@@ -88,7 +88,7 @@ import {MatIconModule} from '@angular/material/icon';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    [UserProfileService]
+    [UserProfileService],
   ],
   bootstrap: [AppComponent]
 })
