@@ -40,10 +40,13 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   tareas_WIP: Array<Tarea> = [];
   tareas_DONE: Array<Tarea> = [];
   id_sala: any;
-  /*create_form_nombre_tarea:any;
-  create_form_desc_tarea: any;
-  create_form_tiempo_estimado:any;
-  create_form_puntos: any;*/
+  p:number=1;
+  paginationLabels = {
+    first: 'Primera',
+    previous: 'Anterior',
+    next: 'Siguiente',
+    last: 'Última'
+  }
 
 
   /*En el constructor: Llama a todas las tareas, las pasa a objeto y las organiza. Un formulario para la edicion y otro para la creacion de tareas*/

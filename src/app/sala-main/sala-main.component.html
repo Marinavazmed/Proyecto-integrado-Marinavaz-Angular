@@ -29,7 +29,7 @@
                     </table>
                     <span *ngIf="checkPO">
                         <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
-                             (click)="historico_tarea(tarea.id)"></fa-icon>
+                            (click)="historico_tarea(tarea.id)"></fa-icon>
                         <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button" [hidden]="false"
                             data-toggle="modal" data-target="#exampleModalCenter"
                             (click)="setValuesFormEdit(tarea)"></fa-icon>
@@ -97,7 +97,8 @@
                     <!--FIN MODAL EDICION-->
 
                     <!--MODAL HISTORIAL-->
-                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial" id="btn_historial_modal"></button>
+                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
+                        id="btn_historial_modal"></button>
                     <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -120,7 +121,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let cambio of tarea_history">
+                                            <tr
+                                                *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
                                                 <th scope="row">{{cambio.estado_tarea}}</th>
                                                 <td>{{cambio.tiempo_estimado}}</td>
                                                 <td>{{cambio.puntos}}</td>
@@ -130,6 +132,12 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div class="text-center">
+                                        <pagination-controls (pageChange)="p = $event"
+                                            previousLabel="{{ paginationLabels.previous }}"
+                                            nextLabel="{{ paginationLabels.next }}"
+                                            cssClass="pagination"></pagination-controls>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button id="btn_cierre" class="btn btn-secondary"
@@ -228,7 +236,8 @@
                     </div>
                     <!--FIN MODAL EDICION-->
                     <!--MODAL HISTORIAL-->
-                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial" id="btn_historial_modal"></button>
+                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
+                        id="btn_historial_modal"></button>
                     <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -251,7 +260,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let cambio of tarea_history">
+                                            <tr
+                                                *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
                                                 <th scope="row">{{cambio.estado_tarea}}</th>
                                                 <td>{{cambio.tiempo_estimado}}</td>
                                                 <td>{{cambio.puntos}}</td>
@@ -261,6 +271,12 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div class="text-center">
+                                        <pagination-controls (pageChange)="p = $event"
+                                            previousLabel="{{ paginationLabels.previous }}"
+                                            nextLabel="{{ paginationLabels.next }}"
+                                            cssClass="pagination"></pagination-controls>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button id="btn_cierre" class="btn btn-secondary"
@@ -302,7 +318,7 @@
                             type="button" (click)="historico_tarea(tarea.id)"></fa-icon></span>
                     <span *ngIf="checkPO">
                         <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
-                             (click)="historico_tarea(tarea.id)"></fa-icon>
+                            (click)="historico_tarea(tarea.id)"></fa-icon>
                         <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button" [hidden]="false"
                             data-toggle="modal" data-target="#exampleModalCenter"
                             (click)="setValuesFormEdit(tarea)"></fa-icon><fa-icon [icon]="faDelete"
@@ -353,7 +369,8 @@
                     </div>
                     <!--FIN MODAL EDICION-->
                     <!--MODAL HISTORIAL-->
-                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial" id="btn_historial_modal"></button>
+                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
+                        id="btn_historial_modal"></button>
                     <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -376,7 +393,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let cambio of tarea_history">
+                                            <tr
+                                                *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
                                                 <th scope="row">{{cambio.estado_tarea}}</th>
                                                 <td>{{cambio.tiempo_estimado}}</td>
                                                 <td>{{cambio.puntos}}</td>
@@ -386,6 +404,12 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div class="text-center">
+                                        <pagination-controls (pageChange)="p = $event"
+                                            previousLabel="{{ paginationLabels.previous }}"
+                                            nextLabel="{{ paginationLabels.next }}"
+                                            cssClass="pagination"></pagination-controls>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button id="btn_cierre" class="btn btn-secondary"
@@ -425,11 +449,10 @@
                             type="button" (click)="historico_tarea(tarea.id)"></fa-icon></span>
                     <span *ngIf="checkPO">
                         <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
-                            data-toggle="modal" data-target="#ModalHistorial"></fa-icon>
+                        (click)="historico_tarea(tarea.id)"></fa-icon>
                         <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button" [hidden]="false"
-                              (click)="historico_tarea(tarea.id)"
-                            (click)="setValuesFormEdit(tarea)"></fa-icon><fa-icon [icon]="faDelete"
-                            class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
+                            (click)="historico_tarea(tarea.id)" (click)="setValuesFormEdit(tarea)"></fa-icon><fa-icon
+                            [icon]="faDelete" class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
                     <!--MODAL EDICION-->
                     <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
                         role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -476,7 +499,8 @@
                     </div>
                     <!--FIN MODAL EDICION-->
                     <!--MODAL HISTORIAL-->
-                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial" id="btn_historial_modal"></button>
+                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
+                        id="btn_historial_modal"></button>
                     <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -499,7 +523,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let cambio of tarea_history">
+                                            <tr
+                                                *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
                                                 <th scope="row">{{cambio.estado_tarea}}</th>
                                                 <td>{{cambio.tiempo_estimado}}</td>
                                                 <td>{{cambio.puntos}}</td>
@@ -509,6 +534,12 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div class="text-center">
+                                        <pagination-controls (pageChange)="p = $event"
+                                            previousLabel="{{ paginationLabels.previous }}"
+                                            nextLabel="{{ paginationLabels.next }}"
+                                            cssClass="pagination"></pagination-controls>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button id="btn_cierre" class="btn btn-secondary"
