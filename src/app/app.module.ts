@@ -41,6 +41,7 @@ import { PagoComponent } from './pago/pago.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import {MatIconModule} from '@angular/material/icon';
 import { NgxPaginationModule } from 'ngx-pagination';
+import {NgToastModule} from 'ng-angular-popup';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     DragDropModule,
     MatIconModule,
     NgxPaginationModule,
+    NgToastModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

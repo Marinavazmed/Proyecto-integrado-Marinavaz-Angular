@@ -11,7 +11,7 @@
               out</a></li>
           <li><a class="negro" (click)="goToSalas();">Salas</a></li>
           <li><a class="negro" routerLink="/registro">Registro</a></li>
-          <li><a class="negro" routerLink="/pago">Subscripción</a></li>
+          <li><a class="negro" (click)="goToSubscripcion()">Subscripción</a></li>
           <li><a class="negro">Otros*</a></li>
         </ul>
       </div>
@@ -25,6 +25,7 @@
 
   <div class="router d-flex mt-5 pt-5 h-100 w-100 mw-100 mh-100">
     <router-outlet></router-outlet>
+    <lib-ng-toast></lib-ng-toast>
   </div>
 </div>
 <!-- FOOTER -->

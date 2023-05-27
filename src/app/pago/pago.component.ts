@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PagoService } from '../pago.service';
 import { Router } from '@angular/router';
 import { PaypalService } from '../paypal.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-pago',
@@ -10,7 +11,7 @@ import { PaypalService } from '../paypal.service';
   ]
 })
 export class PagoComponent {
-  constructor(private pagoService: PagoService, private paypalservice: PaypalService, public router: Router) {
+  constructor(private pagoService: PagoService, private paypalservice: PaypalService, public router: Router, private toast: NgToastService) {
   }
 
   PayPal(): void {
@@ -20,11 +21,11 @@ export class PagoComponent {
         window.location.href = data.approval_url;
       }else{
         if(data.error == "Error status distinto de 200")
-          alert("Parece que ya eres un usuario premium. ¡Genial!")
+          this.toast.success({detail: '¡Genial!', summary: 'Parece que ya eres premium', duration: 3000})
         else if (data.error=="Debes autentificarte para poder obtener la membresia."){
-          alert(data.error)
+          this.toast.error({detail: 'Logeo requerido', summary: 'Autenticate para acceder', duration: 3000})
         }else{
-          alert("Vaya. Parece que algo ha salido mal.")
+          this.toast.error({detail: 'Ups', summary: 'Parece que algo ha salido mal', duration: 3000})
         }
       }
     })

@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { faHome, faAddressBook, faGlobe, faMap, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { getURLs } from './utils';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,7 @@ export class AppComponent implements OnChanges, OnInit{
   faAdressBook = faAddressBook;
   index = "/index"
   
-  constructor(public loginService: AuthService,public router: Router){
+  constructor(public loginService: AuthService,public router: Router, private toast : NgToastService){
     this.checkUser=localStorage.getItem("userData");
     this.urlSalas = "/user-profile/"+ JSON.parse(this.checkUser)?.id;
   }
@@ -58,5 +59,14 @@ export class AppComponent implements OnChanges, OnInit{
       this.router.navigate([`/login`]);
     }
 
+  }
+
+  goToSubscripcion():void{
+    this.checkUser=localStorage.getItem("userData");
+    if(this.checkUser){
+      this.router.navigate(['/pago']);
+    }else{
+      this.toast.warning({detail: 'Autenticación requerida', summary: 'Logeate para obtener tu suscripción.', duration: 3000})
+    }
   }
 }
