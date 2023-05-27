@@ -47,14 +47,17 @@
 <button class="btn btn-dark btn-lg" (click)="completaPago()">Completar pago PayPal</button>
 -->
 <!--MODAL DE CONFIRMACION-->
-<div class="col-md-6"> <button type="button" class="btn btn-lg btn-warning" data-toggle="modal" id="btn_modal_confirmacion" data-target="#ModalConfirmacion" [hidden]=true></button>
-<div class="modal fade" id="ModalConfirmacion" role="dialog">
+<div class="col-md-6"> 
+<button type="button" class="btn btn-lg btn-warning" data-toggle="modal" id="btn_modal_confirmacion" data-target="#ModalConfirmacion" [hidden]=true></button>
+<button #closeModal type="button" class="close" aria-label="Close" (click)="cerrarModal()" id="btn_modal_cierre"></button>
+<div class="modal fade" id="ModalConfirmacion" (click)="onClose()">
     <div class="modal-dialog">
         <div class="card">
             <div class="text-right cross"> <i class="fa fa-times"></i> </div>
             <div class="card-body text-center"> <img src="https://img.icons8.com/bubbles/200/000000/trophy.png">
-                <h4>Enhorabuena</h4>
-                <p>¡No esperes más y comienza ahora mismo a disfrutar del Premium!</p> <button class="btn btn-out btn-square continue" (click)="btnSalas()">IR A SALAS</button>
+                <h4>¡Todo listo!</h4>
+                <p>¡No esperes más y comienza ahora mismo a disfrutar del Premium!</p>
+                <button class="btn btn-dark btn-square close" data-dismiss="modal">CREAR UNA SALA</button>
             </div>
         </div>
     </div>

@@ -1,12 +1,152 @@
 <div class="vw-100 vh-100 mt-5 pt-5">
     <div class="d-flex justify-content-center align-items-center flex-column">
-        <h1 class="profile-heading">Bienvenid@, {{userProfile?.first_name}} {{userProfile?.last_name}} </h1>
+        <!--card profile-->
+        <section class="">
+            <div class="">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <div class="">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body p-4">
+                                <div class="d-flex text-black">
+                                    <div class="flex-shrink-0">
+                                        <!--image box-->
+                                        <form [formGroup]="form">
+                                            <div class="avatar-container">
+                                                <div class="image-container" *ngIf="file; else placeholder"
+                                                    [ngClass]="{'box-shadow-avatar': !!file}"
+                                                    [ngStyle]="{backgroundImage: 'url(' + file + ')'}">
+                                                </div>
 
-        <p>Nombre de usuario: {{ userProfile?.username }}</p>
+                                                <ng-template #placeholder>
+                                                    <div class="image-container avatar-placeholder"
+                                                        [ngStyle]="{backgroundImage: 'url(' + userProfile?.profile_pic + ')'}">
+                                                    </div>
+                                                </ng-template>
 
+                                                <label for="avatar-input-file">
+                                                    <div class="icon-wrapper">
+                                                        <input type="file" id="avatar-input-file" accept="image/*"
+                                                            (change)="onFileChange($event)" />
+                                                        <!--<mat-icon class="icon" fontIcon="edit"></mat-icon>-->
+                                                        <fa-icon [icon]="faPhoto" class="icon"></fa-icon>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </form>
+                                        <!--fin image box-->
+                                        <div class="d-flex"> Nombre de usuario: <strong> {{userProfile?.username}}</strong></div>
+                                        <!--botones redireccion-->
+                                        <div class="d-flex flex-column pt-1">
+                                            <button type="button" class="btn btn-outline-primary me-1 flex-grow-1 mt-3"
+                                                (click)="joinSala()">Unirme a
+                                                una sala</button>
+                                            <button type="button" class="btn btn-primary flex-grow-1 mt-3"
+                                                (click)="router.navigate(['/crear_sala']);">Crear nueva
+                                                sala</button>
+                                        </div>
+                                        <!--fin botones redireccion-->
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5 class="mb-1">{{userProfile?.first_name}} {{userProfile?.last_name}}</h5>
+                                        <p class="mb-2 pb-1" style="color: #2b2a2a;">Usuario premium/gratuito</p>
+                                        <div class="d-flex justify-content-start rounded-3 p-2 mb-2"
+                                            style="background-color: #efefef;">
+                                            <!--profile box-->
+                                            <section>
+                                                <div class="container-fluid py-5">
+                                                    <div class="row d-flex justify-content-center align-items-center">
+                                                        <div class="">
+                                                            <div class="card mb-5" style="border-radius: 15px;">
+                                                                <div class="card-body p-4">
+                                                                    <h3 class="mb-3">Salas como Desarrollador</h3>
+                                                                    <p class="small mb-0"><i
+                                                                            class="far fa-star fa-lg"></i>
+                                                                        <span class="mx-2"></span> Total
+                                                                        de
+                                                                        <strong>{{salas.length}}</strong> Salas |
+                                                                        {{currentDate | date:'yyyy-MM-dd h:mm'}}
+                                                                    </p>
+                                                                    <hr class="my-4">
+                                                                    <div class="d-flex justify-content-start align-items-center"
+                                                                        *ngFor="let sala of salas">
+                                                                        <p class="mb-0 text-uppercase"> <span
+                                                                                class="text-muted small">{{sala.nombre_sala}}</span>
+                                                                        </p>
+                                                                        <button type="button"
+                                                                            class="ms-2 btn btn-outline-dark btn-sm btn-floating"
+                                                                            (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">
+                                                                            <fa-icon [icon]="faGoInSala"></fa-icon>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card" style="border-radius: 15px;">
+                                                                <div class="card-body p-4">
+                                                                    <h3 class="mb-3">Salas como Product Owner</h3>
+                                                                    <p class="small mb-0"><i
+                                                                            class="far fa-star fa-lg"></i>
+                                                                        <span class="mx-2"></span> Total
+                                                                        de
+
+                                                                        <strong>{{salas.length}}</strong> Salas | {{currentDate |
+                                                                        date:'yyyy-MM-dd h:mm'}}
+                                                                    </p>
+                                                                    <hr class="my-4">
+                                                                    <div class="d-flex justify-content-start align-items-center"
+                                                                        *ngFor="let sala of salas_PO">
+                                                                        <p class="mb-0 text-uppercase"> <span
+                                                                                class="text-muted small">{{sala.nombre_sala}}</span>
+                                                                        </p>
+                                                                        <button type="button"
+                                                                            class="ms-2 btn btn-outline-dark btn-sm btn-floating"
+                                                                            (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">
+                                                                            <fa-icon [icon]="faGoInSala"></fa-icon>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!--fin profile box-->
+                                        </div>
+                                        <!---paginacion?-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <!---------->
+        <!--template antiguo de listado de salas-->
+        <!--<h2>SALAS DE DEV:</h2>
+            <table>
+                <tr *ngFor="let sala of salas">
+                    <td><button (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">{{sala.nombre_sala}}</button>
+                    </td>
+                </tr>
+            </table>
+            <h2>SALAS DE PO:</h2>
+            <table>
+                <tr *ngFor="let sala of salas_PO">
+                    <td><button (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">{{sala.nombre_sala}}</button>
+                    </td>
+                </tr>
+            </table>
+            <br>-->
+        <!--template antiguo salas-->
+
+        <!--template antiguo de perfil-->
         <!--<img src={{userProfile?.profile_pic}} alt="Profile photo" style="height:200px;max-width:200px;">-->
         <!--PRUEBAS IMAGENES-->
-        <form [formGroup]="form">
+        <!--<form [formGroup]="form">
 
             <div class="avatar-container">
                 <div class="image-container" *ngIf="file; else placeholder" [ngClass]="{'box-shadow-avatar': !!file}"
@@ -14,36 +154,66 @@
                 </div>
 
                 <ng-template #placeholder>
-                    <div class="image-container avatar-placeholder" [ngStyle]="{backgroundImage: 'url(' + userProfile?.profile_pic + ')'}">
+                    <div class="image-container avatar-placeholder"
+                        [ngStyle]="{backgroundImage: 'url(' + userProfile?.profile_pic + ')'}">
                     </div>
                 </ng-template>
 
                 <label for="avatar-input-file">
                     <div class="icon-wrapper">
                         <input type="file" id="avatar-input-file" accept="image/*" (change)="onFileChange($event)" />
-                        <!--<mat-icon class="icon" fontIcon="edit"></mat-icon>-->
                         <fa-icon [icon]="faPhoto" class="icon"></fa-icon>
                     </div>
                 </label>
 
             </div>
         </form>
-        <!--PRUEBAS IMAGENES-->
-        <h2>SALAS DE DEV:</h2>
-        <table>
-            <tr *ngFor="let sala of salas">
-                <td><button (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">{{sala.nombre_sala}}</button>
-                </td>
-            </tr>
-        </table>
-        <h2>SALAS DE PO:</h2>
-        <table>
-            <tr *ngFor="let sala of salas_PO">
-                <td><button (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">{{sala.nombre_sala}}</button>
-                </td>
-            </tr>
-        </table>
-        <br>
+        <section>
+            <div class="container-fluid py-5">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <div class="">
+                        <div class="card mb-5" style="border-radius: 15px;">
+                            <div class="card-body p-4">
+                                <h3 class="mb-3">Salas como Desarrollador</h3>
+                                <p class="small mb-0"><i class="far fa-star fa-lg"></i> <span class="mx-2"></span> Total
+                                    de
+                                    <strong>{{salas.length}}</strong> Salas | {{currentDate | date:'yyyy-MM-dd h:mm'}}
+                                </p>
+                                <hr class="my-4">
+                                <div class="d-flex justify-content-start align-items-center" *ngFor="let sala of salas">
+                                    <p class="mb-0 text-uppercase"><i class="fas fa-cog me-2"></i> <span
+                                            class="text-muted small">{{sala.nombre_sala}}</span></p>
+                                    <button type="button" class="ms-2 btn btn-outline-dark btn-sm btn-floating"
+                                        (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body p-4">
+                                <h3 class="mb-3">Salas como Product Owner</h3>
+                                <p class="small mb-0"><i class="far fa-star fa-lg"></i> <span class="mx-2"></span> Total
+                                    de
+
+                                    <strong>1</strong> Salas | {{currentDate | date:'yyyy-MM-dd h:mm'}}
+                                </p>
+                                <hr class="my-4">
+                                <div class="d-flex justify-content-start align-items-center"
+                                    *ngFor="let sala of salas_PO">
+                                    <p class="mb-0 text-uppercase"><i class="fas fa-cog me-2"></i> <span
+                                            class="text-muted small">{{sala.nombre_sala}}</span></p>
+                                    <button type="button" class="ms-2 btn btn-outline-dark btn-sm btn-floating"
+                                        (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <div>
             <button class="btn btn-info" (click)="router.navigate(['/crear_sala']);">
                 <span>Crear una nueva sala</span>
@@ -55,102 +225,5 @@
         <div>
             <button (click)="logOut()" class="btn btn-danger">Logout</button>
         </div>
-    </div>
-
-    <!--
-    <div class="row w-100">
-        <div class="col-3">
-            <div class="nav flex-column nav-tabs text-center" id="v-tabs-tab" role="tablist"
-                aria-orientation="vertical">
-                <a class="nav-link active" id="v-tabs-home-tab" data-mdb-toggle="tab" href="#v-tabs-home" role="tab"
-                    aria-controls="v-tabs-home" aria-selected="true">Home</a>
-                <a class="nav-link" id="v-tabs-profile-tab" data-mdb-toggle="tab" href="#v-tabs-profile" role="tab"
-                    aria-controls="v-tabs-profile" aria-selected="false">Profile</a>
-                <a class="nav-link" id="v-tabs-messages-tab" data-mdb-toggle="tab" href="#v-tabs-messages" role="tab"
-                    aria-controls="v-tabs-messages" aria-selected="false">Messages</a>
-            </div>
-
-        </div>
-
-        <div class="col-9">
-            <div class="tab-content" id="v-tabs-tabContent">
-                <div class="tab-pane fade show active" id="v-tabs-home" role="tabpanel"
-                    aria-labelledby="v-tabs-home-tab">
-                    Home content
-                </div>
-                <div class="tab-pane fade" id="v-tabs-profile" role="tabpanel" aria-labelledby="v-tabs-profile-tab">
-                    Profile content
-                </div>
-                <div class="tab-pane fade" id="v-tabs-messages" role="tabpanel" aria-labelledby="v-tabs-messages-tab">
-                    Messages content
-                </div>
-            </div>
-        </div>
-    </div>
-    -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--<section id="tabs" class="project-tab">
-        <div class="container">
-            <div class="row">
-                <div>
-                    <nav>
-                        <div class="nav-tabs nav-fill" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-po"
-                                role="tab" aria-controls="nav-home" aria-selected="true">Tus Salas</a>
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-dev"
-                                role="tab" aria-controls="nav-profile" aria-selected="false">Salas de participante</a>
-                        </div>
-                    </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-po" role="tabpanel"
-                            aria-labelledby="nav-po-tab">
-                            <table class="table" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Sala</th>
-                                        <th>Dueño de la sala</th>
-                                        <th>Tareas</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let sala of salas_PO">
-                                        <td><button (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">{{sala.nombre_sala}}</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="nav-dev" role="tabpanel" aria-labelledby="nav-dev-tab">
-                            <table class="table" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Sala</th>
-                                        <th>Dueño de la sala</th>
-                                        <th>Tareas</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let sala of salas">
-                                        <td><button (click)="router.navigate(['sala-main/:'+sala.nombre_sala]);">{{sala.nombre_sala}}</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>-->
+    </div>-->
+        <!--template antiguo de perfil-->

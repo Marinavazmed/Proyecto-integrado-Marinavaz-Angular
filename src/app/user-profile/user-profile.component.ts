@@ -11,6 +11,7 @@ import { sala } from '../sala-main/sala';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-profile',
@@ -28,11 +29,13 @@ export class UserProfileComponent implements OnInit, ControlValueAccessor {
   userProfile: UserProfile | null = null;
   userId: any;
   faPhoto = faPen;
+  faGoInSala = faLocationArrow;
   public salas: Array<any>
   public salas_PO: Array<any>
   public url_user_PO: any;
   public file: string = '';
   public form! :FormGroup;
+  currentDate = new Date();
   constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http: HttpClient, private _peticion: ServiceSalasService, public router: Router, public loginService: AuthService, private profilepicForm: FormBuilder) {
     this.salas = []
     this.salas_PO = []

@@ -35,11 +35,11 @@ export class CheckoutComponent {
 
   }
 
-  btnSalas() {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      let id = JSON.parse(localStorage.getItem("userData")!).id
-      this.router.navigate(['/user-profile/:'+id]);
-    });
+  cerrarModal() {
+    document.getElementById("btn_modal_cierre")?.click()
   }
-
+  
+  onClose(){
+    this.router.navigateByUrl("/crear_sala")
+  }
 }

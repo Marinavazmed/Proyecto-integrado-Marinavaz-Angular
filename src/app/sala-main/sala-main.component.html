@@ -33,8 +33,8 @@
                         <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button" [hidden]="false"
                             data-toggle="modal" data-target="#exampleModalCenter"
                             (click)="setValuesFormEdit(tarea)"></fa-icon>
-                        <fa-icon [icon]="faDelete" class="iconoPopDelete"
-                            (click)="borrarTarea(tarea.id)"></fa-icon></span>
+                        <fa-icon [icon]="faDelete" class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon>
+                    </span>
 
                     <!--MODAL EDICION-->
                     <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
@@ -446,13 +446,15 @@
                         <!--<tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>-->
                     </table>
                     <span *ngIf="!checkPO"><fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial"
-                            type="button" (click)="historico_tarea(tarea.id)"></fa-icon></span>
+                            type="button" (click)="historico_tarea(tarea.id)"></fa-icon>
+                    </span>
                     <span *ngIf="checkPO">
                         <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
-                        (click)="historico_tarea(tarea.id)"></fa-icon>
+                            (click)="historico_tarea(tarea.id)"></fa-icon>
                         <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button" [hidden]="false"
-                            (click)="historico_tarea(tarea.id)" (click)="setValuesFormEdit(tarea)"></fa-icon><fa-icon
-                            [icon]="faDelete" class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
+                            data-toggle="modal" data-target="#exampleModalCenter" (click)="setValuesFormEdit(tarea)"></fa-icon>
+                        <fa-icon [icon]="faDelete" class="iconoPopDelete"(click)="borrarTarea(tarea.id)"></fa-icon>
+                    </span>
                     <!--MODAL EDICION-->
                     <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
                         role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
