@@ -207,24 +207,38 @@
                                         <div class="mb-3">
                                             <label class="form-label">Nombre de la tarea</label>
                                             <input type="text" formControlName="nombre_tarea" class="form-control"
-                                                value="{{tarea.nombre_tarea}}" />
+                                                value="{{tarea.nombre_tarea}}" maxlength="100" minlength="1" />
+                                            <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Descripción de la tarea</label>
                                             <input type="text" formControlName="desc_tarea" class="form-control"
-                                                value="{{tarea.desc_tarea}}" />
+                                                value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
+                                            <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Tiempo estimado</label>
                                             <input type="number" formControlName="tiempo_estimado" class="form-control"
                                                 value="{{tarea.tiempo_estimado}}" />
+                                            <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Puntos</label>
                                             <input type="number" formControlName="puntos" class="form-control"
                                                 value="{{tarea.puntos}}" />
+                                            <div *ngIf="editarTareaForm.controls['puntos'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
-                                        <button class="btn btn-lg btn-dark" type="submit">Modificar tarea</button>
+                                        <button class="btn btn-lg btn-dark" type="submit"
+                                            [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
+                                            tarea</button>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -340,24 +354,38 @@
                                         <div class="mb-3">
                                             <label class="form-label">Nombre de la tarea</label>
                                             <input type="text" formControlName="nombre_tarea" class="form-control"
-                                                value="{{tarea.nombre_tarea}}" />
+                                                value="{{tarea.nombre_tarea}}" maxlength="100" minlength="1" />
+                                            <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Descripción de la tarea</label>
                                             <input type="text" formControlName="desc_tarea" class="form-control"
-                                                value="{{tarea.desc_tarea}}" />
+                                                value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
+                                            <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Tiempo estimado</label>
                                             <input type="number" formControlName="tiempo_estimado" class="form-control"
                                                 value="{{tarea.tiempo_estimado}}" />
+                                            <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Puntos</label>
                                             <input type="number" formControlName="puntos" class="form-control"
                                                 value="{{tarea.puntos}}" />
+                                            <div *ngIf="editarTareaForm.controls['puntos'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
-                                        <button class="btn btn-lg btn-dark" type="submit">Modificar tarea</button>
+                                        <button class="btn btn-lg btn-dark" type="submit"
+                                            [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
+                                            tarea</button>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -452,8 +480,9 @@
                         <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
                             (click)="historico_tarea(tarea.id)"></fa-icon>
                         <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button" [hidden]="false"
-                            data-toggle="modal" data-target="#exampleModalCenter" (click)="setValuesFormEdit(tarea)"></fa-icon>
-                        <fa-icon [icon]="faDelete" class="iconoPopDelete"(click)="borrarTarea(tarea.id)"></fa-icon>
+                            data-toggle="modal" data-target="#exampleModalCenter"
+                            (click)="setValuesFormEdit(tarea)"></fa-icon>
+                        <fa-icon [icon]="faDelete" class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon>
                     </span>
                     <!--MODAL EDICION-->
                     <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
@@ -472,24 +501,38 @@
                                         <div class="mb-3">
                                             <label class="form-label">Nombre de la tarea</label>
                                             <input type="text" formControlName="nombre_tarea" class="form-control"
-                                                value={{tarea.nombre_tarea}} />
+                                                value="{{tarea.nombre_tarea}}" maxlength="100" minlength="1" />
+                                            <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Descripción de la tarea</label>
                                             <input type="text" formControlName="desc_tarea" class="form-control"
-                                                value={{tarea.desc_tarea}} />
+                                                value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
+                                            <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Tiempo estimado</label>
                                             <input type="number" formControlName="tiempo_estimado" class="form-control"
-                                                value={{tarea.tiempo_estimado}} />
+                                                value="{{tarea.tiempo_estimado}}" />
+                                            <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Puntos</label>
                                             <input type="number" formControlName="puntos" class="form-control"
-                                                value={{tarea.puntos}} />
+                                                value="{{tarea.puntos}}" />
+                                            <div *ngIf="editarTareaForm.controls['puntos'].errors">
+                                                Campo obligatorio.
+                                            </div>
                                         </div>
-                                        <button class="btn btn-lg btn-dark" type="submit">Modificar tarea</button>
+                                        <button class="btn btn-lg btn-dark" type="submit"
+                                            [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
+                                            tarea</button>
                                     </form>
                                 </div>
                                 <div class="modal-footer">

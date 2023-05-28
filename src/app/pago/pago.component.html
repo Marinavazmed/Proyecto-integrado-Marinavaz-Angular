@@ -18,7 +18,7 @@
                             <li>Pago único</li>
                         </ul>
                         <br>
-                        <p (click)="PayPal()" class="view-more effect">Subscríbeme</p>
+                        <p (click)="PayPal()" class="view-more effect">Subscríbeme<mat-progress-spinner *ngIf="proceso" class="custom-spinner" mode="indeterminate" diameter="20" style="margin:0 auto;"></mat-progress-spinner></p>
 
                     </div>
                 </div>

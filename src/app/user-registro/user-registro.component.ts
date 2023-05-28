@@ -24,6 +24,7 @@ export class UserRegistroComponent implements OnInit {
   selectedFile: any;
   pass_valid: any;
   file: string = "";
+  confirmacion = "";
   constructor(private formBuilder: FormBuilder, private UserProfileService: UserProfileService, public router: Router, private authService: AuthService) {
     this.registroForm = this.formBuilder.group({
       username: ['' as string | null, Validators.compose([
@@ -51,21 +52,39 @@ export class UserRegistroComponent implements OnInit {
 
   }
 
-  //Comprueban que las password encajen en tiempo real. 
-  //TODO: No es una validacion ya que no es un requisito que encajen para mandar peticion
-  checkPass(pass: any, $event: any) {
+  //Comprobaciones a tiempo real de contraseña
+  checkValid(pass: any){
     if (pass.length < 8) {
       this.pass_valid = false;
     } else {
       this.pass_valid = true;
     }
-    if (pass != $event?.target?.value) {
+  }
+
+  checkPasswordConfirmacion(pass:any, $event:any){
+    this.confirmacion= $event?.target?.value;
+    if (pass != this.confirmacion) {
       console.log("No encajan")
       this.checked = false;
     } else {
       console.log("encajan")
       this.checked = true;
     }
+  }
+
+  
+  checkPassword(pass:any){
+    if (pass != this.confirmacion) {
+      console.log("No encajan")
+      this.checked = false;
+    } else {
+      console.log("encajan")
+      this.checked = true;
+    }
+  }
+
+  setConfirmacionValue($event:any){
+    this.confirmacion = $event.target.value
   }
 
 

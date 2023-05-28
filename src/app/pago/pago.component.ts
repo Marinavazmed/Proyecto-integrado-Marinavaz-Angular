@@ -11,22 +11,25 @@ import { NgToastService } from 'ng-angular-popup';
   ]
 })
 export class PagoComponent {
+  proceso = false;
   constructor(private pagoService: PagoService, private paypalservice: PaypalService, public router: Router, private toast: NgToastService) {
   }
 
   PayPal(): void {
+    this.proceso = true;
     this.paypalservice.postCreaOrder().subscribe(data=>{
       console.log(data)
       if(data.approval_url){
         window.location.href = data.approval_url;
       }else{
         if(data.error == "Error status distinto de 200")
-          this.toast.success({detail: '¡Genial!', summary: 'Parece que ya eres premium', duration: 3000})
+          this.toast.success({detail: '¡Genial!', summary: 'Parece que ya eres premium', duration: 2500})
         else if (data.error=="Debes autentificarte para poder obtener la membresia."){
-          this.toast.error({detail: 'Logeo requerido', summary: 'Autenticate para acceder', duration: 3000})
+          this.toast.error({detail: 'Logeo requerido', summary: 'Autenticate para acceder', duration: 2500})
         }else{
-          this.toast.error({detail: 'Ups', summary: 'Parece que algo ha salido mal', duration: 3000})
+          this.toast.error({detail: 'Ups', summary: 'Parece que algo ha salido mal', duration: 2500})
         }
+        this.proceso=false;
       }
     })
   }

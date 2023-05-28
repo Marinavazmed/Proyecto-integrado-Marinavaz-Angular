@@ -17,7 +17,7 @@
                         </div>
                     </div>
                 </div>
-                <a (click)="completaPago()" class="btn btn-primary btn-lg mb30 text-light">Confirmar Pago con PayPal</a>
+                    <a (click)="completaPago()" class="btn btn-primary btn-lg mb30 text-light">Confirmar Pago con PayPal <mat-progress-spinner *ngIf="proceso" class="custom-spinner" mode="indeterminate" diameter="20" style="margin:0 auto;"></mat-progress-spinner></a>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
 

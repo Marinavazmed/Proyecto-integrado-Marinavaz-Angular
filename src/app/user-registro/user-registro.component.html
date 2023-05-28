@@ -12,19 +12,21 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" formControlName="password" class="form-control" required />
+                        <input type="password" formControlName="password" class="form-control" (keyup)="checkValid(registroForm.get('password')?.value)"
+                        (keyup)="checkPassword(registroForm.get('password')?.value)"
+                        required />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Confirma tu contraseña</label>
                         <input id="confirmacion" type="password" class="form-control"
-                            (keyup)="checkPass(registroForm.get('password')?.value, $event)" required />
+                            (keyup)="checkPasswordConfirmacion(registroForm.get('password')?.value, $event)" required />
                         <div *ngIf="checked!=null">
-                            <p *ngIf="checked"><fa-icon [icon]="faCheck"></fa-icon> La contraseña coincide</p>
-                            <p *ngIf="!checked"><fa-icon [icon]="faError"></fa-icon> La contraseña no coincide</p>
+                            <p *ngIf="pass_valid && !checked"><fa-icon [icon]="faError"></fa-icon> La contraseña no coincide</p>
                         </div>
                         <div *ngIf="pass_valid!=null">
                             <p *ngIf="!pass_valid"><fa-icon [icon]="faError"></fa-icon> La contraseña debe tener más de
                                 8 caracteres</p>
+                            <p *ngIf="pass_valid && checked"><fa-icon [icon]="faCheck"></fa-icon>Contraseña correcta</p>
                         </div>
 
                     </div>

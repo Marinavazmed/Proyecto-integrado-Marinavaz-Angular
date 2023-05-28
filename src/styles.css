@@ -948,3 +948,9 @@ h3 {
 .widget { margin-bottom: 30px; background-color: #e9ebef; padding: 50px; border-radius: 6px; }
 .widget:last-child { border-bottom: 0px; }
 .widget-title { color: #094bde; font-size: 16px; font-weight: 700; text-transform: uppercase; margin-bottom: 25px; letter-spacing: 1px; display: table; line-height: 1; }
+
+/*mat spinner*/
+
+.custom-spinner circle{   
+    stroke: #fff;
+}

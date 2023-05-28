@@ -9,7 +9,7 @@ import { PaypalService } from '../paypal.service';
   ]
 })
 export class CheckoutComponent {
-
+  proceso = false;
   constructor(private route: ActivatedRoute, private paypalservice: PaypalService, private router: Router) {
 
   }
@@ -23,6 +23,7 @@ export class CheckoutComponent {
   }
 
   completaPago() {
+    this.proceso=true;
     this.route.queryParams
       .subscribe(params => {
         let payerID = params['PayerID']
@@ -30,6 +31,7 @@ export class CheckoutComponent {
         this.paypalservice.captureOrder(payerID, token).subscribe(data => {
           console.log(data)
           document.getElementById("btn_modal_confirmacion")?.click()
+          this.proceso=false;
         });
       })
 

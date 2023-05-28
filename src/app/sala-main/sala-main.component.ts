@@ -130,10 +130,6 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
       if (this.checkPO) {
         perfilCAMBIO = [];
       }
-      console.log(event.container.id)
-      /*console.log("AQUI")
-      console.log(event.currentIndex) //es 1 (el indice que toma en el contenedor recibidor)
-      console.log(event.container.data[0]) //es la tarea a traspasar*/
       if(event.container.data[event.currentIndex] == undefined){
         this.cambiaEstadoTarea(event.container.data[0], perfilCAMBIO, event.previousContainer.id, event.container.id);
       }else{
