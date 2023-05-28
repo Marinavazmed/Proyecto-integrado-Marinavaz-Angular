@@ -12,16 +12,25 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" formControlName="password" class="form-control" (keyup)="checkValid(registroForm.get('password')?.value)"
-                        (keyup)="checkPassword(registroForm.get('password')?.value)"
-                        required />
+                        <div class="input-group">
+                            <input [type]="fieldTextType ? 'text' : 'password'" formControlName="password" class="form-control"
+                                (keyup)="checkValid(registroForm.get('password')?.value)"
+                                (keyup)="checkPassword(registroForm.get('password')?.value)" required />
+                            <div class="input-group-append">
+                                <span class="input-group-text" [style]="fieldTextType ? 'color:white; background-color:black;' : 'color:black; background-color:white;' ">
+                                    <fa-icon [icon]="faEyeSlash" (click)="toggleFieldTextType($event)"></fa-icon>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Confirma tu contraseña</label>
-                        <input id="confirmacion" type="password" class="form-control"
-                            (keyup)="checkPasswordConfirmacion(registroForm.get('password')?.value, $event)" required />
+                            <input id="confirmacion" [type]="fieldTextType ? 'text' : 'password'" class="form-control"
+                                (keyup)="checkPasswordConfirmacion(registroForm.get('password')?.value, $event)"
+                                required />
                         <div *ngIf="checked!=null">
-                            <p *ngIf="pass_valid && !checked"><fa-icon [icon]="faError"></fa-icon> La contraseña no coincide</p>
+                            <p *ngIf="pass_valid && !checked"><fa-icon [icon]="faError"></fa-icon> La contraseña no
+                                coincide</p>
                         </div>
                         <div *ngIf="pass_valid!=null">
                             <p *ngIf="!pass_valid"><fa-icon [icon]="faError"></fa-icon> La contraseña debe tener más de

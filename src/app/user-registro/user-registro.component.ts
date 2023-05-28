@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { UserProfileService } from '../user-profile.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NG_VALIDATORS, AbstractControl, ValidationErrors, Validator, FormControl } from '@angular/forms';
-import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-registro',
@@ -21,10 +21,14 @@ export class UserRegistroComponent implements OnInit {
   checked: any;
   faCheck = faCheck;
   faError = faXmark;
+  faEyeSlash = faEyeSlash;
+  faEye = faEye;
   selectedFile: any;
   pass_valid: any;
   file: string = "";
   confirmacion = "";
+  fieldTextType = false;
+
   constructor(private formBuilder: FormBuilder, private UserProfileService: UserProfileService, public router: Router, private authService: AuthService) {
     this.registroForm = this.formBuilder.group({
       username: ['' as string | null, Validators.compose([
@@ -50,6 +54,10 @@ export class UserRegistroComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  toggleFieldTextType($event:any) {
+    this.fieldTextType = !this.fieldTextType;
   }
 
   //Comprobaciones a tiempo real de contraseña
