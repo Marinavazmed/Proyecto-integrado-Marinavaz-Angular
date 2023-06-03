@@ -1,40 +1,34 @@
-<div class="vw-100 vh-100 mt-5 pt-5">
-  <div class="login-form-container d-flex justify-content-center align-items-center flex-column">
-
-    <!--
-    <form [formGroup]="logInForm" (submit)="onSubmit(logInForm.value)" class="get-in-touch">
-      <h1 class="title">Inicia sesión</h1>
-      <form class="contact-form row">
-        <div class="form-field col-lg-6">
-          <input class="input-text js-input" type="text" formControlName="username" required>
-          <label class="label" for="username">Nombre de usuario</label>
-        </div>
-        <div class="form-field col-lg-6 ">
-          <input id="pass" class="input-text js-input" type="password" formControlName="password" required>
-          <label class="label" for="pass">Contraseña</label>
-        </div>
-        <div class="form-field col-lg-12">
-          <input class="submit-btn" type="submit" value="Submit">
-        </div>
-      </form>
-    </form>
-    -->
-
+<div class="mt-5 pt-5">
+  <div class="login-form-container d-flex justify-content-center align-items-center flex-column mt-5 pt-5">
     <div class="card">
       <h4 class="card-header">Inicia sesión</h4>
       <div class="card-body m-2">
 
-          <form [formGroup]="logInForm" (submit)="onSubmit(logInForm.value)">
+        <form [formGroup]="logInForm" (submit)="onSubmit(logInForm.value)">
+
+          <div class="form-floating mb-3">
+            <input type="text" formControlName="username" class="form-control" id="floatingUsername" placeholder="Nombre de usuario">
+            <label for="floatingUsername">Nombre de usuario</label>
+          </div>
+          <div class="form-floating mb-2">
+            <input type="password" formControlName="password" class="form-control" id="floatingPassword" placeholder="Contraseña">
+            <label for="floatingPassword">Contraseña</label>
+          </div>
+
+
+
+          <!--
           <div class="mb-3">
             <label class="form-label">Nombre de usuario</label>
             <input type="text" formControlName="username" class="form-control" />
           </div>
+          -->
 
 
-          <div class="mb-3">
+          <!--<div class="mb-3">
             <label class="form-label">Contraseña</label>
             <input type="password" formControlName="password" class="form-control" />
-          </div>
+          </div>-->
 
           <button id="openModalButton" type="button" [hidden]="true" data-toggle="modal"
             data-target="#exampleModalCenter">Open Modal</button>
@@ -60,7 +54,10 @@
           <div *ngIf="infoMessage.length > 0">
             <span>{{ infoMessage }}</span>
           </div>
-          <button type="submit" class="btn btn-dark btn-lg" (click)="onSubmit(logInForm.value)">Inicia sesión</button>
+          <div class="d-grid gap-1 col-8 mx-auto mb-2">
+            <button type="submit" class="btn btn-dark btn-lg" (click)="onSubmit(logInForm.value)">Inicia sesión</button>
+          </div>
+
         </form>
 
       </div>

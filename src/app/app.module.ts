@@ -42,7 +42,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import {MatIconModule} from '@angular/material/icon';
 import { NgxPaginationModule } from 'ngx-pagination';
 import {NgToastModule} from 'ng-angular-popup';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [

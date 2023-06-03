@@ -5,3 +5,5 @@ export function getURLs():string{
     return PRE;
 }
 /*Cambiar antes de subir a pro! */
+
+

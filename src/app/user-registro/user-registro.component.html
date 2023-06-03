@@ -1,5 +1,5 @@
-<div class="vw-100 vh-100 mt-5 pt-5">
-    <div class="login-form-container d-flex justify-content-center align-items-center flex-column">
+<div class="mt-5 pt-5">
+    <div class="login-form-container d-flex justify-content-center align-items-center flex-column mt-5 pt-5">
         <div class="card">
             <h4 class="card-header">¡Bienvenido, nuevo usuario!</h4>
             <div class="card-body">
@@ -13,11 +13,12 @@
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
                         <div class="input-group">
-                            <input [type]="fieldTextType ? 'text' : 'password'" formControlName="password" class="form-control"
-                                (keyup)="checkValid(registroForm.get('password')?.value)"
+                            <input [type]="fieldTextType ? 'text' : 'password'" formControlName="password"
+                                class="form-control" (keyup)="checkValid(registroForm.get('password')?.value)"
                                 (keyup)="checkPassword(registroForm.get('password')?.value)" required />
                             <div class="input-group-append">
-                                <span class="input-group-text" [style]="fieldTextType ? 'color:white; background-color:black;' : 'color:black; background-color:white;' ">
+                                <span class="input-group-text"
+                                    [style]="fieldTextType ? 'color:white; background-color:black;' : 'color:black; background-color:white;' ">
                                     <fa-icon [icon]="faEyeSlash" (click)="toggleFieldTextType($event)"></fa-icon>
                                 </span>
                             </div>
@@ -25,9 +26,8 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Confirma tu contraseña</label>
-                            <input id="confirmacion" [type]="fieldTextType ? 'text' : 'password'" class="form-control"
-                                (keyup)="checkPasswordConfirmacion(registroForm.get('password')?.value, $event)"
-                                required />
+                        <input id="confirmacion" [type]="fieldTextType ? 'text' : 'password'" class="form-control"
+                            (keyup)="checkPasswordConfirmacion(registroForm.get('password')?.value, $event)" required />
                         <div *ngIf="checked!=null">
                             <p *ngIf="pass_valid && !checked"><fa-icon [icon]="faError"></fa-icon> La contraseña no
                                 coincide</p>
@@ -63,7 +63,10 @@
                     <div *ngIf="this.infoMessage!=null">
                         <p>{{infoMessage}}</p>
                     </div>
-                    <button class="btn btn-dark btn-lg">Completar el registro</button>
+                    <div class="d-grid gap-1 col-8 mx-auto mb-2">
+                        <button class="btn btn-dark btn-lg">Completar el registro</button>
+                    </div>
+
                 </form>
                 <div class="card-footer">
                     <p>¿Tienes ya una cuenta? <u (click)="router.navigate(['/login']);">Inicia sesión aquí</u></p>

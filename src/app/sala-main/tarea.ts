@@ -9,6 +9,7 @@ export class Tarea{
         public tiempo_estimado: string,
         public puntos : number,
         public url: string,
+        public fecha_creacion?: any,
         public datos_user_dev?:any,
         public history?:any
     ){}

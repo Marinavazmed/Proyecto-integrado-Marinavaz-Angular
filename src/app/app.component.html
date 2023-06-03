@@ -1,8 +1,8 @@
-<div class="home vw-100 mt-0">
+<div class="home mt-0">
   <nav class="nav vw-90 mw-90 w-90">
     <div class="container mw-90 vw-90 w-90">
       <div class="logo">
-        <img src='assets/Logo_marina.svg' class="negro pb-3" width="60" height="55"  (click)="goToProfile()">
+        <img src='assets/Logo_marina.svg' class="negro pb-3" width="60" height="55" (click)="goToProfile()">
       </div>
       <div id="mainListDiv" class="main_list">
         <ul class="navlinks">
@@ -12,7 +12,6 @@
           <li><a class="negro" (click)="goToSalas();">Salas</a></li>
           <li><a class="negro" routerLink="/registro">Registro</a></li>
           <li><a class="negro" (click)="goToSubscripcion()">Subscripción</a></li>
-          <li><a class="negro">Otros*</a></li>
         </ul>
       </div>
       <span class="navTrigger">
@@ -23,11 +22,14 @@
     </div>
   </nav>
 
-  <div class="router d-flex mt-5 pt-5 h-100 w-100 mw-100 mh-100">
+<!--<div class="router d-flex mt-5 pt-5 h-100 w-100 mw-100 mh-100">-->
+  <div class="container-fluid pt-5 mt-5">
     <router-outlet></router-outlet>
     <lib-ng-toast></lib-ng-toast>
   </div>
 </div>
+
+
 <!-- FOOTER -->
 
 <footer class="bg-dark text-center text-white">
@@ -42,22 +44,28 @@
     </section>
     <section class="mb-4">
       <!-- Facebook -->
-      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon [icon]="faHome"></fa-icon></a>
+      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon
+          [icon]="faHome"></fa-icon></a>
 
       <!-- Twitter -->
-      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon [icon]="faGlobe"></fa-icon></a>
+      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon
+          [icon]="faGlobe"></fa-icon></a>
 
       <!-- Google -->
-      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon [icon]="faMap"></fa-icon></a>
+      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon
+          [icon]="faMap"></fa-icon></a>
 
       <!-- Instagram -->
-      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon [icon]="faEnvelope"></fa-icon></a>
+      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon
+          [icon]="faEnvelope"></fa-icon></a>
 
       <!-- Linkedin -->
-      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon [icon]="faAdressBook"></fa-icon></a>
+      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon
+          [icon]="faAdressBook"></fa-icon></a>
 
       <!-- Github -->
-      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon [icon]="faHome"></fa-icon></a>
+      <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon
+          [icon]="faHome"></fa-icon></a>
     </section>
     <!-- Section: Social media -->
   </div>

@@ -6,7 +6,7 @@ import { TareasServiceService } from '../tareas-service.service';
 import { UserProfileService } from '../user-profile.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Tarea } from './tarea';
-import { faCheck, faXmark, faBan, faPenToSquare, faPen, faLandmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faBan, faPenToSquare, faBoxArchive } from '@fortawesome/free-solid-svg-icons';
 import { Desarrollador } from './desarrollador';
 import { Observable } from 'rxjs';
 import { po } from 'src/po';
@@ -30,7 +30,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   faError = faXmark;
   faDelete = faBan;
   faEdit = faPenToSquare;
-  faNotes = faLandmark;
+  faNotes = faBoxArchive;
   editarTareaForm: any;
   crearTareaForm: any;
   tarea_history:any;
@@ -54,8 +54,8 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data => {
       this.tareas_obj=[];
       this.tareas = data;
-      this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; datos_user_dev: string, history: string, url: string; }) => {
-        this.tareas_obj.push(new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url, tarea.datos_user_dev, tarea.history))
+      this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; fecha_creacion:any, datos_user_dev: string, history: string, url: string; }) => {
+        this.tareas_obj.push(new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url, tarea.fecha_creacion, tarea.datos_user_dev, tarea.history))
         if(this.tareas_obj[this.tareas_obj.length-1].datos_user_dev){
           console.log(this.tareas_obj[this.tareas_obj.length-1].datos_user_dev.username)
         }
@@ -306,7 +306,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     })
   }
 
-  refrescarTareas() {
+  /*refrescarTareas() {
     this.tareas_obj = []
     this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data => {
       this.tareas = data;
@@ -318,7 +318,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
       this.tareas_WIP = this.tareas_obj.filter((tarea) => tarea.estado_tarea == "WIP")
       this.tareas_DONE = this.tareas_obj.filter((tarea) => tarea.estado_tarea == "DONE")
     })
-  }
+  }*/
 
   historico_tarea(id:any){
     this.tareaService.getTarea(id).subscribe({
