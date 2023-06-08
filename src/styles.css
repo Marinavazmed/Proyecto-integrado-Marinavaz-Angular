@@ -31,6 +31,7 @@ footer{
 }
 
 
+
 /*BARRA NAV*/
 .nav {
     width: 100%;
@@ -477,7 +478,11 @@ a:hover:after {
 
 .example-box {
     padding: 20px 10px;
-    border-bottom: solid 5px #F0F0F0;
+    border-radius: 25px;
+    /*border-bottom: solid 5px #F0F0F0;*/
+    border-bottom: 5px solid transparent;
+    border-image: url(src/images/Polygon_Luminary.svg) 30 round;
+    border-image-repeat: no-repeat;
     color: rgba(0, 0, 0, 0.87);
     display: flex;
     flex-direction: row;
@@ -517,7 +522,8 @@ a:hover:after {
 /*CSS GENERICOS (PLANTILLAS, FUENTES, FONDOS, IMAGENESs)*/
 .home {
     margin-top: 5%;
-    background-image: url(src/images/298130722328.jpg);
+    /*background-image: url(src/images/298130722328.jpg);*/
+    background-image: url(src/images/Polygon_Luminary.svg);
     background-position: center top;
     background-size: cover;
     border: solid white 1px;
@@ -1066,7 +1072,8 @@ textarea {
         linear-gradient(to right bottom,
             rgba(76, 216, 255, 0.8),
             rgba(30, 108, 217, 0.8)),
-        url('https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg');
+        url(src/images/lan.jpeg);
+        /*url('https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg');*/
 
     background-size: cover;
     background-position: top;
