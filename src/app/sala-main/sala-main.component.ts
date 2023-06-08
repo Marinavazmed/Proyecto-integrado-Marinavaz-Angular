@@ -357,8 +357,4 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   }
 
 
-
-
-
-
 }

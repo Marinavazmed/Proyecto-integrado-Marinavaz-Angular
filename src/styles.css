@@ -16,6 +16,15 @@ body {
     font-size: 10px;
 }
 
+body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+footer{
+    order: 999;
+}
 
 
 /*BARRA NAV*/
@@ -454,17 +463,11 @@ a:hover:after {
 */
 
 /*DRAG AND DROP*/
-.example-container {
-    width: 550px;
-    max-width: 550px;
-    margin: 0 25px 25px 0;
-}
-
 .example-list {
     min-height: 60px;
     background: white;
     border-radius: 4px;
-    overflow: hidden;
+    /*overflow: hidden;*/
     display: block;
 }
 

@@ -1,7 +1,6 @@
 
-  <div class="">
   <div class="home mt-0">
-    <nav class="nav navbar navbar-expand-lg">
+    <nav class="nav navbar navbar-expand-lg justify-content-center">
       <div class="container">
         <a class="navbar-brand logo" href="#"><img src='assets/Logo_marina.svg' class="negro pb-3" width="60" height="55" (click)="goToProfile()"></a>
         <button class="navbar-toggler navTrigger" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,6 +27,7 @@
         </div>
       </div>
     </nav>
+    
     <!--<nav class="nav vw-90 mw-90 w-90">
       <div class="container mw-90 vw-90 w-90">
         <div class="logo">
@@ -51,7 +51,7 @@
     </nav>-->
 
     <!--<div class="router d-flex mt-5 pt-5 h-100 w-100 mw-100 mh-100">-->
-    <div class="vh-100">
+    <div class="container-fluid">
       <router-outlet></router-outlet>
       <lib-ng-toast></lib-ng-toast>
     </div>
@@ -106,4 +106,3 @@
     </div>
     <!-- Copyright -->
   </footer>
-  </div>
