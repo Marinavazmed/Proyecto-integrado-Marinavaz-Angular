@@ -62,6 +62,7 @@ export class AppComponent implements OnChanges, OnInit {
   }
 
   goToSalas(): void {
+    
     this.checkUser = localStorage.getItem("userData");
     if (this.checkUser) {
       this.urlSalas = "/user-profile/" + JSON.parse(this.checkUser)?.id;
@@ -79,5 +80,14 @@ export class AppComponent implements OnChanges, OnInit {
     } else {
       this.toast.warning({ detail: 'Autenticación requerida', summary: 'Logeate para obtener tu suscripción.', duration: 3000 })
     }
+  }
+
+  goToRegistro():void{
+
+    this.router.navigate([`/registro`]);
+  }
+
+  goToLogin():void{
+    this.router.navigate([`/login`]);
   }
 }

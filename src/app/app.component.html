@@ -1,27 +1,27 @@
 
   <div class="home mt-0">
-    <nav class="nav navbar navbar-expand-lg justify-content-center">
+    <nav class="nav navbar navbar-expand-lg">
       <div class="container">
         <a class="navbar-brand logo" href="#"><img src='assets/Logo_marina.svg' class="negro pb-3" width="60" height="55" (click)="goToProfile()"></a>
-        <button class="navbar-toggler navTrigger" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler navTrigger" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="hamburguesa">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse main_list" id="mainListDiv" id="navbarSupportedContent">
           <ul class="navbar-nav nav-links me-auto mb-2 mb-lg-0">
             <li class="nav-item active">
-              <a class="negro" routerLink="/login">Inicia sesión</a>
+              <a class="negro" (click)="goToLogin()" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Inicia sesión</a>
             </li>
             <li class="nav-item">
-              <a class="negro" (click)="logOut()">Cerrar sesión</a>
+              <a class="negro" (click)="logOut()"  data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Cerrar sesión</a>
             </li>
             <li class="nav-item">
-              <a class="negro" (click)="goToSalas();">Salas</a>
+              <a class="negro" (click)="goToSalas();"  data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Salas</a>
             </li>
             <li class="nav-item">
-              <a class="negro" routerLink="/registro">Registro</a>
+              <a class="negro" (click)="goToRegistro()"  data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Registro</a>
             </li>
             <li class="nav-item">
-              <a class="negro" (click)="goToSubscripcion()">Subscripción</a>
+              <a class="negro" (click)="goToSubscripcion()"  data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Subscripción</a>
             </li>
           </ul>
         </div>
