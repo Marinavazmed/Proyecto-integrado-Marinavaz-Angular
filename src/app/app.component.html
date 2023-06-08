@@ -1,11 +1,13 @@
 
   <div class="home mt-0">
     <nav class="nav navbar navbar-expand-lg">
-      <div class="container">
+      <div class="container-fluid d-flex justify-content-center">
+        <div class="d-flex">
         <a class="navbar-brand logo" href="#"><img src='assets/Logo_marina.svg' class="negro pb-3" width="60" height="55" (click)="goToProfile()"></a>
         <button class="navbar-toggler navTrigger" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="hamburguesa">
-          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon negro"></span>
         </button>
+        </div>
         <div class="collapse navbar-collapse main_list" id="mainListDiv" id="navbarSupportedContent">
           <ul class="navbar-nav nav-links me-auto mb-2 mb-lg-0">
             <li class="nav-item active">
@@ -90,10 +92,6 @@
         <!-- Linkedin -->
         <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon
             [icon]="faAdressBook"></fa-icon></a>
-
-        <!-- Github -->
-        <a class="btn btn-outline-light btn-floating m-1" href={{this.index}} role="button"><fa-icon
-            [icon]="faHome"></fa-icon></a>
       </section>
       <!-- Section: Social media -->
     </div>

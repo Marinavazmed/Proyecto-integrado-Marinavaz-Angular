@@ -26,6 +26,10 @@ footer{
     order: 999;
 }
 
+.borde{
+    border: solid red 1px;
+}
+
 
 /*BARRA NAV*/
 .nav {
@@ -122,7 +126,7 @@ footer{
     content: '';
     display: block;
     width: 100%;
-    height: 4px;
+    height: 1rem;
 }
 
 .navTrigger i:nth-child(1) {
@@ -516,7 +520,7 @@ a:hover:after {
     background-image: url(src/images/298130722328.jpg);
     background-position: center top;
     background-size: cover;
-    border: solid white 3px;
+    border: solid white 1px;
     height: 100%;
     max-height: 100%;
 }
@@ -533,11 +537,11 @@ a:hover:after {
 }
 
 
-.background {
+/*.background {
     background-image: url(src/images/wave_azul.svg);
     background-position: center;
     background-size: cover;
-}
+}*/
 
 
 .login-form-container {
@@ -953,9 +957,6 @@ a:hover:after {
     }
 }
 
-.navbar {
-    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
-}
 
 @media (min-width: 767.98px) {
     .navbar {

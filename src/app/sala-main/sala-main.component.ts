@@ -44,10 +44,10 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   id_sala: any;
   p: number = 1;
   paginationLabels = {
-    first: 'Primera',
-    previous: 'Anterior',
-    next: 'Siguiente',
-    last: 'Última'
+    first: '',
+    previous: '',
+    next: '',
+    last: ''
   }
 
 
