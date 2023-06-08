@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ServiceSalasService } from '../service-salas.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,9 +6,9 @@ import { TareasServiceService } from '../tareas-service.service';
 import { UserProfileService } from '../user-profile.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Tarea } from './tarea';
-import { faCheck, faXmark, faBan, faPenToSquare, faBoxArchive } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faBan, faPenToSquare, faBoxArchive, faPlusCircle, faAnglesDown } from '@fortawesome/free-solid-svg-icons';
 import { Desarrollador } from './desarrollador';
-import { Observable } from 'rxjs';
+import { Observable, interval } from 'rxjs';
 import { po } from 'src/po';
 import { sala_put_service } from './sala-put-service';
 import { getURLs } from '../utils';
@@ -31,16 +31,18 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   faDelete = faBan;
   faEdit = faPenToSquare;
   faNotes = faBoxArchive;
+  faAdd = faPlusCircle;
+  faScroll = faAnglesDown;
   editarTareaForm: any;
   crearTareaForm: any;
-  tarea_history:any;
+  tarea_history: any;
   tareas_obj: Array<Tarea> = [];
   tareas_BACKLOG: Array<Tarea> = [];
   tareas_TODO: Array<Tarea> = [];
   tareas_WIP: Array<Tarea> = [];
   tareas_DONE: Array<Tarea> = [];
   id_sala: any;
-  p:number=1;
+  p: number = 1;
   paginationLabels = {
     first: 'Primera',
     previous: 'Anterior',
@@ -50,14 +52,14 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
 
 
   /*En el constructor: Llama a todas las tareas, las pasa a objeto y las organiza. Un formulario para la edicion y otro para la creacion de tareas*/
-  constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService, public userService: UserProfileService, private tareaService: TareasServiceService) {
+  constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService, public userService: UserProfileService, private tareaService: TareasServiceService, private cdr: ChangeDetectorRef) {
     this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data => {
-      this.tareas_obj=[];
+      this.tareas_obj = [];
       this.tareas = data;
-      this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; fecha_creacion:any, datos_user_dev: string, history: string, url: string; }) => {
+      this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; fecha_creacion: any, datos_user_dev: string, history: string, url: string; }) => {
         this.tareas_obj.push(new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url, tarea.fecha_creacion, tarea.datos_user_dev, tarea.history))
-        if(this.tareas_obj[this.tareas_obj.length-1].datos_user_dev){
-          console.log(this.tareas_obj[this.tareas_obj.length-1].datos_user_dev.username)
+        if (this.tareas_obj[this.tareas_obj.length - 1].datos_user_dev) {
+          console.log(this.tareas_obj[this.tareas_obj.length - 1].datos_user_dev.username)
         }
 
       });
@@ -101,58 +103,50 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
       data => {
         this.id_sala = data[0].id
       }
-    )
-}
+    );
+  }
 
   /*Util para usos posteriores y react*/
   ngAfterViewInit(): void {
   }
 
   ngOnChanges() {
-
   }
 
   /*evento de la libreria. el container contiene los datos del objeto, la posicion previa y actual en el contenedor. 
   antes de hacer el put comprueba si es PO para no adjudicarle la tareaen caso de que lo sea*/
   drop(event: CdkDragDrop<Tarea[]>) {
-    if (this.confirma(event.container)) {
-      if (event.previousContainer === event.container) {
-        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      } else {
-        transferArrayItem(
-          event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex,
-        );
-      }
-      let perfilCAMBIO = this.perfilDEV;
-      if (this.checkPO) {
-        perfilCAMBIO = [];
-      }
-      if(event.container.data[event.currentIndex] == undefined){
-        this.cambiaEstadoTarea(event.container.data[0], perfilCAMBIO, event.previousContainer.id, event.container.id);
-      }else{
-        this.cambiaEstadoTarea(event.container.data[event.currentIndex], perfilCAMBIO, event.previousContainer.id, event.container.id);
-      }
-
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+    let perfilCAMBIO = this.perfilDEV;
+    if (this.checkPO) {
+      perfilCAMBIO = [];
+    }
+    if (event.container.data[event.currentIndex] == undefined) {
+      this.cambiaEstadoTarea(event.container.data[0], perfilCAMBIO, event.previousContainer.id, event.container.id);
+    } else {
+      this.cambiaEstadoTarea(event.container.data[event.currentIndex], perfilCAMBIO, event.previousContainer.id, event.container.id);
     }
 
-  }
-
-  confirma(eventcontainer: any): boolean {
-    return confirm("¿Está seguro de que desea cambiar el estado de la tarea ?");
   }
 
   cambiaEstadoTarea(tarea: any, dev: any, id_prev_container: any, id_curr_container: any) {
     //Atribuye la tarea arrastrada al usuario logeado en caso de que sea DEV.
     //Comprueba y cambia el nuevo estado de la tarea antes de hacer el put
-    if (this.checkPO && id_curr_container=="contenedor_backlog") {
+    if (this.checkPO && id_curr_container == "contenedor_backlog") {
       tarea.dev_asignado = null;
-    }else if(this.checkPO){
+    } else if (this.checkPO) {
       tarea.dev_asignado = tarea.dev_asignado
-    }else{
-      tarea.dev_asignado=dev.url
+    } else {
+      tarea.dev_asignado = dev.url
     }
     switch (id_curr_container) {
       case "contenedor_backlog":
@@ -170,8 +164,31 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
       default:
         console.log("No se ha podido identificar el estado de la tarea")
     }
-    this.tareaService.putTarea(tarea)
+
+    this.tareaService.putTareaObservable(tarea).subscribe({
+      next: (data) => {
+      },
+      error: (error) => {
+      },
+      complete: (() => {
+        this.actualizaDevName(tarea);
+      })
+    }
+    )
+
   }
+
+  //El nombre del desarrollador se actualiza en server; debemos actualizar el objeto array de la librería con los datos autocompletados del servidor
+  actualizaDevName(tarea: any) {
+    this.tareaService.getTarea(tarea.id).subscribe(data => {
+      if (data.datos_user_dev != undefined) {
+        tarea.datos_user_dev = data.datos_user_dev;
+      } else {
+        tarea.datos_user_dev = null;
+      }
+    })
+  }
+
 
   abandonaSala(nombre_sala: any) {
     this.salaService.getSala(nombre_sala).subscribe(data => {
@@ -190,9 +207,6 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
       this.salaService.leaveSala(sala_put)
       this.router.navigate([`/user-profile/${this.userService.obtenerCredenciales().id}`]);
     })
-
-
-
   }
 
   eliminaSala(nombre_sala: any) {
@@ -239,16 +253,16 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
 
     switch (tarea_put.estado_tarea) {
       case "BACKLOG":
-        this.tareas_BACKLOG=this.actualizaCDKafterPut(this.tareas_BACKLOG, tarea_put)
+        this.tareas_BACKLOG = this.actualizaCDKafterPut(this.tareas_BACKLOG, tarea_put)
         break;
       case "SPRINT":
-        this.tareas_TODO=this.actualizaCDKafterPut(this.tareas_TODO, tarea_put)
+        this.tareas_TODO = this.actualizaCDKafterPut(this.tareas_TODO, tarea_put)
         break;
       case "WIP":
-        this.tareas_WIP=this.actualizaCDKafterPut(this.tareas_WIP, tarea_put)
+        this.tareas_WIP = this.actualizaCDKafterPut(this.tareas_WIP, tarea_put)
         break;
       case "DONE":
-        this.tareas_DONE=this.actualizaCDKafterPut(this.tareas_DONE, tarea_put)
+        this.tareas_DONE = this.actualizaCDKafterPut(this.tareas_DONE, tarea_put)
         break;
       default:
         console.log("No se ha podido identificar el estado de la tarea")
@@ -261,10 +275,10 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   }
 
   /*Pruebas para refactorizar y remodelar el array del contenedor CDK cuando se realiza un cambio en la tarea*/
-  actualizaCDKafterPut(lista:any, tarea_put:any):Array<Tarea>{
+  actualizaCDKafterPut(lista: any, tarea_put: any): Array<Tarea> {
     let objIndex = lista.findIndex(((obj: { id: any; }) => obj.id == tarea_put.id));
     lista[objIndex].nombre_tarea = tarea_put.nombre_tarea;
-    lista[objIndex].desc_tarea=tarea_put.desc_tarea
+    lista[objIndex].desc_tarea = tarea_put.desc_tarea
     lista[objIndex].tiempo_estimado = tarea_put.tiempo_estimado
     lista[objIndex].puntos = tarea_put.puntos
     return lista;
@@ -320,21 +334,31 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     })
   }*/
 
-  historico_tarea(id:any){
+  historico_tarea(id: any) {
     this.tareaService.getTarea(id).subscribe({
       next: (data) => {
-        this.tarea_history=data.history;
+        this.tarea_history = data.history;
       },
       error: (error) => {
       },
-      complete: (()=>{
+      complete: (() => {
         //abre modal
         document.getElementById("btn_historial_modal")?.click()
       })
     });
   }
 
-  
+  bounceAnimation(id:any){
+    document.getElementById("flecha_scroll" + id)?.classList.add("bounce")
+  }
+
+  bounceAnimationOff(id:any){
+    document.getElementById("flecha_scroll" + id)?.classList.remove("bounce")
+  }
+
+
+
+
 
 
 }

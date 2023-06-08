@@ -34,9 +34,9 @@
                                 <div class="d-flex justify-content-center"> Nombre de usuario: <strong> {{userProfile?.username}}</strong></div>
                                 <!--botones redireccion-->
                                 <div class="d-flex flex-column pt-1">
-                                    <button type="button" class="btn btn-outline-primary me-1 flex-grow-1 mt-3"
+                                    <button type="button" class="btn btn-outline-primary me-1 flex-grow-1 mt-3" id="size_general"
                                         (click)="joinSala()">Unirme a una sala</button>
-                                    <button type="button" class="btn btn-primary flex-grow-1 mt-3"
+                                    <button type="button" class="btn btn-primary flex-grow-1 mt-3" id="size_general"
                                         (click)="router.navigate(['/crear_sala']);">Crear nueva sala</button>
                                 </div>
                                 <!--fin botones redireccion-->
@@ -59,7 +59,7 @@
                                             <div class="card mb-5" style="border-radius: 15px;">
                                                 <div class="card-body p-4">
                                                     <div class="d-flex flex-column justify-content-center align-items-center">
-                                                    <h3 class="mb-3">Salas como Desarrollador</h3>
+                                                    <h2 class="mb-3">Salas como Desarrollador</h2>
                                                     <p class="small mb-0"><i class="far fa-star fa-lg"></i>
                                                         <span class="mx-2"></span> Total de
                                                         <strong>{{salas.length}}</strong> Salas |
@@ -69,8 +69,8 @@
                                                     <hr class="my-4">
                                                     <div class="d-flex justify-content-end align-items-center"
                                                         *ngFor="let sala of salas">
-                                                        <p class="mb-0 text-uppercase"> <span
-                                                                class="text-muted small">{{sala.nombre_sala}}</span>
+                                                        <p class="mb-0 text-uppercase"> 
+                                                            <span class="text-muted">{{sala.nombre_sala}}</span>
                                                         </p>
                                                         <button type="button"
                                                             class="ms-2 btn btn-outline-dark btn-sm btn-floating"
@@ -83,7 +83,7 @@
                                             <div class="card" style="border-radius: 15px;">
                                                 <div class="card-body p-4">
                                                     <div class="d-flex flex-column justify-content-center align-items-center">
-                                                    <h3 class="mb-3">Salas como Product Owner</h3>
+                                                    <h2 class="mb-3">Salas como Product Owner</h2>
                                                     <p class="small mb-0"><i class="far fa-star fa-lg"></i>
                                                         <span class="mx-2"></span> Total de
                                                         <strong>{{salas_PO.length}}</strong> Salas |

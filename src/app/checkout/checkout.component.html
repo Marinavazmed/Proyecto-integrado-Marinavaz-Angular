@@ -1,8 +1,6 @@
-<div class="background vw-100">
+<div class="background container-fluid">
     <div class="mt-5 pt-5 ms-3 h-50 w-100 pe-4">
         <h2 class="d-flex w-100 justify-content-center cabecera">Sólo estás a un paso. Completa tu pago y accede a los beneficios de un usuario premium.</h2>
-<!--prueba checkout-->
-<div class="content">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12">
@@ -17,10 +15,10 @@
                         </div>
                     </div>
                 </div>
-                    <a (click)="completaPago()" class="btn btn-primary btn-lg mb30 text-light">Confirmar Pago con PayPal <mat-progress-spinner *ngIf="proceso" class="custom-spinner" mode="indeterminate" diameter="20" style="margin:0 auto;"></mat-progress-spinner></a>
+                <a (click)="completaPago()" class="btn btn-primary btn-lg mb30 text-light d-none d-sm-block">Confirmar Pago con PayPal <mat-progress-spinner *ngIf="proceso" class="custom-spinner" mode="indeterminate" diameter="20" style="margin:0 auto;"></mat-progress-spinner></a>
             </div>
+            
             <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
-
                 <div class="widget">
                     <h4 class="widget-title">Resumen del pago</h4>
                     <div class="summary-block">
@@ -35,17 +33,13 @@
                         </div>
                     </div>
                 </div>
-
+                <a (click)="completaPago()" class="btn btn-primary btn-lg mb30 text-light d-block d-sm-none">Confirmar Pago con PayPal <mat-progress-spinner *ngIf="proceso" class="custom-spinner" mode="indeterminate" diameter="20" style="margin:0 auto;"></mat-progress-spinner></a>
             </div>
         </div>
     </div>
-</div>
-<!--fin prueba checkout-->
     </div>
 </div>
-<!--
-<button class="btn btn-dark btn-lg" (click)="completaPago()">Completar pago PayPal</button>
--->
+
 <!--MODAL DE CONFIRMACION-->
 <div class="col-md-6"> 
 <button type="button" class="btn btn-lg btn-warning" data-toggle="modal" id="btn_modal_confirmacion" data-target="#ModalConfirmacion" [hidden]=true></button>

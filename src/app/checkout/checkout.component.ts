@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaypalService } from '../paypal.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-checkout',
@@ -10,7 +11,7 @@ import { PaypalService } from '../paypal.service';
 })
 export class CheckoutComponent {
   proceso = false;
-  constructor(private route: ActivatedRoute, private paypalservice: PaypalService, private router: Router) {
+  constructor(private route: ActivatedRoute, private paypalservice: PaypalService, private router: Router, private toast: NgToastService) {
 
   }
 
@@ -28,11 +29,17 @@ export class CheckoutComponent {
       .subscribe(params => {
         let payerID = params['PayerID']
         let token = params['token']
-        this.paypalservice.captureOrder(payerID, token).subscribe(data => {
-          console.log(data)
-          document.getElementById("btn_modal_confirmacion")?.click()
+        if (payerID == undefined || token == undefined){
+          this.toast.error({ detail: 'Vaya', summary: 'Parece que algo ha salido mal.', duration: 3000 })
           this.proceso=false;
-        });
+        }else{
+          this.paypalservice.captureOrder(payerID, token).subscribe(data => {
+            console.log(data)
+            document.getElementById("btn_modal_confirmacion")?.click()
+            this.proceso=false;
+          });
+        }
+
       })
 
   }

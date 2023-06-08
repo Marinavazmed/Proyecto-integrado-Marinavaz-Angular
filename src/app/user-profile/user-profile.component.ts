@@ -34,7 +34,7 @@ export class UserProfileComponent implements OnInit, ControlValueAccessor {
   public salas_PO: Array<any>
   public url_user_PO: any;
   public file: string = '';
-  public form! :FormGroup;
+  public form!: FormGroup;
   currentDate = new Date();
   constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http: HttpClient, private _peticion: ServiceSalasService, public router: Router, public loginService: AuthService, private profilepicForm: FormBuilder) {
     this.salas = []
@@ -86,13 +86,14 @@ export class UserProfileComponent implements OnInit, ControlValueAccessor {
       error: (error) => {
         console.log(error);
       },
-      complete: () => this.filtraSalas()
+      complete: () => {
+        this._peticion.getSalasParticipante().subscribe(dataSalas => {
+          this.salas = dataSalas;
+          this.filtraSalas();
+        })
+      }
     }
     );
-    this._peticion.getSalasParticipante().subscribe(dataSalas => {
-      this.salas = dataSalas;
-    })
-
   }
 
   filtraSalas(): void {
@@ -107,6 +108,7 @@ export class UserProfileComponent implements OnInit, ControlValueAccessor {
       }
     })
   }
+
 
   goToPage(pageName: string) {
     this.router.navigate([`${pageName}`]);
@@ -126,16 +128,16 @@ export class UserProfileComponent implements OnInit, ControlValueAccessor {
   /*FILE IMAGEN*/
   onFileChange(event: any) {
     const files = event.target.files as FileList;
-    let uploadedImage:File;
+    let uploadedImage: File;
     uploadedImage = event.target.files[0];
     const imageFormData = new FormData()
     imageFormData.append('profile_pic', uploadedImage)
 
-    if(uploadedImage!=null){
+    if (uploadedImage != null) {
       imageFormData.append('email', this.form.get('email')?.value)
       imageFormData.append('first_name', this.form.get('first_name')?.value)
       imageFormData.append('last_name', this.form.get('last_name')?.value)
-      imageFormData.append('username',this.form.get('username')?.value)
+      imageFormData.append('username', this.form.get('username')?.value)
     }
 
     if (files.length > 0) {

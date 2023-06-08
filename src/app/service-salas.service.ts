@@ -57,7 +57,10 @@ export class ServiceSalasService {
     return this._http.get<any[]>(this.url + `api/v1/sala/?nombre_sala=&prod_owner=${id}`);
   }
 
-
+  putSala(url:any, values:any, arraydevs:any): Observable<any[]>{
+    values.devs = arraydevs;
+    return this._http.put<any>(url, values)
+  }
 
   //Incluye al usuario autenticado bajo el perfil de DEV en una sala.
   joinSala(values: any): void {
@@ -96,9 +99,6 @@ export class ServiceSalasService {
     let url = this.url + `api/v1/sala/${sala_put.id}/`
     this._http.put<any>(url, sala_put).subscribe()
   }
-
-
-
 
   deleteSala(nombre_sala: any): void {
     let url: any;

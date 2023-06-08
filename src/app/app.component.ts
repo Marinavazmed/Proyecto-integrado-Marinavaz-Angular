@@ -34,6 +34,7 @@ export class AppComponent implements OnChanges, OnInit {
     this.checkUser = localStorage.getItem("userData");
   }
 
+
   navResponsive($event: any): void {
     document.getElementById('navTrigger')?.classList.toggle('active');
   }
@@ -46,7 +47,6 @@ export class AppComponent implements OnChanges, OnInit {
   ngOnChanges(): void {
     this.checkUser = localStorage.getItem("userData");
   }
-
 
 
   logOut() {

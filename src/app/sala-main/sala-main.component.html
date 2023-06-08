@@ -1,805 +1,840 @@
-
-
-<p>{{nombre_sala}}</p>
-<div cdkDropListGroup class="d-lg-flex">
-    <div class="example-container" *ngIf="checkPO">
-        <h2>Backlog</h2>
-        <div class="custom-cdk-scrollable" cdkScrollable data-simplebar>
-            <div id="contenedor_backlog" cdkDropList #backlogList="cdkDropList" [cdkDropListData]="tareas_BACKLOG"
-                [cdkDropListConnectedTo]="[todoList, wipList, doneList]" class="example-list backlog"
-                (cdkDropListDropped)="drop($event)">
-                <div *ngIf="tareas_BACKLOG.length!=0">
-                    <div class="example-box" *ngFor="let tarea of tareas_BACKLOG" cdkDrag>
-                        <table>
-                            <tr><u>{{tarea.nombre_tarea}}</u></tr>
-                            <tr><i>{{tarea.desc_tarea}}</i></tr>
-                            <tr><b>{{tarea.puntos}}p.</b> Tiempo estimado: {{tarea.tiempo_estimado}} horas</tr>
-                            <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
-                                <!--<i>{{tarea.dev_asignado}}</i>-->
-                                <i>{{tarea.datos_user_dev?.username}}</i>
-                            </tr>
-                            <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
-                        </table>
-                        <span *ngIf="checkPO" class="d-flex flex-column">
-                            <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
-                                (click)="historico_tarea(tarea.id)"></fa-icon>
-                            <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button"
-                                [hidden]="false" data-toggle="modal" data-target="#exampleModalCenter"
-                                (click)="setValuesFormEdit(tarea)"></fa-icon>
-                            <fa-icon [icon]="faDelete" class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon>
-                        </span>
-
-                        <!--MODAL EDICION-->
-                        <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
-                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Edición de tarea</h5>
-                                        <button class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!--aqui el formulario de editar tarea-->
-                                        <form [formGroup]="editarTareaForm" (ngSubmit)="editTarea()">
-                                            <div class="mb-3">
-                                                <label class="form-label">Nombre de la tarea</label>
-                                                <input type="text" formControlName="nombre_tarea" class="form-control"
-                                                    value="{{tarea.nombre_tarea}}" maxlength="100" minlength="1" />
-                                                <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
-                                                    Campo obligatorio.
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Descripción de la tarea</label>
-                                                <input type="text" formControlName="desc_tarea" class="form-control"
-                                                    value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
-                                                <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
-                                                    Campo obligatorio.
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Tiempo estimado</label>
-                                                <input type="number" formControlName="tiempo_estimado"
-                                                    class="form-control" value="{{tarea.tiempo_estimado}}" />
-                                                <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
-                                                    Campo obligatorio.
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Puntos</label>
-                                                <input type="number" formControlName="puntos" class="form-control"
-                                                    value="{{tarea.puntos}}" />
-                                                <div *ngIf="editarTareaForm.controls['puntos'].errors">
-                                                    Campo obligatorio.
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-lg btn-dark" type="submit"
-                                                [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
-                                                tarea</button>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button id="btn_cierre" class="btn btn-secondary"
-                                            data-dismiss="modal">Cancelar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--FIN MODAL EDICION-->
-
-                        <!--MODAL HISTORIAL-->
-                        <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
-                            id="btn_historial_modal"></button>
-                        <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1"
-                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Histórico de la tarea</h5>
-                                        <button class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Estado anterior</th>
-                                                    <th scope="col">Tiempo estimado</th>
-                                                    <th scope="col">Puntuación</th>
-                                                    <th scope="col">ID Desarrollador asignado</th>
-                                                    <th scope="col">Fecha del cambio</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr
-                                                    *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
-                                                    <th scope="row">{{cambio.estado_tarea}}</th>
-                                                    <td>{{cambio.tiempo_estimado}}</td>
-                                                    <td>{{cambio.puntos}}</td>
-                                                    <td *ngIf="cambio.dev_asignado_id!=null">{{cambio.dev_asignado_id}}
-                                                    </td>
-                                                    <td *ngIf="cambio.dev_asignado_id==null">-</td>
-                                                    <td>{{cambio.history_date | date: 'dd/MM/yyyy h:mm'}}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="text-center">
-                                            <pagination-controls (pageChange)="p = $event"
-                                                previousLabel="{{ paginationLabels.previous }}"
-                                                nextLabel="{{ paginationLabels.next }}"
-                                                cssClass="pagination"></pagination-controls>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button id="btn_cierre" class="btn btn-secondary"
-                                            data-dismiss="modal">Cerrar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--FIN MODAL HISTORIAL-->
-
-
-                    </div>
-                </div>
-                <div *ngIf="tareas_BACKLOG.length==0">
-                    <div class="example-box text-dark text-opacity-50" cdkDrag><i>¡Vaya! ¡No tienes tarea pendiente!</i>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-    <div class="example-container">
-
-        <h2>To do</h2>
-
-        <div id="contenedor_todo" cdkDropList #todoList="cdkDropList" [cdkDropListData]="tareas_TODO"
-            [cdkDropListConnectedTo]="[wipList, doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
-            <div *ngIf="tareas_TODO.length!=0">
-                <div class="example-box" *ngFor="let tarea of tareas_TODO" cdkDrag>
-                    <table>
-                        <tr><u>{{tarea.nombre_tarea}}</u></tr>
-                        <tr><i>{{tarea.desc_tarea}}</i></tr>
-                        <tr><b>{{tarea.puntos}}p</b></tr>
-                        <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
-                            <!--<i>{{tarea.dev_asignado}}</i>-->
-                            <i>{{tarea.datos_user_dev?.username}}</i>
-                        </tr>
-                        <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
-                    </table>
-                    <span *ngIf="!checkPO"><fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial"
-                            type="button" (click)="historico_tarea(tarea.id)"></fa-icon></span>
-                    <span *ngIf="checkPO" class="d-flex flex-column">
-                        <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
-                            (click)="historico_tarea(tarea.id)"></fa-icon>
-                        <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button" [hidden]="false"
-                            data-toggle="modal" data-target="#exampleModalCenter"
-                            (click)="setValuesFormEdit(tarea)"></fa-icon><fa-icon [icon]="faDelete"
-                            class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
-                    <!--MODAL EDICION-->
-                    <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
-                        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Edición de tarea</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <!--aqui el formulario de editar tarea-->
-                                    <form [formGroup]="editarTareaForm" (ngSubmit)="editTarea()">
-                                        <div class="mb-3">
-                                            <label class="form-label">Nombre de la tarea</label>
-                                            <input type="text" formControlName="nombre_tarea" class="form-control"
-                                                value="{{tarea.nombre_tarea}}" maxlength="100" minlength="1" />
-                                            <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Descripción de la tarea</label>
-                                            <input type="text" formControlName="desc_tarea" class="form-control"
-                                                value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
-                                            <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Tiempo estimado</label>
-                                            <input type="number" formControlName="tiempo_estimado" class="form-control"
-                                                value="{{tarea.tiempo_estimado}}" />
-                                            <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Puntos</label>
-                                            <input type="number" formControlName="puntos" class="form-control"
-                                                value="{{tarea.puntos}}" />
-                                            <div *ngIf="editarTareaForm.controls['puntos'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-lg btn-dark" type="submit"
-                                            [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
-                                            tarea</button>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="btn_cierre" class="btn btn-secondary"
-                                        data-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--FIN MODAL EDICION-->
-                    <!--MODAL HISTORIAL-->
-                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
-                        id="btn_historial_modal"></button>
-                    <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Histórico de la tarea</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Estado anterior</th>
-                                                <th scope="col">Tiempo estimado</th>
-                                                <th scope="col">Puntuación</th>
-                                                <th scope="col">ID Desarrollador asignado</th>
-                                                <th scope="col">Fecha del cambio</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr
-                                                *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
-                                                <th scope="row">{{cambio.estado_tarea}}</th>
-                                                <td>{{cambio.tiempo_estimado}}</td>
-                                                <td>{{cambio.puntos}}</td>
-                                                <td *ngIf="cambio.dev_asignado_id!=null">{{cambio.dev_asignado_id}}</td>
-                                                <td *ngIf="cambio.dev_asignado_id==null">-</td>
-                                                <td>{{cambio.history_date | date: 'dd/MM/yyyy h:mm'}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="text-center">
-                                        <pagination-controls (pageChange)="p = $event"
-                                            previousLabel="{{ paginationLabels.previous }}"
-                                            nextLabel="{{ paginationLabels.next }}"
-                                            cssClass="pagination"></pagination-controls>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="btn_cierre" class="btn btn-secondary"
-                                        data-dismiss="modal">Cerrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--FIN MODAL HISTORIAL-->
-
-                </div>
-            </div>
-            <div *ngIf="tareas_TODO.length==0">
-                <div class="example-box text-dark text-opacity-50" cdkDrag><i>¡Vaya! ¡No tienes tarea pendiente!</i>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="example-container">
-        <h2>WIP</h2>
-
-        <div id="contenedor_wip" cdkDropList #wipList="cdkDropList" [cdkDropListData]="tareas_WIP"
-            [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
-            <div *ngIf="tareas_WIP.length!=0">
-                <div class="example-box" *ngFor="let tarea of tareas_WIP" cdkDrag>
-                    <table>
-                        <tr><u>{{tarea.nombre_tarea}}</u></tr>
-                        <tr><i>{{tarea.desc_tarea}}</i></tr>
-                        <tr><b>{{tarea.puntos}}p</b></tr>
-                        <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
-                            <!--<i>{{tarea.dev_asignado}}</i>-->
-                            <i>{{tarea.datos_user_dev?.username}}</i>
-                        </tr>
-                        <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
-                    </table>
-                    <span *ngIf="!checkPO"><fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial"
-                            type="button" (click)="historico_tarea(tarea.id)"></fa-icon></span>
-                    <span *ngIf="checkPO" class="d-flex flex-column">
-                        <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
-                            (click)="historico_tarea(tarea.id)"></fa-icon>
-                        <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button" [hidden]="false"
-                            data-toggle="modal" data-target="#exampleModalCenter"
-                            (click)="setValuesFormEdit(tarea)"></fa-icon><fa-icon [icon]="faDelete"
-                            class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
-                    <!--MODAL EDICION-->
-                    <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
-                        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Edición de tarea</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <!--aqui el formulario de editar tarea-->
-                                    <form [formGroup]="editarTareaForm" (ngSubmit)="editTarea()">
-                                        <div class="mb-3">
-                                            <label class="form-label">Nombre de la tarea</label>
-                                            <input type="text" formControlName="nombre_tarea" class="form-control"
-                                                value="{{tarea.nombre_tarea}}" maxlength="100" minlength="1" />
-                                            <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Descripción de la tarea</label>
-                                            <input type="text" formControlName="desc_tarea" class="form-control"
-                                                value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
-                                            <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Tiempo estimado</label>
-                                            <input type="number" formControlName="tiempo_estimado" class="form-control"
-                                                value="{{tarea.tiempo_estimado}}" />
-                                            <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Puntos</label>
-                                            <input type="number" formControlName="puntos" class="form-control"
-                                                value="{{tarea.puntos}}" />
-                                            <div *ngIf="editarTareaForm.controls['puntos'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-lg btn-dark" type="submit"
-                                            [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
-                                            tarea</button>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="btn_cierre" class="btn btn-secondary"
-                                        data-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--FIN MODAL EDICION-->
-                    <!--MODAL HISTORIAL-->
-                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
-                        id="btn_historial_modal"></button>
-                    <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Histórico de la tarea</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Estado anterior</th>
-                                                <th scope="col">Tiempo estimado</th>
-                                                <th scope="col">Puntuación</th>
-                                                <th scope="col">ID Desarrollador asignado</th>
-                                                <th scope="col">Fecha del cambio</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr
-                                                *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
-                                                <th scope="row">{{cambio.estado_tarea}}</th>
-                                                <td>{{cambio.tiempo_estimado}}</td>
-                                                <td>{{cambio.puntos}}</td>
-                                                <td *ngIf="cambio.dev_asignado_id!=null">{{cambio.dev_asignado_id}}</td>
-                                                <td *ngIf="cambio.dev_asignado_id==null">-</td>
-                                                <td>{{cambio.history_date | date: 'dd/MM/yyyy h:mm'}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="text-center">
-                                        <pagination-controls (pageChange)="p = $event"
-                                            previousLabel="{{ paginationLabels.previous }}"
-                                            nextLabel="{{ paginationLabels.next }}"
-                                            cssClass="pagination"></pagination-controls>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="btn_cierre" class="btn btn-secondary"
-                                        data-dismiss="modal">Cerrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--FIN MODAL HISTORIAL-->
-
-                </div>
-            </div>
-            <div *ngIf="tareas_WIP.length==0">
-                <div class="example-box text-dark text-opacity-50" cdkDrag><i>Arrastra aquí la tarea que quieras
-                        adjudicarte.</i></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="example-container">
-        <h2>Done</h2>
-        <div id="contenedor_done" cdkDropList #doneList="cdkDropList" [cdkDropListData]="tareas_DONE"
-            [cdkDropListConnectedTo]="[]" class="example-list" (cdkDropListDropped)="drop($event)">
-            <div *ngIf="tareas_DONE.length!=0">
-                <div class="example-box" *ngFor="let tarea of tareas_DONE" cdkDrag>
-                    <table>
-                        <tr><u>{{tarea.nombre_tarea}}</u></tr>
-                        <tr><i>{{tarea.desc_tarea}}</i></tr>
-                        <tr><b>{{tarea.puntos}}p</b></tr>
-                        <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
-                            <!--<i>{{tarea.dev_asignado}}</i>-->
-                            <i>{{tarea.datos_user_dev?.username}}</i>
-                        </tr>
-                        <!--<tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>-->
-                    </table>
-                    <span *ngIf="!checkPO"><fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial"
-                            type="button" (click)="historico_tarea(tarea.id)"></fa-icon>
-                    </span>
-                    <span *ngIf="checkPO" class="d-flex flex-column">
-                        <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
-                            (click)="historico_tarea(tarea.id)"></fa-icon>
-                        <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button" [hidden]="false"
-                            data-toggle="modal" data-target="#exampleModalCenter"
-                            (click)="setValuesFormEdit(tarea)"></fa-icon>
-                        <fa-icon [icon]="faDelete" class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon>
-                    </span>
-                    <!--MODAL EDICION-->
-                    <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
-                        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Edición de tarea</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <!--aqui el formulario de editar tarea-->
-                                    <form [formGroup]="editarTareaForm" (ngSubmit)="editTarea()">
-                                        <div class="mb-3">
-                                            <label class="form-label">Nombre de la tarea</label>
-                                            <input type="text" formControlName="nombre_tarea" class="form-control"
-                                                value="{{tarea.nombre_tarea}}" maxlength="100" minlength="1" />
-                                            <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Descripción de la tarea</label>
-                                            <input type="text" formControlName="desc_tarea" class="form-control"
-                                                value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
-                                            <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Tiempo estimado</label>
-                                            <input type="number" formControlName="tiempo_estimado" class="form-control"
-                                                value="{{tarea.tiempo_estimado}}" />
-                                            <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Puntos</label>
-                                            <input type="number" formControlName="puntos" class="form-control"
-                                                value="{{tarea.puntos}}" />
-                                            <div *ngIf="editarTareaForm.controls['puntos'].errors">
-                                                Campo obligatorio.
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-lg btn-dark" type="submit"
-                                            [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
-                                            tarea</button>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="btn_cierre" class="btn btn-secondary"
-                                        data-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--FIN MODAL EDICION-->
-                    <!--MODAL HISTORIAL-->
-                    <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
-                        id="btn_historial_modal"></button>
-                    <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Histórico de la tarea</h5>
-                                    <button class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Estado anterior</th>
-                                                <th scope="col">Tiempo estimado</th>
-                                                <th scope="col">Puntuación</th>
-                                                <th scope="col">ID Desarrollador asignado</th>
-                                                <th scope="col">Fecha del cambio</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr
-                                                *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
-                                                <th scope="row">{{cambio.estado_tarea}}</th>
-                                                <td>{{cambio.tiempo_estimado}}</td>
-                                                <td>{{cambio.puntos}}</td>
-                                                <td *ngIf="cambio.dev_asignado_id!=null">{{cambio.dev_asignado_id}}</td>
-                                                <td *ngIf="cambio.dev_asignado_id==null">-</td>
-                                                <td>{{cambio.history_date | date: 'dd/MM/yyyy h:mm'}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="text-center">
-                                        <pagination-controls (pageChange)="p = $event"
-                                            previousLabel="{{ paginationLabels.previous }}"
-                                            nextLabel="{{ paginationLabels.next }}"
-                                            cssClass="pagination"></pagination-controls>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="btn_cierre" class="btn btn-secondary"
-                                        data-dismiss="modal">Cerrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--FIN MODAL HISTORIAL-->
-
-                </div>
-            </div>
-            <div *ngIf="tareas_DONE.length==0">
-                <div class="example-box text-dark text-opacity-50" cdkDrag><i>¿Primera tarea finalizada? Colócala
-                        aquí</i>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<div class="three">
+    <h2>{{nombre_sala}}</h2>
 </div>
-<div>
-    <!--<button *ngIf="checkPO" (click)="router.navigate(['crear-tarea/:'+ nombre_sala]);">
+<div class="container-fluid padre_tareas">
+    <div class="d-flex flex-row-reverse">
+        <button *ngIf="checkPO" id="openModalButtonCrear" type="button" [hidden]="false" data-toggle="modal"
+            data-target="#exampleModalCenterCrear" class="btn btn-lg btn-success">Crear una nueva
+            tarea <fa-icon [icon]="faAdd"></fa-icon></button>
+    </div>
+    <div cdkDropListGroup class="d-lg-flex">
+        <div class="example-container" *ngIf="checkPO">
+            <h2>Backlog</h2>
+            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('1')" (mouseleave)="bounceAnimationOff('1')">
+                <div id="contenedor_backlog" cdkDropList #backlogList="cdkDropList" [cdkDropListData]="tareas_BACKLOG"
+                    [cdkDropListConnectedTo]="[todoList, wipList, doneList]" class="example-list backlog"
+                    (cdkDropListDropped)="drop($event)">
+                    <div *ngIf="tareas_BACKLOG.length!=0">
+                        <div class="example-box" *ngFor="let tarea of tareas_BACKLOG" cdkDrag>
+                            <table>
+                                <tr><u>{{tarea.nombre_tarea}}</u></tr>
+                                <tr><i>{{tarea.desc_tarea}}</i></tr>
+                                <tr><b>{{tarea.puntos}}p.</b> Tiempo estimado: {{tarea.tiempo_estimado}} horas</tr>
+                                <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
+                                    <i>{{tarea.datos_user_dev?.username}}</i>
+                                </tr>
+                                <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
+                            </table>
+                            <span *ngIf="checkPO" class="d-flex flex-column">
+                                <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
+                                    (click)="historico_tarea(tarea.id)"></fa-icon>
+                                <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button"
+                                    [hidden]="false" data-toggle="modal" data-target="#exampleModalCenter"
+                                    (click)="setValuesFormEdit(tarea)"></fa-icon>
+                                <fa-icon [icon]="faDelete" class="iconoPopDelete"
+                                    (click)="borrarTarea(tarea.id)"></fa-icon>
+                            </span>
+
+                            <!--MODAL EDICION-->
+                            <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Edición de tarea</h5>
+                                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!--aqui el formulario de editar tarea-->
+                                            <form [formGroup]="editarTareaForm" (ngSubmit)="editTarea()">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nombre de la tarea</label>
+                                                    <input type="text" formControlName="nombre_tarea"
+                                                        class="form-control" value="{{tarea.nombre_tarea}}"
+                                                        maxlength="100" minlength="1" />
+                                                    <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Descripción de la tarea</label>
+                                                    <input type="text" formControlName="desc_tarea" class="form-control"
+                                                        value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
+                                                    <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tiempo estimado</label>
+                                                    <input type="number" formControlName="tiempo_estimado"
+                                                        class="form-control" value="{{tarea.tiempo_estimado}}" />
+                                                    <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Puntos</label>
+                                                    <input type="number" formControlName="puntos" class="form-control"
+                                                        value="{{tarea.puntos}}" />
+                                                    <div *ngIf="editarTareaForm.controls['puntos'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-lg btn-dark" type="submit"
+                                                    [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
+                                                    tarea</button>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cierre" class="btn btn-secondary"
+                                                data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--FIN MODAL EDICION-->
+
+                            <!--MODAL HISTORIAL-->
+                            <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
+                                id="btn_historial_modal"></button>
+                            <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Histórico de la tarea
+                                            </h5>
+                                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Estado anterior</th>
+                                                        <th scope="col">Tiempo estimado</th>
+                                                        <th scope="col">Puntuación</th>
+                                                        <th scope="col">ID Desarrollador asignado</th>
+                                                        <th scope="col">Fecha del cambio</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
+                                                        <th scope="row">{{cambio.estado_tarea}}</th>
+                                                        <td>{{cambio.tiempo_estimado}}</td>
+                                                        <td>{{cambio.puntos}}</td>
+                                                        <td *ngIf="cambio.dev_asignado_id!=null">
+                                                            {{cambio.dev_asignado_id}}
+                                                        </td>
+                                                        <td *ngIf="cambio.dev_asignado_id==null">-</td>
+                                                        <td>{{cambio.history_date | date: 'dd/MM/yyyy h:mm'}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="text-center">
+                                                <pagination-controls (pageChange)="p = $event"
+                                                    previousLabel="{{ paginationLabels.previous }}"
+                                                    nextLabel="{{ paginationLabels.next }}"
+                                                    cssClass="pagination"></pagination-controls>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cierre" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--FIN MODAL HISTORIAL-->
+                        </div>
+                    </div>
+                    <div *ngIf="tareas_BACKLOG.length==0">
+                        <div class="example-box text-dark text-opacity-50" cdkDrag><i>¡Vaya! ¡No tienes tarea
+                                pendiente!</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span id="flecha_scroll1" class="d-flex justify-content-center animated_bounce_scroll" *ngIf="tareas_BACKLOG.length>4"><fa-icon [icon]="faScroll"></fa-icon></span>
+        </div>
+
+
+
+
+
+        <div class="example-container">
+
+            <h2>To do</h2>
+            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('2')" (mouseleave)="bounceAnimationOff('2')">
+                <div id="contenedor_todo" cdkDropList #todoList="cdkDropList" [cdkDropListData]="tareas_TODO"
+                    [cdkDropListConnectedTo]="[wipList, doneList]" class="example-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div *ngIf="tareas_TODO.length!=0">
+                        <div class="example-box" *ngFor="let tarea of tareas_TODO" cdkDrag>
+                            <table>
+                                <tr><u>{{tarea.nombre_tarea}}</u></tr>
+                                <tr><i>{{tarea.desc_tarea}}</i></tr>
+                                <tr><b>{{tarea.puntos}}p</b></tr>
+                                <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
+                                    <!--<i>{{tarea.dev_asignado}}</i>-->
+                                    <i>{{tarea.datos_user_dev?.username}}</i>
+                                </tr>
+                                <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
+                            </table>
+                            <span *ngIf="!checkPO"><fa-icon [icon]="faNotes" class="iconoPopHistory"
+                                    id="openModalHistorial" type="button"
+                                    (click)="historico_tarea(tarea.id)"></fa-icon></span>
+                            <span *ngIf="checkPO" class="d-flex flex-column">
+                                <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
+                                    (click)="historico_tarea(tarea.id)"></fa-icon>
+                                <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button"
+                                    [hidden]="false" data-toggle="modal" data-target="#exampleModalCenter"
+                                    (click)="setValuesFormEdit(tarea)"></fa-icon><fa-icon [icon]="faDelete"
+                                    class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
+                            <!--MODAL EDICION-->
+                            <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Edición de tarea</h5>
+                                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!--aqui el formulario de editar tarea-->
+                                            <form [formGroup]="editarTareaForm" (ngSubmit)="editTarea()">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nombre de la tarea</label>
+                                                    <input type="text" formControlName="nombre_tarea"
+                                                        class="form-control" value="{{tarea.nombre_tarea}}"
+                                                        maxlength="100" minlength="1" />
+                                                    <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Descripción de la tarea</label>
+                                                    <input type="text" formControlName="desc_tarea" class="form-control"
+                                                        value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
+                                                    <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tiempo estimado</label>
+                                                    <input type="number" formControlName="tiempo_estimado"
+                                                        class="form-control" value="{{tarea.tiempo_estimado}}" />
+                                                    <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Puntos</label>
+                                                    <input type="number" formControlName="puntos" class="form-control"
+                                                        value="{{tarea.puntos}}" />
+                                                    <div *ngIf="editarTareaForm.controls['puntos'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-lg btn-dark" type="submit"
+                                                    [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
+                                                    tarea</button>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cierre" class="btn btn-secondary"
+                                                data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--FIN MODAL EDICION-->
+                            <!--MODAL HISTORIAL-->
+                            <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
+                                id="btn_historial_modal"></button>
+                            <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Histórico de la tarea
+                                            </h5>
+                                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Estado anterior</th>
+                                                        <th scope="col">Tiempo estimado</th>
+                                                        <th scope="col">Puntuación</th>
+                                                        <th scope="col">ID Desarrollador asignado</th>
+                                                        <th scope="col">Fecha del cambio</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
+                                                        <th scope="row">{{cambio.estado_tarea}}</th>
+                                                        <td>{{cambio.tiempo_estimado}}</td>
+                                                        <td>{{cambio.puntos}}</td>
+                                                        <td *ngIf="cambio.dev_asignado_id!=null">
+                                                            {{cambio.dev_asignado_id}}
+                                                        </td>
+                                                        <td *ngIf="cambio.dev_asignado_id==null">-</td>
+                                                        <td>{{cambio.history_date | date: 'dd/MM/yyyy h:mm'}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="text-center">
+                                                <pagination-controls (pageChange)="p = $event"
+                                                    previousLabel="{{ paginationLabels.previous }}"
+                                                    nextLabel="{{ paginationLabels.next }}"
+                                                    cssClass="pagination"></pagination-controls>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cierre" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--FIN MODAL HISTORIAL-->
+
+                        </div>
+                    </div>
+                    <div *ngIf="tareas_TODO.length==0">
+                        <div class="example-box text-dark text-opacity-50" cdkDrag><i>¡Vaya! ¡No tienes tarea
+                                pendiente!</i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <span id="flecha_scroll2" class="d-flex justify-content-center animated_bounce_scroll" *ngIf="tareas_TODO.length>4"><fa-icon [icon]="faScroll"></fa-icon></span>
+        </div>
+
+        <div class="example-container">
+            <h2>WIP</h2>
+            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('3')" (mouseleave)="bounceAnimationOff('3')">
+                <div id="contenedor_wip" cdkDropList #wipList="cdkDropList" [cdkDropListData]="tareas_WIP"
+                    [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div *ngIf="tareas_WIP.length!=0">
+                        <div class="example-box" *ngFor="let tarea of tareas_WIP" cdkDrag>
+                            <table>
+                                <tr><u>{{tarea.nombre_tarea}}</u></tr>
+                                <tr><i>{{tarea.desc_tarea}}</i></tr>
+                                <tr><b>{{tarea.puntos}}p</b></tr>
+                                <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Asignado a:
+                                    <!--<i>{{tarea.dev_asignado}}</i>-->
+                                    <i>{{tarea.datos_user_dev?.username}}</i>
+                                </tr>
+                                <tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>
+                            </table>
+                            <span *ngIf="!checkPO"><fa-icon [icon]="faNotes" class="iconoPopHistory"
+                                    id="openModalHistorial" type="button"
+                                    (click)="historico_tarea(tarea.id)"></fa-icon></span>
+                            <span *ngIf="checkPO" class="d-flex flex-column">
+                                <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
+                                    (click)="historico_tarea(tarea.id)"></fa-icon>
+                                <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button"
+                                    [hidden]="false" data-toggle="modal" data-target="#exampleModalCenter"
+                                    (click)="setValuesFormEdit(tarea)"></fa-icon><fa-icon [icon]="faDelete"
+                                    class="iconoPopDelete" (click)="borrarTarea(tarea.id)"></fa-icon></span>
+                            <!--MODAL EDICION-->
+                            <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Edición de tarea</h5>
+                                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!--aqui el formulario de editar tarea-->
+                                            <form [formGroup]="editarTareaForm" (ngSubmit)="editTarea()">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nombre de la tarea</label>
+                                                    <input type="text" formControlName="nombre_tarea"
+                                                        class="form-control" value="{{tarea.nombre_tarea}}"
+                                                        maxlength="100" minlength="1" />
+                                                    <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Descripción de la tarea</label>
+                                                    <input type="text" formControlName="desc_tarea" class="form-control"
+                                                        value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
+                                                    <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tiempo estimado</label>
+                                                    <input type="number" formControlName="tiempo_estimado"
+                                                        class="form-control" value="{{tarea.tiempo_estimado}}" />
+                                                    <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Puntos</label>
+                                                    <input type="number" formControlName="puntos" class="form-control"
+                                                        value="{{tarea.puntos}}" />
+                                                    <div *ngIf="editarTareaForm.controls['puntos'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-lg btn-dark" type="submit"
+                                                    [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
+                                                    tarea</button>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cierre" class="btn btn-secondary"
+                                                data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--FIN MODAL EDICION-->
+                            <!--MODAL HISTORIAL-->
+                            <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
+                                id="btn_historial_modal"></button>
+                            <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Histórico de la tarea
+                                            </h5>
+                                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Estado anterior</th>
+                                                        <th scope="col">Tiempo estimado</th>
+                                                        <th scope="col">Puntuación</th>
+                                                        <th scope="col">ID Desarrollador asignado</th>
+                                                        <th scope="col">Fecha del cambio</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
+                                                        <th scope="row">{{cambio.estado_tarea}}</th>
+                                                        <td>{{cambio.tiempo_estimado}}</td>
+                                                        <td>{{cambio.puntos}}</td>
+                                                        <td *ngIf="cambio.dev_asignado_id!=null">
+                                                            {{cambio.dev_asignado_id}}
+                                                        </td>
+                                                        <td *ngIf="cambio.dev_asignado_id==null">-</td>
+                                                        <td>{{cambio.history_date | date: 'dd/MM/yyyy h:mm'}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="text-center">
+                                                <pagination-controls (pageChange)="p = $event"
+                                                    previousLabel="{{ paginationLabels.previous }}"
+                                                    nextLabel="{{ paginationLabels.next }}"
+                                                    cssClass="pagination"></pagination-controls>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cierre" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--FIN MODAL HISTORIAL-->
+
+                        </div>
+                    </div>
+                    <div *ngIf="tareas_WIP.length==0">
+                        <div class="example-box text-dark text-opacity-50" cdkDrag><i>Arrastra aquí la tarea que quieras
+                                adjudicarte.</i></div>
+                    </div>
+                </div>
+            </div>
+            <span id="flecha_scroll3" class="d-flex justify-content-center animated_bounce_scroll" *ngIf="tareas_WIP.length>4"><fa-icon [icon]="faScroll"></fa-icon></span>
+        </div>
+
+        <div class="example-container">
+            <h2>Done</h2>
+            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('4')" (mouseleave)="bounceAnimationOff('4')">
+                <div id="contenedor_done" cdkDropList #doneList="cdkDropList" [cdkDropListData]="tareas_DONE"
+                    [cdkDropListConnectedTo]="[]" class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div *ngIf="tareas_DONE.length!=0">
+                        <div class="example-box" *ngFor="let tarea of tareas_DONE" cdkDrag>
+                            <table>
+                                <tr><u>{{tarea.nombre_tarea}}</u></tr>
+                                <tr><i>{{tarea.desc_tarea}}</i></tr>
+                                <tr><b>{{tarea.puntos}}p</b></tr>
+                                <tr class="text-dark text-opacity-50" *ngIf="tarea.dev_asignado!=null"> Completado por:
+                                    <!--<i>{{tarea.dev_asignado}}</i>-->
+                                    <i>{{tarea.datos_user_dev?.username}}</i>
+                                </tr>
+                                <!--<tr class="text-primary text-opacity-75" *ngIf="!tarea.dev_asignado">Disponible</tr>-->
+                            </table>
+                            <span *ngIf="!checkPO"><fa-icon [icon]="faNotes" class="iconoPopHistory"
+                                    id="openModalHistorial" type="button" (click)="historico_tarea(tarea.id)"></fa-icon>
+                            </span>
+                            <span *ngIf="checkPO" class="d-flex flex-column">
+                                <fa-icon [icon]="faNotes" class="iconoPopHistory" id="openModalHistorial" type="button"
+                                    (click)="historico_tarea(tarea.id)"></fa-icon>
+                                <fa-icon [icon]="faEdit" class="iconoPop" id="openModalButton" type="button"
+                                    [hidden]="false" data-toggle="modal" data-target="#exampleModalCenter"
+                                    (click)="setValuesFormEdit(tarea)"></fa-icon>
+                                <fa-icon [icon]="faDelete" class="iconoPopDelete"
+                                    (click)="borrarTarea(tarea.id)"></fa-icon>
+                            </span>
+                            <!--MODAL EDICION-->
+                            <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Edición de tarea</h5>
+                                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!--aqui el formulario de editar tarea-->
+                                            <form [formGroup]="editarTareaForm" (ngSubmit)="editTarea()">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nombre de la tarea</label>
+                                                    <input type="text" formControlName="nombre_tarea"
+                                                        class="form-control" value="{{tarea.nombre_tarea}}"
+                                                        maxlength="100" minlength="1" />
+                                                    <div *ngIf="editarTareaForm.controls['nombre_tarea'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Descripción de la tarea</label>
+                                                    <input type="text" formControlName="desc_tarea" class="form-control"
+                                                        value="{{tarea.desc_tarea}}" maxlength="300" minlength="1" />
+                                                    <div *ngIf="editarTareaForm.controls['desc_tarea'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tiempo estimado</label>
+                                                    <input type="number" formControlName="tiempo_estimado"
+                                                        class="form-control" value="{{tarea.tiempo_estimado}}" />
+                                                    <div *ngIf="editarTareaForm.controls['tiempo_estimado'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Puntos</label>
+                                                    <input type="number" formControlName="puntos" class="form-control"
+                                                        value="{{tarea.puntos}}" />
+                                                    <div *ngIf="editarTareaForm.controls['puntos'].errors">
+                                                        Campo obligatorio.
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-lg btn-dark" type="submit"
+                                                    [disabled]="!editarTareaForm.get('nombre_tarea').valid ||!editarTareaForm.get('desc_tarea').valid || !editarTareaForm.get('tiempo_estimado').valid || !editarTareaForm.get('puntos').valid">Modificar
+                                                    tarea</button>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cierre" class="btn btn-secondary"
+                                                data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--FIN MODAL EDICION-->
+                            <!--MODAL HISTORIAL-->
+                            <button [hidden]=true data-toggle="modal" data-target="#ModalHistorial"
+                                id="btn_historial_modal"></button>
+                            <div #ModalHistorial class="modal fade text-dark" id="ModalHistorial" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Histórico de la tarea
+                                            </h5>
+                                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Estado anterior</th>
+                                                        <th scope="col">Tiempo estimado</th>
+                                                        <th scope="col">Puntuación</th>
+                                                        <th scope="col">ID Desarrollador asignado</th>
+                                                        <th scope="col">Fecha del cambio</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let cambio of tarea_history | paginate: { itemsPerPage: 4, currentPage: p}">
+                                                        <th scope="row">{{cambio.estado_tarea}}</th>
+                                                        <td>{{cambio.tiempo_estimado}}</td>
+                                                        <td>{{cambio.puntos}}</td>
+                                                        <td *ngIf="cambio.dev_asignado_id!=null">
+                                                            {{cambio.dev_asignado_id}}
+                                                        </td>
+                                                        <td *ngIf="cambio.dev_asignado_id==null">-</td>
+                                                        <td>{{cambio.history_date | date: 'dd/MM/yyyy h:mm'}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="text-center">
+                                                <pagination-controls (pageChange)="p = $event"
+                                                    previousLabel="{{ paginationLabels.previous }}"
+                                                    nextLabel="{{ paginationLabels.next }}"
+                                                    cssClass="pagination"></pagination-controls>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cierre" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--FIN MODAL HISTORIAL-->
+
+                        </div>
+                    </div>
+                    <div *ngIf="tareas_DONE.length==0">
+                        <div class="example-box text-dark text-opacity-50" cdkDrag><i>¿Primera tarea finalizada?
+                                Colócala
+                                aquí</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span id="flecha_scroll4" class="d-flex justify-content-center animated_bounce_scroll" *ngIf="tareas_DONE.length>4"><fa-icon [icon]="faScroll"></fa-icon></span>
+        </div>
+
+    </div>
+    <div>
+        <!--<button *ngIf="checkPO" (click)="router.navigate(['crear-tarea/:'+ nombre_sala]);">
         <span>Crear una nueva tarea</span>
     </button>-->
 
-    <!--<button *ngIf="checkPO" id="openModalButtonCrear" type="button" [hidden]="false" data-toggle="modal"
+        <!--<button *ngIf="checkPO" id="openModalButtonCrear" type="button" [hidden]="false" data-toggle="modal"
         data-target="#exampleModalCenterCrear">Crear una nueva tarea</button>-->
-    <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenterCrear" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Edición de tarea</h5>
-                    <button class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form [formGroup]="crearTareaForm" (submit)="creaTarea()">
-                        <div class="mb-3">
-                            <label class="form-label">Nombre de la tarea</label>
-                            <input type="text" formControlName="nombre_tarea" class="form-control" maxlength="100"
-                                minlength="1" />
-                            <div
-                                *ngIf="crearTareaForm.controls['nombre_tarea'].touched && crearTareaForm.controls['nombre_tarea'].errors">
-                                Campo obligatorio.
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Descripción de la tarea</label>
-                            <input type="text" formControlName="desc_tarea" class="form-control" maxlength="300"
-                                minlength="1" />
-                            <div
-                                *ngIf="crearTareaForm.controls['desc_tarea'].touched && crearTareaForm.controls['desc_tarea'].errors">
-                                Campo obligatorio.
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tiempo estimado</label>
-                            <input type="number" formControlName="tiempo_estimado" class="form-control" />
-                            <div
-                                *ngIf="crearTareaForm.controls['tiempo_estimado'].touched && crearTareaForm.controls['tiempo_estimado'].errors">
-                                Campo obligatorio.
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Puntos</label>
-                            <input type="number" formControlName="puntos" class="form-control" />
-                            <div
-                                *ngIf="crearTareaForm.controls['puntos'].touched && crearTareaForm.controls['puntos'].errors">
-                                Campo obligatorio.
-                            </div>
-                        </div>
-                        <button class="btn btn-lg btn-dark"
-                            [disabled]="!crearTareaForm.get('nombre_tarea').valid || !crearTareaForm.get('desc_tarea').valid || !crearTareaForm.get('tiempo_estimado').valid || !crearTareaForm.get('puntos').valid"
-                            type="submit">Crear tarea</button>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button id="btn_cierre_crear" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!--<button *ngIf="checkPO" (click)="eliminaSala(nombre_sala)">
-        <span>Eliminar esta sala</span>
-    </button>-->
-
-    <button *ngIf="!checkPO" (click)="abandonaSala(nombre_sala)">
-        <span>Abandonar esta sala</span>
-    </button>
-</div>
-<!--DASHBOARD-->
-<div *ngIf="checkPO" class="container-fluid">
-    <div class="accordion" id="accordionExample">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Dashboard
-                </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <div class="row">
-                        <main class="row">
-                            <h1 class="h2">Dashboard</h1>
-                            <div class="row my-4">
-                                <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                    <div class="card">
-                                        <h5 class="card-header">Backlog</h5>
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{tareas_BACKLOG.length}} tareas.</h5>
-                                            <p class="card-text">Feb 1 - Apr 1, United States</p>
-                                            <p class="card-text text-success">18.2% increase since last month</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
-                                    <div class="card">
-                                        <h5 class="card-header">Sprint</h5>
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{tareas_TODO.length}} tareas.</h5>
-                                            <p class="card-text">Feb 1 - Apr 1, United States</p>
-                                            <p class="card-text text-success">4.6% increase since last month</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
-                                    <div class="card">
-                                        <h5 class="card-header">WIP</h5>
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{tareas_WIP.length}} tareas.</h5>
-                                            <p class="card-text">Feb 1 - Apr 1, United States</p>
-                                            <p class="card-text text-danger">2.6% decrease since last month</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
-                                    <div class="card">
-                                        <h5 class="card-header">Realizadas</h5>
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{tareas_DONE.length}} tareas.</h5>
-                                            <p class="card-text">Feb 1 - Apr 1, United States</p>
-                                            <p class="card-text text-success">2.5% increase since last month</p>
-                                        </div>
-                                    </div>
+        <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenterCrear" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Edición de tarea</h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form [formGroup]="crearTareaForm" (submit)="creaTarea()">
+                            <div class="mb-3">
+                                <label class="form-label">Nombre de la tarea</label>
+                                <input type="text" formControlName="nombre_tarea" class="form-control" maxlength="100"
+                                    minlength="1" />
+                                <div
+                                    *ngIf="crearTareaForm.controls['nombre_tarea'].touched && crearTareaForm.controls['nombre_tarea'].errors">
+                                    Campo obligatorio.
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12 col-xl-8 mb-4 mb-lg-0">
-                                    <div class="card">
-                                        <h5 class="card-header">Registro de tareas</h5>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">ID</th>
-                                                            <th scope="col">Nombre</th>
-                                                            <th scope="col">Tiempo estimado</th>
-                                                            <th scope="col">Disponibilidad</th>
-                                                            <th scope="col">Prioridad</th>
-                                                            <th scope="col">Fecha de creación</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody
-                                                        *ngFor="let tarea of tareas_obj | paginate: { itemsPerPage: 4, currentPage: p}">
-                                                        <tr>
-                                                            <th scope="row">{{tarea.id}}</th>
-                                                            <td>{{tarea.nombre_tarea}}</td>
-                                                            <td>{{tarea.tiempo_estimado}} horas.</td>
-                                                            <td *ngIf="tarea.dev_asignado">No</td>
-                                                            <td *ngIf="!tarea.dev_asignado">Sí</td>
-                                                            <td>Prioridad</td>
-                                                            <td>{{tarea.fecha_creacion | date: 'dd/MM/yyyy h:mm'}}
-                                                            </td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <div class="text-center">
-                                                    <pagination-controls (pageChange)="p = $event"
-                                                        previousLabel="{{ paginationLabels.previous }}"
-                                                        nextLabel="{{ paginationLabels.next }}"
-                                                        cssClass="pagination"></pagination-controls>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-xl-4">
-                                    <div class="card">
-                                        <h5 class="card-header">Administración</h5>
-                                        <div class="card-body">
-                                            <div id="traffic-chart">
-                                                <div class="container-fluid d-flex flex-column">
-                                                    <button *ngIf="checkPO" id="openModalButtonCrear" type="button"
-                                                        [hidden]="false" data-toggle="modal"
-                                                        data-target="#exampleModalCenterCrear">Crear una nueva
-                                                        tarea</button>
-                                                    <button *ngIf="checkPO" (click)="eliminaSala(nombre_sala)">
-                                                        <span>Eliminar esta sala</span>
-                                                    </button>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="mb-3">
+                                <label class="form-label">Descripción de la tarea</label>
+                                <input type="text" formControlName="desc_tarea" class="form-control" maxlength="300"
+                                    minlength="1" />
+                                <div
+                                    *ngIf="crearTareaForm.controls['desc_tarea'].touched && crearTareaForm.controls['desc_tarea'].errors">
+                                    Campo obligatorio.
                                 </div>
                             </div>
-                        </main>
+                            <div class="mb-3">
+                                <label class="form-label">Tiempo estimado</label>
+                                <input type="number" formControlName="tiempo_estimado" class="form-control" />
+                                <div
+                                    *ngIf="crearTareaForm.controls['tiempo_estimado'].touched && crearTareaForm.controls['tiempo_estimado'].errors">
+                                    Campo obligatorio.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Puntos</label>
+                                <input type="number" formControlName="puntos" class="form-control" />
+                                <div
+                                    *ngIf="crearTareaForm.controls['puntos'].touched && crearTareaForm.controls['puntos'].errors">
+                                    Campo obligatorio.
+                                </div>
+                            </div>
+                            <button class="btn btn-lg btn-dark"
+                                [disabled]="!crearTareaForm.get('nombre_tarea').valid || !crearTareaForm.get('desc_tarea').valid || !crearTareaForm.get('tiempo_estimado').valid || !crearTareaForm.get('puntos').valid"
+                                type="submit">Crear tarea</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn_cierre_crear" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
+
+        <!--<button *ngIf="checkPO" (click)="eliminaSala(nombre_sala)">
+        <span>Eliminar esta sala</span>
+    </button>-->
+
+        <button *ngIf="!checkPO" (click)="abandonaSala(nombre_sala)" class="btn btn-lg btn-outline-danger">
+            <span>Abandonar esta sala</span>
+        </button>
+    </div>
+    <!--DASHBOARD-->
+    <div *ngIf="checkPO" class="container-fluid">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Dashboard
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <main class="row">
+                                <h1 class="h2">Dashboard</h1>
+                                <div class="row my-4">
+                                    <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                                        <div class="card">
+                                            <h5 class="card-header">Backlog</h5>
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{tareas_BACKLOG.length}} tareas.</h5>
+                                                <p class="card-text">Feb 1 - Apr 1, United States</p>
+                                                <p class="card-text text-success">18.2% increase since last month</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+                                        <div class="card">
+                                            <h5 class="card-header">Sprint</h5>
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{tareas_TODO.length}} tareas.</h5>
+                                                <p class="card-text">Feb 1 - Apr 1, United States</p>
+                                                <p class="card-text text-success">4.6% increase since last month</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+                                        <div class="card">
+                                            <h5 class="card-header">WIP</h5>
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{tareas_WIP.length}} tareas.</h5>
+                                                <p class="card-text">Feb 1 - Apr 1, United States</p>
+                                                <p class="card-text text-danger">2.6% decrease since last month</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+                                        <div class="card">
+                                            <h5 class="card-header">Realizadas</h5>
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{tareas_DONE.length}} tareas.</h5>
+                                                <p class="card-text">Feb 1 - Apr 1, United States</p>
+                                                <p class="card-text text-success">2.5% increase since last month</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                                        <div class="card">
+                                            <h5 class="card-header">Registro de tareas</h5>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">ID</th>
+                                                                <th scope="col">Nombre</th>
+                                                                <th scope="col">Tiempo estimado</th>
+                                                                <th scope="col">Disponibilidad</th>
+                                                                <th scope="col">Prioridad</th>
+                                                                <th scope="col">Fecha de creación</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody
+                                                            *ngFor="let tarea of tareas_obj | paginate: { itemsPerPage: 4, currentPage: p}">
+                                                            <tr>
+                                                                <th scope="row">{{tarea.id}}</th>
+                                                                <td>{{tarea.nombre_tarea}}</td>
+                                                                <td>{{tarea.tiempo_estimado}} horas.</td>
+                                                                <td *ngIf="tarea.dev_asignado">No</td>
+                                                                <td *ngIf="!tarea.dev_asignado">Sí</td>
+                                                                <td>Prioridad</td>
+                                                                <td>{{tarea.fecha_creacion | date: 'dd/MM/yyyy h:mm'}}
+                                                                </td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="text-center">
+                                                        <pagination-controls (pageChange)="p = $event"
+                                                            previousLabel="{{ paginationLabels.previous }}"
+                                                            nextLabel="{{ paginationLabels.next }}"
+                                                            cssClass="pagination"></pagination-controls>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-xl-4">
+                                        <div class="card">
+                                            <h5 class="card-header">Administración</h5>
+                                            <div class="card-body">
+                                                <div id="traffic-chart">
+                                                    <div class="container-fluid d-flex flex-column">
+                                                        <!--<button *ngIf="checkPO" id="openModalButtonCrear" type="button"
+                                                            [hidden]="false" data-toggle="modal"
+                                                            data-target="#exampleModalCenterCrear" class="btn btn-lg btn-outline-success">Crear una nueva
+                                                            tarea</button>-->
+                                                        <button *ngIf="checkPO" (click)="eliminaSala(nombre_sala)"
+                                                            class="btn btn-lg btn-outline-danger">
+                                                            <span>Eliminar esta sala</span>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </main>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>

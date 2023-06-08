@@ -96,17 +96,18 @@ export class UserRegistroComponent implements OnInit {
   }
 
 
-  //Manda peticion post + Recoge errores de validacion de servidor si los hay.
+  //Manda peticion post si el formulario está correcto + Recoge errores de validacion de servidor si los hay.
   onSubmit() {
-    if (this.registroForm.invalid) {
+    if (this.checked && this.pass_valid && this.registroForm.invalid) {
       console.log(this.registroForm.errors);
       this.infoMessage = "Formulario no válido"
-    } else {
+    }else if (!this.checked || !this.pass_valid){
+      this.infoMessage = "Las contraseña debe tener más de 8 caracteres y coincidir en ambos campos."
+    }else {
       this.UserProfileService.postUser(this.registroForm.value).subscribe(x => {
         console.log('Persona registrada', x)
         this.authService.logInUser(this.registroForm.value)
       },
-
         err => {
           if (err instanceof HttpErrorResponse) {
             const ValidationErrors = err.error;
