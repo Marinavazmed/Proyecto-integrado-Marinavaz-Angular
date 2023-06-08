@@ -6,7 +6,7 @@ import { TareasServiceService } from '../tareas-service.service';
 import { UserProfileService } from '../user-profile.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Tarea } from './tarea';
-import { faCheck, faXmark, faBan, faPenToSquare, faBoxArchive, faPlusCircle, faAnglesDown } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faBan, faPenToSquare, faBoxArchive, faPlusCircle, faAnglesDown, faDisplay } from '@fortawesome/free-solid-svg-icons';
 import { Desarrollador } from './desarrollador';
 import { Observable, interval } from 'rxjs';
 import { po } from 'src/po';
@@ -191,22 +191,25 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
 
 
   abandonaSala(nombre_sala: any) {
-    this.salaService.getSala(nombre_sala).subscribe(data => {
-      //Crea obj perfil con credenciales de logeo
-      let perfilDEV = JSON.parse(sessionStorage.getItem("perfilDEV")!);
-      let perfil = new po(perfilDEV.id, perfilDEV.usuario, perfilDEV.url, perfilDEV.puntuacion)
-      let arraydevs = [];
-      for (let i = 0; i < data[0].devs.length; i++) {
-        let dev = new po(data[0].devs[i].id, data[0].devs[i].usuario, data[0].devs[i].url, data[0].devs[i].puntuacion)
-        if (dev.id != perfil.id) {
-          arraydevs.push(dev)
+    if(confirm("¿Estás seguro de que deseas abandonar esta sala?")){
+      this.salaService.getSala(nombre_sala).subscribe(data => {
+        //Crea obj perfil con credenciales de logeo
+        let perfilDEV = JSON.parse(sessionStorage.getItem("perfilDEV")!);
+        let perfil = new po(perfilDEV.id, perfilDEV.usuario, perfilDEV.url, perfilDEV.puntuacion)
+        let arraydevs = [];
+        for (let i = 0; i < data[0].devs.length; i++) {
+          let dev = new po(data[0].devs[i].id, data[0].devs[i].usuario, data[0].devs[i].url, data[0].devs[i].puntuacion)
+          if (dev.id != perfil.id) {
+            arraydevs.push(dev)
+          }
         }
-      }
-      //Crea un objeto sala con todos los desarrolladores menos el dev logeado:
-      let sala_put = new sala_put_service(data[0].id, data[0].prod_owner, arraydevs, data[0].nombre_sala, data[0].pass_sala, data[0].url)
-      this.salaService.leaveSala(sala_put)
-      this.router.navigate([`/user-profile/${this.userService.obtenerCredenciales().id}`]);
-    })
+        //Crea un objeto sala con todos los desarrolladores menos el dev logeado:
+        let sala_put = new sala_put_service(data[0].id, data[0].prod_owner, arraydevs, data[0].nombre_sala, data[0].pass_sala, data[0].url)
+        this.salaService.leaveSala(sala_put)
+        this.router.navigate([`/user-profile/${this.userService.obtenerCredenciales().id}`]);
+      })
+    }
+
   }
 
   eliminaSala(nombre_sala: any) {
@@ -354,6 +357,18 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
 
   bounceAnimationOff(id:any){
     document.getElementById("flecha_scroll" + id)?.classList.remove("bounce")
+  }
+
+  get_overflow(id:any){
+    let element = document.getElementById("container_"+id);
+    let flecha = document.getElementById("flecha_scroll"+id);
+    if(element!.offsetHeight! < element!.scrollHeight!){
+      flecha?.setAttribute("display", "block")
+      flecha?.classList.add("bounce")
+    }else{
+      flecha?.setAttribute("display", "none")
+      flecha?.classList.remove("bounce")
+    }
   }
 
 

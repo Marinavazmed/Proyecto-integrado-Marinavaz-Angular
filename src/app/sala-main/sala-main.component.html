@@ -11,7 +11,7 @@
     <div cdkDropListGroup class="d-lg-flex">
         <div class="container-fluid" *ngIf="checkPO">
             <h2>Backlog</h2>
-            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('1')" (mouseleave)="bounceAnimationOff('1')">
+            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('1')" (mouseleave)="bounceAnimationOff('1')" id="container_1">
                 <div id="contenedor_backlog" cdkDropList #backlogList="cdkDropList" [cdkDropListData]="tareas_BACKLOG"
                     [cdkDropListConnectedTo]="[todoList, wipList, doneList]" class="example-list backlog"
                     (cdkDropListDropped)="drop($event)">
@@ -170,7 +170,7 @@
         <div class="container-fluid">
 
             <h2>To do</h2>
-            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('2')" (mouseleave)="bounceAnimationOff('2')">
+            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('2')" (mouseleave)="bounceAnimationOff('2')" id="container_2">
                 <div id="contenedor_todo" cdkDropList #todoList="cdkDropList" [cdkDropListData]="tareas_TODO"
                     [cdkDropListConnectedTo]="[wipList, doneList]" class="example-list"
                     (cdkDropListDropped)="drop($event)">
@@ -326,7 +326,7 @@
 
         <div class="container-fluid">
             <h2>WIP</h2>
-            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('3')" (mouseleave)="bounceAnimationOff('3')">
+            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('3')" (mouseleave)="bounceAnimationOff('3')" id="container_3">
                 <div id="contenedor_wip" cdkDropList #wipList="cdkDropList" [cdkDropListData]="tareas_WIP"
                     [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
                     <div *ngIf="tareas_WIP.length!=0">
@@ -479,7 +479,7 @@
 
         <div class="container-fluid">
             <h2>Done</h2>
-            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('4')" (mouseleave)="bounceAnimationOff('4')">
+            <div class="custom-cdk-scrollable" cdkScrollable data-simplebar (mouseenter)="bounceAnimation('4')" (mouseleave)="bounceAnimationOff('4')" id="container_4">
                 <div id="contenedor_done" cdkDropList #doneList="cdkDropList" [cdkDropListData]="tareas_DONE"
                     [cdkDropListConnectedTo]="[]" class="example-list" (cdkDropListDropped)="drop($event)">
                     <div *ngIf="tareas_DONE.length!=0">
@@ -705,7 +705,7 @@
         <span>Eliminar esta sala</span>
     </button>-->
 
-        <button *ngIf="!checkPO" (click)="abandonaSala(nombre_sala)" class="btn btn-lg btn-outline-danger">
+        <button *ngIf="!checkPO" (click)="abandonaSala(nombre_sala)" class="btn btn-lg btn-outline-danger mt-5">
             <span>Abandonar esta sala</span>
         </button>
     </div>

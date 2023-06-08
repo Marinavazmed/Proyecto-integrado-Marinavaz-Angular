@@ -985,15 +985,18 @@ a:hover:after {
 }
 
 /*SCROLL DE TAREAS*/
-.custom-cdk-scrollable {
-    overflow: auto;
+/*.custom-cdk-scrollable {
+
     max-height: 500px;
-}
+    max-width: 100%;
+}*/
 
 .custom-cdk-scrollable {
+    overflow: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
     overflow-y: scroll;
+    max-height: 500px;
 }
 
 .custom-cdk-scrollable::-webkit-scrollbar {
@@ -1067,18 +1070,21 @@ textarea {
 
 /*HEADER LANDING*/
 .header {
-    height: 85vh;
+    height: 95vh;
     background-image:
-        linear-gradient(to right bottom,
+        /*linear-gradient(to right bottom,
             rgba(76, 216, 255, 0.8),
-            rgba(30, 108, 217, 0.8)),
-        url(src/images/lan.jpeg);
+            rgba(30, 108, 217, 0.8)),*/
+        linear-gradient(to right bottom,
+        rgba(112, 66, 20, 0.4),
+        rgba(212, 156, 72, 0.4)),
+        url(src/images/landing_bronce.jpg);
+        /*url(src/images/lan.jpeg);*/
         /*url('https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg');*/
 
     background-size: cover;
-    background-position: top;
+    background-position: center;
     position: relative;
-
     clip-path: polygon(0 0, 100% 0, 100% 55vh, 0 100%);
 }
 
@@ -1145,8 +1151,15 @@ textarea {
 .btn-white {
     background-color: #fff;
     color: #777;
-    font-size: 14px;
+    font-size: 1.5rem;
 }
+
+.btn-white:hover{
+    background-color: white;
+    font-size: 1.8rem;
+}
+
+
 
 /*HEADER SALAS*/
 .three h2 {
