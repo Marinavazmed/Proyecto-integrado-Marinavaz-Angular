@@ -1244,3 +1244,15 @@ textarea {
 .animated_bounce_scroll fa-icon{
     font-size: 2rem;
 }
+.skills {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: white;
+    background-color: grey;
+}
+
+.container_bar {
+    width: 100%;
+    background-color: white;
+}

@@ -43,12 +43,39 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   tareas_DONE: Array<Tarea> = [];
   id_sala: any;
   p: number = 1;
+  dashboard = 'dashboard';
+  devs_participantes_list:any;
+  p_dashboard: { [id: string]: number } = {};
+  porcentaje_backlog: any;
+  porcentaje_todo: any;
+  porcentaje_wip: any;
+  porcentaje_done: any;
+  porcentaje_data_mayor: any;
+  porcentaje_data_menor: any;
+  all_prioridades: any;
+  filteredItems:any;
   paginationLabels = {
-    first: '',
-    previous: '',
-    next: '',
-    last: ''
+    first: 'Primero',
+    previous: 'Anterior',
+    next: 'Siguiente',
+    last: 'Último'
   }
+  items = [{
+    name: 'Item 0',
+    category: 'TODOS'
+  }, {
+    name: 'Item 1',
+    category: 'URGENTE'
+  }, {
+    name: 'Item 2',
+    category: 'ALTA'
+  }, {
+    name: 'Item 3',
+    category: 'MEDIA'
+  }, {
+    name: 'Item 4',
+    category: 'BAJA'
+  }];
 
 
   /*En el constructor: Llama a todas las tareas, las pasa a objeto y las organiza. Un formulario para la edicion y otro para la creacion de tareas*/
@@ -56,17 +83,18 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data => {
       this.tareas_obj = [];
       this.tareas = data;
-      this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; puntos: number; fecha_creacion: any, datos_user_dev: string, history: string, url: string; }) => {
-        this.tareas_obj.push(new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.puntos, tarea.url, tarea.fecha_creacion, tarea.datos_user_dev, tarea.history))
+      this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; prioridad: string, fecha_creacion: any, datos_user_dev: string, history: string, url: string; }) => {
+        this.tareas_obj.push(new Tarea(tarea.id, tarea.id_sala, tarea.dev_asignado, tarea.nombre_tarea, tarea.desc_tarea, tarea.estado_tarea, tarea.tiempo_estimado, tarea.prioridad, tarea.url, tarea.fecha_creacion, tarea.datos_user_dev, tarea.history))
         if (this.tareas_obj[this.tareas_obj.length - 1].datos_user_dev) {
           console.log(this.tareas_obj[this.tareas_obj.length - 1].datos_user_dev.username)
         }
-
       });
       this.tareas_BACKLOG = this.tareas_obj.filter((tarea) => tarea.estado_tarea == "BACKLOG")
       this.tareas_TODO = this.tareas_obj.filter((tarea) => tarea.estado_tarea == "SPRINT")
       this.tareas_WIP = this.tareas_obj.filter((tarea) => tarea.estado_tarea == "WIP")
       this.tareas_DONE = this.tareas_obj.filter((tarea) => tarea.estado_tarea == "DONE")
+      this.filteredItems = this.tareas_obj;
+      this.actualizaPorcentajes()
     }),
       this.editarTareaForm = this.formBuilder.group({
         id: ['', Validators.required],
@@ -76,7 +104,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
         desc_tarea: [null, Validators.required],
         estado_tarea: [formBuilder.array, Validators.required],
         tiempo_estimado: [null, Validators.required],
-        puntos: [null, Validators.required],
+        prioridad: [null, Validators.required],
         url: ['', Validators.required]
       }),
 
@@ -88,9 +116,14 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
         desc_tarea: [null, Validators.required],
         estado_tarea: [formBuilder.array, Validators.required],
         tiempo_estimado: [null, Validators.required],
-        puntos: [null, Validators.required],
+        prioridad: [null, Validators.required],
         url: ['', Validators.required]
       });
+
+    this.all_prioridades = ['URGENTE', 'ALTA', 'MEDIA', 'BAJA']
+    this.dashboard = 'dashboard';
+    this.p_dashboard = {};
+    this.devs_participantes_list = [];
 
   }
 
@@ -111,6 +144,9 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   }
 
   ngOnChanges() {
+  }
+  handlePageChange($event: any) {
+    this.p = $event;
   }
 
   /*evento de la libreria. el container contiene los datos del objeto, la posicion previa y actual en el contenedor. 
@@ -135,7 +171,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     } else {
       this.cambiaEstadoTarea(event.container.data[event.currentIndex], perfilCAMBIO, event.previousContainer.id, event.container.id);
     }
-
+    this.actualizaPorcentajes()
   }
 
   cambiaEstadoTarea(tarea: any, dev: any, id_prev_container: any, id_curr_container: any) {
@@ -189,9 +225,23 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     })
   }
 
+  devsParticipantes(tarea: any) {
+
+  }
+
+
+  actualizaPorcentajes() {
+    this.porcentaje_backlog = (this.tareas_BACKLOG.length / this.tareas_obj.length) * 100
+    this.porcentaje_todo = (this.tareas_TODO.length / this.tareas_obj.length) * 100
+    this.porcentaje_wip = (this.tareas_WIP.length / this.tareas_obj.length) * 100
+    this.porcentaje_done = (this.tareas_DONE.length / this.tareas_obj.length) * 100
+    this.porcentaje_data_mayor = Math.max(this.porcentaje_backlog, this.porcentaje_todo, this.porcentaje_wip, this.porcentaje_done)
+    this.porcentaje_data_menor = Math.min(this.porcentaje_backlog, this.porcentaje_todo, this.porcentaje_wip, this.porcentaje_done)
+
+  }
 
   abandonaSala(nombre_sala: any) {
-    if(confirm("¿Estás seguro de que deseas abandonar esta sala?")){
+    if (confirm("¿Estás seguro de que deseas abandonar esta sala?")) {
       this.salaService.getSala(nombre_sala).subscribe(data => {
         //Crea obj perfil con credenciales de logeo
         let perfilDEV = JSON.parse(sessionStorage.getItem("perfilDEV")!);
@@ -241,8 +291,9 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     this.crearTareaForm.controls['id_sala'].setValue(`${root}api/v1/sala/${this.id_sala}/`);
     this.crearTareaForm.controls['estado_tarea'].setValue('BACKLOG');
     this.tareasService.postTarea(this.crearTareaForm.value).subscribe(data => {
+      console.log(data.prioridad)
       this.tareas_BACKLOG.push(new Tarea(data.id, data.id_sala, data.dev_asignado, data.nombre_tarea, data.desc_tarea, data.estado_tarea,
-        data.tiempo_estimado, data.puntos, data.url))
+        data.tiempo_estimado, data.prioridad, data.url))
     })
     this.crearTareaForm.reset()
     document.getElementById("btn_cierre_crear")?.click()
@@ -252,7 +303,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     /*TODO: Editar método update en serializador en BACKEND para hacer de sólo lectura los campos id, id_sala, y url. Esto esta hardcodeado y esta to feo*/
     let tarea_put = new Tarea(this.editarTareaForm.get('id').value, this.editarTareaForm.get('id_sala').value, this.editarTareaForm.get('dev_asignado').value,
       this.editarTareaForm.get('nombre_tarea').value, this.editarTareaForm.get('desc_tarea').value, this.editarTareaForm.get('estado_tarea').value,
-      this.editarTareaForm.get('tiempo_estimado').value, this.editarTareaForm.get('puntos').value, this.editarTareaForm.get('url').value)
+      this.editarTareaForm.get('tiempo_estimado').value, this.editarTareaForm.get('prioridad').value, this.editarTareaForm.get('url').value)
 
     switch (tarea_put.estado_tarea) {
       case "BACKLOG":
@@ -270,7 +321,6 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
       default:
         console.log("No se ha podido identificar el estado de la tarea")
     }
-
     this.tareaService.putTareaObservable(tarea_put).subscribe(data => {
       console.log(data)
     })
@@ -283,7 +333,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     lista[objIndex].nombre_tarea = tarea_put.nombre_tarea;
     lista[objIndex].desc_tarea = tarea_put.desc_tarea
     lista[objIndex].tiempo_estimado = tarea_put.tiempo_estimado
-    lista[objIndex].puntos = tarea_put.puntos
+    lista[objIndex].prioridad = tarea_put.prioridad
     return lista;
   }
 
@@ -297,7 +347,7 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     this.editarTareaForm.controls['desc_tarea'].setValue(tarea.desc_tarea)
     this.editarTareaForm.controls['estado_tarea'].setValue(tarea.estado_tarea)
     this.editarTareaForm.controls['tiempo_estimado'].setValue(tarea.tiempo_estimado)
-    this.editarTareaForm.controls['puntos'].setValue(tarea.puntos)
+    this.editarTareaForm.controls['prioridad'].setValue(tarea.prioridad)
     this.editarTareaForm.controls['url'].setValue(tarea.url)
   }
 
@@ -351,25 +401,52 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
     });
   }
 
-  bounceAnimation(id:any){
+  bounceAnimation(id: any) {
     document.getElementById("flecha_scroll" + id)?.classList.add("bounce")
   }
 
-  bounceAnimationOff(id:any){
+  bounceAnimationOff(id: any) {
     document.getElementById("flecha_scroll" + id)?.classList.remove("bounce")
   }
 
-  get_overflow(id:any){
-    let element = document.getElementById("container_"+id);
-    let flecha = document.getElementById("flecha_scroll"+id);
-    if(element!.offsetHeight! < element!.scrollHeight!){
+  get_overflow(id: any) {
+    let element = document.getElementById("container_" + id);
+    let flecha = document.getElementById("flecha_scroll" + id);
+    if (element!.offsetHeight! < element!.scrollHeight!) {
       flecha?.setAttribute("display", "block")
       flecha?.classList.add("bounce")
-    }else{
+    } else {
       flecha?.setAttribute("display", "none")
       flecha?.classList.remove("bounce")
     }
   }
+  /*Filtro anidado, vinculado a un evento que se aplica a ambos input*/
+  filterItems($event:any) {
+    const disp = (<HTMLInputElement>document.getElementById('dispFilter')).value;
+    const category = (<HTMLInputElement>document.getElementById('categoryFilter')).value;
+    if (disp == "TODOS") {
+      if (category == "TODOS") {
+        this.filteredItems = this.tareas_obj;
+      } else {
+        this.filteredItems = this.tareas_obj.filter(item => item.prioridad === category);
+      }
+    } else if (disp == "DISPONIBLE") {
+      if (category == "TODOS") {
+        this.filteredItems = this.tareas_obj.filter(item => item.dev_asignado == null);
+      } else {
+        this.filteredItems = this.tareas_obj.filter(item => item.prioridad === category && item.dev_asignado == null);
+      }
+    } else {
+      if (category == "TODOS") {
+        this.filteredItems = this.tareas_obj.filter(item => item.dev_asignado != null);
+      } else {
+        this.filteredItems = this.tareas_obj.filter(item => item.prioridad === category && item.dev_asignado != null);
+      }
+    }
+
+  }
+
+
 
 
 }

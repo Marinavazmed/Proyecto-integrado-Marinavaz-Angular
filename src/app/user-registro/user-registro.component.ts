@@ -5,7 +5,8 @@ import { Router } from "@angular/router";
 import { UserProfileService } from '../user-profile.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NG_VALIDATORS, AbstractControl, ValidationErrors, Validator, FormControl } from '@angular/forms';
-import { faCheck, faXmark, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faEyeSlash, faEye, faRefresh } from '@fortawesome/free-solid-svg-icons';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
   selector: 'app-user-registro',
@@ -22,13 +23,13 @@ export class UserRegistroComponent implements OnInit {
   faCheck = faCheck;
   faError = faXmark;
   faEyeSlash = faEyeSlash;
+  faRefresh = faRefresh;
   faEye = faEye;
   selectedFile: any;
   pass_valid: any;
   file: string = "";
   confirmacion = "";
   fieldTextType = false;
-
   constructor(private formBuilder: FormBuilder, private UserProfileService: UserProfileService, public router: Router, private authService: AuthService) {
     this.registroForm = this.formBuilder.group({
       username: ['' as string | null, Validators.compose([
@@ -94,7 +95,12 @@ export class UserRegistroComponent implements OnInit {
   setConfirmacionValue($event:any){
     this.confirmacion = $event.target.value
   }
-
+  resetear() {
+    (<HTMLInputElement>document.getElementById('confirmacion')).value = "";
+    this.pass_valid = null;
+    this.infoMessage="";
+    this.registroForm.reset();
+  }
 
   //Manda peticion post si el formulario está correcto + Recoge errores de validacion de servidor si los hay.
   onSubmit() {

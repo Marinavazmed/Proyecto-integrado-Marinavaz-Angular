@@ -1,56 +1,79 @@
-<div class="mt-5 pt-5 vh-100">
-  <div class="login-form-container d-flex justify-content-center align-items-center flex-column mt-5 pt-5">
-    <div class="card">
-      <h4 class="card-header">Inicia sesión</h4>
-      <div class="card-body m-2">
+<section class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-10">
+        <div class="card" style="border-radius: 1rem;">
+          <div class="row g-0">
+            <div class="col-md-6 col-lg-5 d-none d-md-block">
+              <img src="assets/loginFormPic.jpg"
+                alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+            </div>
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
 
-        <form [formGroup]="logInForm" (submit)="onSubmit(logInForm.value)">
+                <form [formGroup]="logInForm" (submit)="onSubmit(logInForm.value)">
 
-          <div class="form-floating mb-3">
-            <input type="text" formControlName="username" class="form-control" id="floatingUsername" placeholder="Nombre de usuario">
-            <label for="floatingUsername">Nombre de usuario</label>
-          </div>
-          <div class="form-floating mb-2">
-            <input type="password" formControlName="password" class="form-control" id="floatingPassword" placeholder="Contraseña">
-            <label for="floatingPassword">Contraseña</label>
-          </div>
+                  <div class="d-flex align-items-center mb-3 pb-1">
+                    <span class="h1 fw-bold mb-0">Inicia sesión</span>
+                  </div>
 
-          <button id="openModalButton" type="button" [hidden]="true" data-toggle="modal"
-            data-target="#exampleModalCenter">Open Modal</button>
-          <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">¡Ups!</h5>
-                  <button class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  {{infoMessage}}
-                </div>
-                <div class="modal-footer">
-                  <button id="btn_cierre" class="btn btn-secondary" data-dismiss="modal">OK</button>
-                </div>
+                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Y accede a nuestro servicio</h5>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="floatingUsername" class="form-control form-control-lg" formControlName="username" placeholder="Nombre de usuario" required />
+                    <mat-error *ngIf="logInForm.get('username')?.touched && logInForm.get('username')?.hasError('required')">
+                      Campo obligatorio.
+                    </mat-error>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <input type="password" id="floatingPassword" class="form-control form-control-lg" formControlName="password" placeholder="Contraseña" required/>
+                      <mat-error *ngIf="logInForm.get('password')?.touched && logInForm.get('password')?.hasError('required')">
+                      Campo obligatorio.
+                    </mat-error>
+                  </div>
+                  <!--MODAL CREDENCIALES-->
+                  <button id="openModalButton" type="button" [hidden]="true" data-toggle="modal"
+                  data-target="#exampleModalCenter">Open Modal</button>
+                  <div #exampleModalCenter class="modal fade text-dark" id="exampleModalCenter" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">¡Ups!</h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div>Credenciales no válidas.</div>
+                        <p>¡Recuerda que este formulario distingue mayúsculas y minúsculas!</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button id="btn_cierre" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  <!--FIN MODAL CREDENCIALES-->
+                  <!--MENSAJE VALIDACION-->
+                  <div *ngIf="infoMessage.length > 0">
+                    <span>{{ infoMessage }}</span>
+                  </div>
+                  <!--FIN MENSAJE VALIDACION-->
+                  <div class="pt-1 mb-4">
+                    <button class="btn btn-dark btn-lg btn-block" type="submit" (click)="onSubmit(logInForm.value)">Inicia sesión</button>
+                  </div>
+
+                  <p class="mb-5 pb-lg-2" style="color: #393f81;">¿No tienes ya una cuenta? <a
+                      style="color: #393f81;" (click)="router.navigate(['/registro'])"><strong>Regístrate aquí</strong></a></p> 
+
+                </form>
+
               </div>
             </div>
           </div>
-          <div *ngIf="infoMessage.length > 0">
-            <span>{{ infoMessage }}</span>
-          </div>
-          <div class="d-grid gap-1 col-8 mx-auto mb-2">
-            <button type="submit" class="btn btn-dark btn-lg" (click)="onSubmit(logInForm.value)">Inicia sesión</button>
-          </div>
-
-        </form>
-
-      </div>
-      <div class="card-footer">
-        <p>
-          <span>¿No tienes una cuenta? <u (click)="router.navigate(['/registro'])">Regístrate aquí</u></span>
-        </p>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</section>

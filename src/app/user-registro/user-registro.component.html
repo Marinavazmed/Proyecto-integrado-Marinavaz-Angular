@@ -1,79 +1,137 @@
-<div class="mt-5 pt-5 vh-100">
-    <div class="login-form-container d-flex justify-content-center align-items-center flex-column mt-5 pt-5">
-        <div class="card">
-            <h4 class="card-header">¡Bienvenido, nuevo usuario!</h4>
-            <div class="card-body">
-                <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
-                    <div class="mb-3">
-                        <label class="form-label">Nombre de usuario</label>
-                        <input type="text" formControlName="username" class="form-control" required />
-                        <mat-error *ngIf="registroForm.get('username')?.errors?.['serverError']">
-                            {{registroForm.get('username')?.errors?.['serverError']}}</mat-error>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Contraseña</label>
-                        <div class="input-group">
-                            <input [type]="fieldTextType ? 'text' : 'password'" formControlName="password"
-                                class="form-control" (keyup)="checkValid(registroForm.get('password')?.value)"
-                                (keyup)="checkPassword(registroForm.get('password')?.value)" required />
-                            <div class="input-group-append">
-                                <span class="input-group-text"
-                                    [style]="fieldTextType ? 'color:white; background-color:black;' : 'color:black; background-color:white;' ">
-                                    <fa-icon [icon]="faEyeSlash" (click)="toggleFieldTextType($event)"></fa-icon>
-                                </span>
+<section class="vh-100">
+    <div class="container h-100 py-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card card-registration my-4">
+                    <div class="row g-0">
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
+                                <form class="" [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+                                    <div class="d-flex align-items-center justify-content-between mb-3 pb-1">
+                                        <span class="h1 fw-bold mb-0">Formulario de Registro</span>
+                                        <button type="button" class="btn btn-light btn-lg" (click)="resetear()">
+                                            <fa-icon [icon]="faRefresh"></fa-icon>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+                                            <input type="text" formControlName="first_name" class="form-control"
+                                                placeholder="Nombre" required />
+                                            <mat-error *ngIf="registroForm.get('first_name')?.errors?.['serverError']">
+                                                {{registroForm.get('first_name')?.errors?.['serverError']}}</mat-error>
+                                            <mat-error
+                                                *ngIf="registroForm.get('first_name')?.touched && registroForm.get('first_name')?.hasError('required')">
+                                                Campo obligatorio.
+                                            </mat-error>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <input type="text" formControlName="last_name" class="form-control"
+                                                placeholder="Apellidos" required />
+                                            <mat-error *ngIf="registroForm.get('last_name')?.errors?.['serverError']">
+                                                {{registroForm.get('last_name')?.errors?.['serverError']}}</mat-error>
+                                            <mat-error
+                                                *ngIf="registroForm.get('last_name')?.touched && registroForm.get('last_name')?.hasError('required')">
+                                                Campo obligatorio.
+                                            </mat-error>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="text" formControlName="username" class="form-control"
+                                            placeholder="Nombre de usuario" required />
+                                        <mat-error *ngIf="registroForm.get('username')?.errors?.['serverError']">
+                                            {{registroForm.get('username')?.errors?.['serverError']}}</mat-error>
+                                        <mat-error
+                                            *ngIf="registroForm.get('username')?.touched && registroForm.get('username')?.hasError('required')">
+                                            Campo obligatorio.
+                                        </mat-error>
+                                    </div>
+
+
+                                    <div class="row">
+
+                                        <div class="col-md-6 mb-4">
+                                            <div class="input-group">
+                                                <input [type]="fieldTextType ? 'text' : 'password'"
+                                                    formControlName="password" class="form-control"
+                                                    (keyup)="checkValid(registroForm.get('password')?.value)"
+                                                    (keyup)="checkPassword(registroForm.get('password')?.value)"
+                                                    required placeholder="Contraseña" />
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <div class="input-group">
+                                                <input id="confirmacion" [type]="fieldTextType ? 'text' : 'password'"
+                                                    class="form-control"
+                                                    (keyup)="checkPasswordConfirmacion(registroForm.get('password')?.value, $event)"
+                                                    placeholder="Confirma tu contraseña" required />
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"
+                                                        [style]="fieldTextType ? 'color:white; background-color:black;' : 'color:black; background-color:white;' ">
+                                                        <fa-icon [icon]="faEyeSlash"
+                                                            (click)="toggleFieldTextType($event)"></fa-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="checked!=null">
+                                            <p *ngIf="pass_valid && !checked"><fa-icon [icon]="faError"></fa-icon>
+                                                La
+                                                contraseña no
+                                                coincide</p>
+                                        </div>
+                                        <div *ngIf="pass_valid!=null">
+                                            <p *ngIf="!pass_valid"><fa-icon [icon]="faError"></fa-icon> La
+                                                contraseña
+                                                debe tener más de
+                                                8 caracteres</p>
+                                            <p *ngIf="pass_valid && checked"><fa-icon
+                                                    [icon]="faCheck"></fa-icon>Contraseña
+                                                correcta</p>
+                                        </div>
+                                        <mat-error
+                                            *ngIf="registroForm.get('password')?.touched && registroForm.get('password')?.hasError('required')">
+                                            Campo obligatorio.
+                                        </mat-error>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="text" formControlName="email" name="email" class="form-control"
+                                            placeholder="Email" required />
+                                        <mat-error
+                                            *ngIf="registroForm.get('email')?.touched && registroForm.get('email')?.hasError('required')">
+                                            Campo obligatorio.
+                                        </mat-error>
+                                        <mat-error *ngIf="registroForm.get('email')?.errors?.['serverError']">
+                                            {{registroForm.get('email')?.errors?.['serverError']}}</mat-error>
+                                        <div
+                                            *ngIf="registroForm.get('email')?.touched && registroForm.get('email')?.invalid">
+                                            <p><fa-icon [icon]="faError"></fa-icon> Formato no válido</p>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="this.infoMessage!=null">
+                                        <p>{{infoMessage}}</p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center pt-3">
+
+                                        <button type="submit" class="btn btn-dark btn-lg btn-block">Completar
+                                            formulario</button>
+                                    </div>
+                                </form>
+                                <p class="mb-5 pb-lg-2 mt-4" style="color: #393f81;">¿Tienes ya una cuenta? <a
+                                        style="color: #393f81;" (click)="router.navigate(['/login'])"><strong>Inicia
+                                            sesión aquí</strong></a></p>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Confirma tu contraseña</label>
-                        <input id="confirmacion" [type]="fieldTextType ? 'text' : 'password'" class="form-control"
-                            (keyup)="checkPasswordConfirmacion(registroForm.get('password')?.value, $event)" required />
-                        <div *ngIf="checked!=null">
-                            <p *ngIf="pass_valid && !checked"><fa-icon [icon]="faError"></fa-icon> La contraseña no
-                                coincide</p>
-                        </div>
-                        <div *ngIf="pass_valid!=null">
-                            <p *ngIf="!pass_valid"><fa-icon [icon]="faError"></fa-icon> La contraseña debe tener más de
-                                8 caracteres</p>
-                            <p *ngIf="pass_valid && checked"><fa-icon [icon]="faCheck"></fa-icon>Contraseña correcta</p>
-                        </div>
-
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Nombre</label>
-                        <input type="text" formControlName="first_name" class="form-control" required />
-                        <mat-error *ngIf="registroForm.get('first_name')?.errors?.['serverError']">
-                            {{registroForm.get('first_name')?.errors?.['serverError']}}</mat-error>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Apellidos</label>
-                        <input type="text" formControlName="last_name" class="form-control" required />
-                        <mat-error *ngIf="registroForm.get('last_name')?.errors?.['serverError']">
-                            {{registroForm.get('last_name')?.errors?.['serverError']}}</mat-error>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="text" formControlName="email" name="email" class="form-control" />
-                        <mat-error *ngIf="registroForm.get('email')?.errors?.['serverError']">
-                            {{registroForm.get('email')?.errors?.['serverError']}}</mat-error>
-                        <div *ngIf="registroForm.get('email')?.touched && registroForm.get('email')?.invalid">
-                            <p><fa-icon [icon]="faError"></fa-icon> Formato no válido</p>
+                        <div class="col-md-6 col-lg-5 d-none d-md-block">
+                            <img src="assets/formRegistroPic1.jpg" alt="registro form" class="img-fluid"
+                                style="border-radius: 1rem 0 0 1rem;" />
                         </div>
                     </div>
-                    <div *ngIf="this.infoMessage!=null">
-                        <p>{{infoMessage}}</p>
-                    </div>
-                    <div class="d-grid gap-1 col-8 mx-auto mb-2">
-                        <button class="btn btn-dark btn-lg">Completar el registro</button>
-                    </div>
-
-                </form>
-                <div class="card-footer">
-                    <p>¿Tienes ya una cuenta? <u (click)="router.navigate(['/login']);">Inicia sesión aquí</u></p>
                 </div>
-
             </div>
         </div>
-
     </div>
-</div>
+</section>

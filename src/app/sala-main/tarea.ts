@@ -7,7 +7,7 @@ export class Tarea{
         public desc_tarea:string,
         public estado_tarea:string,
         public tiempo_estimado: string,
-        public puntos : number,
+        public prioridad : string,
         public url: string,
         public fecha_creacion?: any,
         public datos_user_dev?:any,
