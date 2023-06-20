@@ -37,7 +37,7 @@ export class UserProfileComponent implements OnInit, ControlValueAccessor {
   public file: string = '';
   public form!: any;
   currentDate = new Date();
-  constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http: HttpClient, private _peticion: ServiceSalasService, public router: Router, public loginService: AuthService, private profilepicForm: FormBuilder) {
+  constructor(public userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http: HttpClient, private _peticion: ServiceSalasService, public router: Router, public loginService: AuthService, private profilepicForm: FormBuilder) {
     this.salas = []
     this.salas_PO = []
     if(this.userProfileService.obtenerCredenciales()){

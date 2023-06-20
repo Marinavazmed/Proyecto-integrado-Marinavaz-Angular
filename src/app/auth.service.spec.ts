@@ -1,80 +1,62 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
 import { AuthService } from './auth.service';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MdbAccordionModule } from 'mdb-angular-ui-kit/accordion';
-import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
-import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
-import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
-import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
-import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
-import { MdbPopoverModule } from 'mdb-angular-ui-kit/popover';
-import { MdbRadioModule } from 'mdb-angular-ui-kit/radio';
-import { MdbRangeModule } from 'mdb-angular-ui-kit/range';
-import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
-import { MdbScrollspyModule } from 'mdb-angular-ui-kit/scrollspy';
-import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
-import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
-import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
-import { NgToastModule } from 'ng-angular-popup';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { AppRoutingModule } from './app-routing.module';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let httpMock: HttpTestingController;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BrowserModule,
-        FormsModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        MatToolbarModule,
-        MatInputModule,
-        MatSlideToggleModule,
-        MatButtonModule,
-        MdbAccordionModule,
-        MdbCarouselModule,
-        MdbCheckboxModule,
-        MdbCollapseModule,
-        MdbDropdownModule,
-        MdbFormsModule,
-        MdbModalModule,
-        MdbPopoverModule,
-        MdbRadioModule,
-        MdbRangeModule,
-        MdbRippleModule,
-        MdbScrollspyModule,
-        MdbTabsModule,
-        MdbTooltipModule,
-        MdbValidationModule,
-        NgbModule,
-        FontAwesomeModule,
-        DragDropModule,
-        MatIconModule,
-        NgxPaginationModule,
-        NgToastModule,
-      ],
+      imports: [HttpClientTestingModule, RouterTestingModule],
+      providers: [AuthService]
     });
     service = TestBed.inject(AuthService);
+    httpMock = TestBed.inject(HttpTestingController);
+    router = TestBed.inject(Router);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
+    localStorage.clear();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+
+  it('should not set logged in user if already logged in', () => {
+    const username = 'testuser';
+    const password = 'testpassword';
+
+    service.isLoggedIn = true;
+
+    spyOn(localStorage, 'setItem');
+    spyOn(router, 'navigateByUrl');
+
+    service.logIn(username, password).subscribe((response) => {
+      expect(response).toBeUndefined();
+      expect(localStorage.setItem).not.toHaveBeenCalled();
+      expect(service.isLoggedIn).toBe(true);
+      expect(router.navigateByUrl).not.toHaveBeenCalled();
+    });
+
+    httpMock.expectOne(service.url + 'api-user-login/');
+  });
+
+  it('should log out and clear local storage', () => {
+    spyOn(localStorage, 'removeItem');
+
+    service.logOut();
+
+    expect(localStorage.removeItem).toHaveBeenCalledWith('profile');
+    expect(localStorage.removeItem).toHaveBeenCalledWith('userData');
+    expect(service.isLoggedIn).toBe(false);
   });
 });

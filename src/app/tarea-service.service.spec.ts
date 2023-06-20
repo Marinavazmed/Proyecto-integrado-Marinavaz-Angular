@@ -31,9 +31,11 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { NgToastModule } from 'ng-angular-popup';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('TareaServiceService', () => {
   let service: TareaServiceService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -69,12 +71,57 @@ describe('TareaServiceService', () => {
         MatIconModule,
         NgxPaginationModule,
         NgToastModule,
+        HttpClientTestingModule,
       ],
+      providers: [TareaServiceService]
     });
     service = TestBed.inject(TareaServiceService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+  it('should retrieve user profile by ID', () => {
+    const userId = '123';
+    const mockResponse = { id: userId, name: 'John Doe' };
+
+    service.getUserProfile(userId).subscribe((response) => {
+      expect(response).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(service.url + `api/v1/user/${userId}/`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse);
+  });
+
+  it('should retrieve user profile by name', () => {
+    const username = 'johndoe';
+    const mockResponse = { id: '123', name: 'John Doe' };
+
+    service.getUserProfileByName(username).subscribe((response) => {
+      expect(response).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(service.url + `api/v1/user/?username=${username}/`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse);
+  });
+
+  it('should post user', () => {
+    const usuario = { name: 'John Doe' };
+    const mockResponse = { id: '123', name: 'John Doe' };
+
+    service.postUser(usuario).subscribe((response) => {
+      expect(response).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(service.url + 'registro/');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(usuario);
+    req.flush(mockResponse);
   });
 });

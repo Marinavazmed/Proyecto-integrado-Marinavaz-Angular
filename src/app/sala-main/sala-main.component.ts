@@ -79,8 +79,8 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
 
 
   /*En el constructor: Llama a todas las tareas, las pasa a objeto y las organiza. Un formulario para la edicion y otro para la creacion de tareas*/
-  constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private tareasService: TareasServiceService, public userService: UserProfileService, private tareaService: TareasServiceService, private cdr: ChangeDetectorRef) {
-    this.tareasService.getTareasPorNombreSala(this.nombre_sala).subscribe(data => {
+  constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, public tareasService: TareasServiceService, public userService: UserProfileService, private tareaService: TareasServiceService, private cdr: ChangeDetectorRef) {
+    this.tareasService.getTareasPorNombreSala(this.nombre_sala)?.subscribe(data => {
       this.tareas_obj = [];
       this.tareas = data;
       this.tareas.forEach((tarea: { id: string; id_sala: string; dev_asignado: any; nombre_tarea: string; desc_tarea: string; estado_tarea: string; tiempo_estimado: string; prioridad: string, fecha_creacion: any, datos_user_dev: string, history: string, url: string; }) => {
@@ -422,8 +422,8 @@ export class SalaMainComponent implements OnInit, AfterViewInit {
   }
   /*Filtro anidado, vinculado a un evento que se aplica a ambos input*/
   filterItems($event:any) {
-    const disp = (<HTMLInputElement>document.getElementById('dispFilter')).value;
-    const category = (<HTMLInputElement>document.getElementById('categoryFilter')).value;
+    const disp = (<HTMLInputElement>document.getElementById('dispFilter'))?.value;
+    const category = (<HTMLInputElement>document.getElementById('categoryFilter'))?.value;
     if (disp == "TODOS") {
       if (category == "TODOS") {
         this.filteredItems = this.tareas_obj;

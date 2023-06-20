@@ -35,6 +35,8 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { NgToastModule } from 'ng-angular-popup';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppRoutingModule } from '../app-routing.module';
+import { ServiceSalasService } from '../service-salas.service';
+import { ControlValueAccessor } from '@angular/forms';
 
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
@@ -44,7 +46,7 @@ describe('UserProfileComponent', () => {
   let router: Router;
   let http: HttpClient;
   let formBuilder: FormBuilder;
-  let authService: AuthService;
+  let authService: jasmine.SpyObj<AuthService>;
   const userProfile = {
     id: '1',
     username: 'john.doe',
@@ -55,9 +57,10 @@ describe('UserProfileComponent', () => {
   };
 
   beforeEach(async () => {
-    const userProfileServiceSpy = jasmine.createSpyObj('UserProfileService', ['getUserProfile']); // Creamos el objeto espía del servicio con los métodos necesarios
-    userProfileServiceSpy.getUserProfile.and.returnValue(of(userProfile)); // Configuramos el comportamiento del método getUserProfile
 
+    const authServiceSpy = jasmine.createSpyObj('AuthService', ['logOut']);
+    const userProfileServiceSpy = jasmine.createSpyObj('UserProfileService', ['getPOPorUserAuth', 'getUserProfile']);
+    userProfileServiceSpy.getUserProfile.and.returnValue(of(userProfile)); // Configuramos el comportamiento del método getUserProfile
     TestBed.configureTestingModule({
       declarations: [UserProfileComponent],
       imports: [
@@ -94,14 +97,81 @@ describe('UserProfileComponent', () => {
         NgToastModule,
         ReactiveFormsModule,
       ],
+      providers: [Router, { provide: AuthService, useValue: authServiceSpy }, { provide: UserProfileService, useValue: userProfileServiceSpy }]
     }).compileComponents();
     fixture = TestBed.createComponent(UserProfileComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+    authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+    userProfileService = TestBed.inject(UserProfileService) as jasmine.SpyObj<UserProfileService>;
     fixture.detectChanges();
   });
 
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should navigate to "join-sala" when joinSala is called', () => {
+    const navigateSpy = spyOn(router, 'navigate');
+
+    component.joinSala();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['join-sala']);
+  });
+  it('should navigate to the specified page when goToPage is called', () => {
+    const pageName = 'example-page';
+    const navigateSpy = spyOn(router, 'navigate');
+
+    component.goToPage(pageName);
+
+    expect(navigateSpy).toHaveBeenCalledWith([pageName]);
+  });
+  it('should log out and navigate to "index" page when logOut is called', () => {
+    const navigateSpy = spyOn(router, 'navigate');
+    authService.logOut.and.stub();
+
+    component.logOut();
+
+    expect(authService.logOut).toHaveBeenCalled();
+    expect(navigateSpy).toHaveBeenCalledWith(['index']);
+  });
+
+  it('should set file value', () => {
+    const file = 'test.jpg';
+    component.writeValue(file);
+    expect(component.file).toEqual(file);
+  });
+
+  it('should set the file value when calling writeValue', () => {
+    const file = 'test-file.jpg';
+    component.writeValue(file);
+    expect(component.file).toEqual(file);
+  });
+
+
+  it('should update the disabled property when calling setDisabledState', () => {
+    component.setDisabledState && component.setDisabledState(true);
+    expect(component.disabled).toEqual(true);
+    component.setDisabledState && component.setDisabledState(false);
+    expect(component.disabled).toEqual(false);
+  });
+
+
+  it('should not update file or call userProfileService.uploadFileForm when no files are selected', () => {
+    const files: FileList = {
+      length: 0,
+      item: (index: number) => {
+        return null;
+      }
+    } as any;
+    const event = { target: { files } };
+
+    const uploadSpy = spyOn(component.userProfileService, 'uploadFileForm').and.callThrough();
+
+    component.onFileChange(event);
+
+    expect(component.file).toEqual('');
+    expect(uploadSpy).not.toHaveBeenCalled();
   });
 });

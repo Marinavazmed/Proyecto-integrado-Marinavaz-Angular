@@ -31,9 +31,12 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { NgToastModule } from 'ng-angular-popup';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppRoutingModule } from './app-routing.module';
+import { inject } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('ServiceSalasService', () => {
   let service: ServiceSalasService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -69,12 +72,58 @@ describe('ServiceSalasService', () => {
         MatIconModule,
         NgxPaginationModule,
         NgToastModule,
+        HttpClientTestingModule,
       ],
+      providers: [ServiceSalasService]
     });
     service = TestBed.inject(ServiceSalasService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
+
+  afterEach(() => {
+    httpMock.verify();
+  });
+
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+  it('should retrieve salas', () => {
+    const mockSalas = [{ id: 1, nombre: 'Sala 1' }, { id: 2, nombre: 'Sala 2' }];
+
+    service.getSalas().subscribe((salas: any[]) => {
+      expect(salas.length).toBe(2);
+      expect(salas).toEqual(mockSalas);
+    });
+
+    const req = httpMock.expectOne(service.url);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockSalas);
+  });
+
+  it('should post sala', () => {
+    const mockSala = { id: 1, nombre: 'Sala 1' };
+
+    service.postSala(mockSala).subscribe((response: any) => {
+      expect(response).toEqual(mockSala);
+    });
+
+    const req = httpMock.expectOne(service.url + 'api/v1/sala/');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(mockSala);
+    req.flush(mockSala);
+  });
+
+  it('should retrieve sala by nombre_sala', () => {
+    const nombreSala = 'Sala 1';
+    const mockSala = { id: 1, nombre: nombreSala };
+
+    service.getSala(nombreSala).subscribe((sala: any) => {
+      expect(sala).toEqual(mockSala);
+    });
+
+    const req = httpMock.expectOne(service.url + `api/v1/sala/?nombre_sala=${nombreSala}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockSala);
   });
 });

@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -32,8 +32,16 @@ import { NgToastModule } from 'ng-angular-popup';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppRoutingModule } from './app-routing.module';
 import { po } from '../po';
+import { Router } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
+import { AuthService } from './auth.service';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let authService: AuthService;
+  let router: Router;
+  let toastService: NgToastService;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -68,11 +76,21 @@ describe('AppComponent', () => {
         MatIconModule,
         NgxPaginationModule,
         NgToastModule,
+        RouterTestingModule, 
+        FontAwesomeModule,
       ],
       declarations: [
         AppComponent
       ],
+      providers: [AuthService, NgToastService]
     }).compileComponents();
+  });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    authService = TestBed.inject(AuthService);
+    router = TestBed.inject(Router);
+    toastService = TestBed.inject(NgToastService);
   });
 
   it('should create the app', () => {
@@ -86,7 +104,74 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
     expect(app.title).toEqual('PI');
   });
-  
+  it('should initialize the component', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('{"id": 123}');
+    spyOn(router, 'navigate');
+    component.ngOnInit();
+    expect(localStorage.getItem).toHaveBeenCalledWith('userData');
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should toggle navbar collapsing', () => {
+    component.toggleNavbarCollapsing();
+    expect(component.navbarCollapsed).toBe(false);
+    component.toggleNavbarCollapsing();
+    expect(component.navbarCollapsed).toBe(true);
+  });
+
+  it('should log out and navigate to index', () => {
+    spyOn(authService, 'logOut');
+    spyOn(sessionStorage, 'removeItem');
+    spyOn(router, 'navigate');
+    component.logOut();
+    expect(authService.logOut).toHaveBeenCalled();
+    expect(sessionStorage.removeItem).toHaveBeenCalledWith('perfilDEV');
+    expect(router.navigate).toHaveBeenCalledWith(['/index']);
+  });
+
+  it('should navigate to profile', () => {
+    spyOn(router, 'navigate');
+    component.goToProfile();
+    expect(router.navigate).toHaveBeenCalledWith(['/index']);
+  });
+
+  it('should navigate to salas', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('{"id": 123}');
+    spyOn(router, 'navigate');
+    component.goToSalas();
+    expect(localStorage.getItem).toHaveBeenCalledWith('userData');
+    expect(router.navigate).toHaveBeenCalledWith(['/user-profile/123']);
+  });
+
+  it('should navigate to subscripcion', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('{"id": 123}');
+    spyOn(router, 'navigate');
+    spyOn(toastService, 'warning');
+    component.goToSubscripcion();
+    expect(localStorage.getItem).toHaveBeenCalledWith('userData');
+    expect(router.navigate).toHaveBeenCalledWith(['/pago']);
+    expect(toastService.warning).not.toHaveBeenCalled();
+  });
+
+  it('should show warning toast when not logged in', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(null);
+    spyOn(toastService, 'warning');
+    component.goToSubscripcion();
+    expect(localStorage.getItem).toHaveBeenCalledWith('userData');
+    expect(toastService.warning).toHaveBeenCalled();
+  });
+
+  it('should navigate to registro', () => {
+    spyOn(router, 'navigate');
+    component.goToRegistro();
+    expect(router.navigate).toHaveBeenCalledWith(['/registro']);
+  });
+
+  it('should navigate to login', () => {
+    spyOn(router, 'navigate');
+    component.goToLogin();
+    expect(router.navigate).toHaveBeenCalledWith(['/login']);
+  });
 
 });
 describe('po', () => {
@@ -118,4 +203,5 @@ describe('po', () => {
 
     expect(result).toEqual(expectedString);
   });
+  
 });

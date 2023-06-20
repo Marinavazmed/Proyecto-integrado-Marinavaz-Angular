@@ -31,9 +31,12 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { NgToastModule } from 'ng-angular-popup';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { Tarea } from './sala-main/tarea';
 
 describe('TareasServiceService', () => {
   let service: TareasServiceService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -69,12 +72,91 @@ describe('TareasServiceService', () => {
         MatIconModule,
         NgxPaginationModule,
         NgToastModule,
+        HttpClientTestingModule,
       ],
+      providers:[TareasServiceService]
     });
     service = TestBed.inject(TareasServiceService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+  it('should retrieve tasks', () => {
+    const mockResponse: any[] = [
+      { id: 1, name: 'Task 1' },
+      { id: 2, name: 'Task 2' }
+    ];
+
+    service.getTareas().subscribe((response) => {
+      expect(response).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(service.url);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse);
+  });
+
+  it('should post a task', () => {
+    const tarea = { name: 'Task 1' };
+    const mockResponse = { id: 1, name: 'Task 1' };
+
+    service.postTarea(tarea).subscribe((response) => {
+      expect(response).toEqual(mockResponse);
+    });
+
+    const url = service.url + 'api/v1/tarea/';
+    const req = httpMock.expectOne(url);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(tarea);
+    req.flush(mockResponse);
+  });
+
+  it('should retrieve tasks by room name', () => {
+    const nombreSala = 'Room 1';
+    const mockResponse: any[] = [
+      { id: 1, name: 'Task 1' },
+      { id: 2, name: 'Task 2' }
+    ];
+
+    service.getTareasPorNombreSala(nombreSala).subscribe((response) => {
+      expect(response).toEqual(mockResponse);
+    });
+
+    const url = service.url + `api/v1/tarea/?id_sala__nombre_sala=${nombreSala}`;
+    const req = httpMock.expectOne(url);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse);
+  });
+
+  it('should delete a task', () => {
+    const taskId = 1;
+
+    service.deleteTarea(taskId).subscribe();
+
+    const url = service.url + `api/v1/tarea/${taskId}/`;
+    const req = httpMock.expectOne(url);
+    expect(req.request.method).toBe('DELETE');
+    req.flush({});
+  });
+
+
+
+  it('should retrieve a task by ID', () => {
+    const taskId = 1;
+    const mockResponse = { id: 1, name: 'Task 1' };
+
+    service.getTarea(taskId).subscribe((response) => {
+      expect(response).toEqual(mockResponse);
+    });
+
+    const url = service.url + `api/v1/tarea/${taskId}/`;
+    const req = httpMock.expectOne(url);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse);
   });
 });

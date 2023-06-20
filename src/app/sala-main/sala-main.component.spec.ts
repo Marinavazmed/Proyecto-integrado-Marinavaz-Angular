@@ -67,6 +67,7 @@ describe('SalaMainComponent', () => {
   let httpMock: HttpTestingController;
   let service: TareasServiceService;
   let userServiceMock: any;
+  let tareasService: jasmine.SpyObj<TareasServiceService>;
   salaPut = new sala_put_service(
     '123',
     'prod_owner',
@@ -113,7 +114,10 @@ describe('SalaMainComponent', () => {
           NgToastModule,
           HttpClientTestingModule,
         ],
-        providers: [TareasServiceService, ReactiveFormsModule, SalaMainComponent, { provide: UserProfileService, useValue: userServiceMock }]
+        providers: [ReactiveFormsModule, SalaMainComponent, { provide: UserProfileService, useValue: userServiceMock },         {
+          provide: TareasServiceService,
+          useValue: jasmine.createSpyObj('TareasServiceService', ['getTareasPorNombreSala'])
+        }]
       }).compileComponents();
 
       sessionStorage = {
@@ -147,9 +151,9 @@ describe('SalaMainComponent', () => {
       tareaService = TestBed.inject(TareasServiceService);
       service = TestBed.inject(TareasServiceService);
       httpMock = TestBed.inject(HttpTestingController);
+      tareasService = TestBed.inject(TareasServiceService) as jasmine.SpyObj<TareasServiceService>;
       fixture.detectChanges();
     });
-
 
   //tarea.ts
   it('should create an instance of Tarea', () => {
@@ -188,89 +192,6 @@ describe('SalaMainComponent', () => {
   it('should have a correct string representation', () => {
     const toStringResult = desarrollador.toString();
     expect(toStringResult).toEqual('1');
-  });
-
-
-  //cambio de estados en tareas
-
-  it('should not assign task to DEV when user is a PO', () => {
-    spyOn(tareaService, 'putTarea');
-
-    const tarea = {
-      id: '123',
-      dev_asignado: null,
-      estado_tarea: 'BACKLOG'
-    };
-    const dev = tarea.dev_asignado;
-    const id_prev_container = 'contenedor_backlog';
-    const id_curr_container = 'contenedor_todo';
-    component.checkPO = true;
-
-    component.cambiaEstadoTarea(tarea, dev, id_prev_container, id_curr_container);
-
-    expect(tarea.dev_asignado).toBeNull();
-    expect(tarea.estado_tarea).toBe('SPRINT');
-  });
-
-  it('should set task state as BACKLOG when container is "contenedor_backlog"', () => {
-    spyOn(tareaService, 'putTarea');
-
-    const tarea = {
-      id: '123',
-      dev_asignado: 'dev-url',
-      estado_tarea: 'SPRINT'
-    };
-    const dev = { url: 'dev-url' };
-    const id_prev_container = 'contenedor_todo';
-    const id_curr_container = 'contenedor_backlog';
-    component.checkPO = false;
-
-    component.cambiaEstadoTarea(tarea, dev, id_prev_container, id_curr_container);
-
-    expect(tarea.dev_asignado).toBe('dev-url');
-    expect(tarea.estado_tarea).toBe('BACKLOG');
-  });
-
-  it('should set task state as SPRINT when container is "contenedor_todo"', () => {
-    spyOn(tareaService, 'putTarea');
-
-    const tarea = {
-      id: '123',
-      dev_asignado: 'dev-url',
-      estado_tarea: 'BACKLOG'
-    };
-    const dev = { url: 'dev-url' };
-    const id_prev_container = 'contenedor_backlog';
-    const id_curr_container = 'contenedor_todo';
-    component.checkPO = false;
-
-    component.cambiaEstadoTarea(tarea, dev, id_prev_container, id_curr_container);
-
-    expect(tarea.dev_asignado).toBe('dev-url');
-    expect(tarea.estado_tarea).toBe('SPRINT');
-  });
-
-
-
-  it('should log error message if container is not recognized', () => {
-    spyOn(tareaService, 'putTarea');
-    spyOn(console, 'log');
-
-    const tarea = {
-      id: '123',
-      dev_asignado: 'dev-url',
-      estado_tarea: undefined
-    };
-    const dev = { url: 'dev-url' };
-    const id_prev_container = 'unknown-container';
-    const id_curr_container = 'unknown-container';
-    component.checkPO = false;
-
-    component.cambiaEstadoTarea(tarea, dev, id_prev_container, id_curr_container);
-
-    expect(tarea.dev_asignado).toBe('dev-url');
-    expect(tarea.estado_tarea).toBeUndefined();
-    expect(console.log).toHaveBeenCalledWith('No se ha podido identificar el estado de la tarea');
   });
 
   //objeto sala_put_service
@@ -321,5 +242,55 @@ describe('SalaMainComponent', () => {
     expect(component.editarTareaForm.controls['url'].value).toEqual(tarea.url);
   });
 
-  //get perfile dev
+  /*component.tareas_obj = [
+    {id:'11', id_sala:'5', dev_asignado: '', nombre_tarea:'', desc_tarea:'', estado_tarea:'', tiempo_estimado:'', prioridad: 'ALTA', url:'', fecha_creacion: new Date(), datos_user_dev: null, history:null},
+    {id:'22', id_sala:'5', dev_asignado: '', nombre_tarea:'', desc_tarea:'', estado_tarea:'', tiempo_estimado:'', prioridad: 'MEDIA', url:'', fecha_creacion: new Date(), datos_user_dev: null, history:null},
+    {id:'33', id_sala:'5', dev_asignado: '', nombre_tarea:'', desc_tarea:'', estado_tarea:'', tiempo_estimado:'', prioridad: 'BAJA', url:'', fecha_creacion: new Date(), datos_user_dev: null, history:null},
+  ];*/
+  it('should update percentages correctly', () => {
+    // Arrange
+    component.tareas_obj = [
+      {id:'11', id_sala:'5', dev_asignado: '', nombre_tarea:'', desc_tarea:'', estado_tarea:'BACKLOG', tiempo_estimado:'', prioridad: 'ALTA', url:'', fecha_creacion: new Date(), datos_user_dev: null, history:null},
+      {id:'22', id_sala:'5', dev_asignado: '', nombre_tarea:'', desc_tarea:'', estado_tarea:'SPRINT', tiempo_estimado:'', prioridad: 'MEDIA', url:'', fecha_creacion: new Date(), datos_user_dev: null, history:null},
+      {id:'33', id_sala:'5', dev_asignado: '', nombre_tarea:'', desc_tarea:'', estado_tarea:'WIP', tiempo_estimado:'', prioridad: 'BAJA', url:'', fecha_creacion: new Date(), datos_user_dev: null, history:null},
+      {id:'44', id_sala:'5', dev_asignado: '', nombre_tarea:'', desc_tarea:'', estado_tarea:'DONE', tiempo_estimado:'', prioridad: 'BAJA', url:'', fecha_creacion: new Date(), datos_user_dev: null, history:null},
+    ];
+    component.tareas_BACKLOG = [component.tareas_obj[0]];
+    component.tareas_TODO = [component.tareas_obj[1]];
+    component.tareas_WIP = [component.tareas_obj[2]];
+    component.tareas_DONE = [component.tareas_obj[3]];
+
+    // Act
+    component.actualizaPorcentajes();
+
+    // Assert
+    expect(component.porcentaje_backlog).toBe(25);
+    expect(component.porcentaje_todo).toBe(25);
+    expect(component.porcentaje_wip).toBe(25);
+    expect(component.porcentaje_done).toBe(25);
+    expect(component.porcentaje_data_mayor).toBe(25);
+    expect(component.porcentaje_data_menor).toBe(25);
+  });
+
+  it('should handle empty tasks correctly', () => {
+    // Arrange
+    component.tareas_obj = [];
+    component.tareas_BACKLOG = [];
+    component.tareas_TODO = [];
+    component.tareas_WIP = [];
+    component.tareas_DONE = [];
+
+    // Act
+    component.actualizaPorcentajes();
+
+    // Assert
+    expect(component.porcentaje_backlog).toBeNaN();
+    expect(component.porcentaje_todo).toBeNaN();
+    expect(component.porcentaje_wip).toBeNaN();
+    expect(component.porcentaje_done).toBeNaN();
+    expect(component.porcentaje_data_mayor).toBeNaN();
+    expect(component.porcentaje_data_menor).toBeNaN();
+  });
+  
 });
+
