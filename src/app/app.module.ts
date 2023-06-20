@@ -96,6 +96,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     [UserProfileService],
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

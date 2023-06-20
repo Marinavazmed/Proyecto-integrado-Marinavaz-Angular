@@ -20,7 +20,12 @@ export class JoinSalaComponent implements OnInit {
   credenciales_error = "";
   constructor(private formBuilder: FormBuilder, private salaService: ServiceSalasService, public router: Router, private route: ActivatedRoute, private userService: UserProfileService) {
     this.checkUser = localStorage.getItem("userData");
-    this.urlSalas = JSON.parse(this.checkUser).id;
+    if(this.checkUser){
+      this.urlSalas = JSON.parse(this.checkUser).id;
+    }
+    
+    /*this.checkUser = localStorage.getItem("userData");
+    this.urlSalas = JSON.parse(this.checkUser).id;*/
 
     this.joinSalaForm = this.formBuilder.group({
       id: ['', Validators.required],

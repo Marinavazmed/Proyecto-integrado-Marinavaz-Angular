@@ -12,6 +12,7 @@ import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Valida
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-profile',
@@ -34,12 +35,17 @@ export class UserProfileComponent implements OnInit, ControlValueAccessor {
   public salas_PO: Array<any>
   public url_user_PO: any;
   public file: string = '';
-  public form!: FormGroup;
+  public form!: any;
   currentDate = new Date();
   constructor(private userProfileService: UserProfileService, private activatedRoute: ActivatedRoute, private http: HttpClient, private _peticion: ServiceSalasService, public router: Router, public loginService: AuthService, private profilepicForm: FormBuilder) {
     this.salas = []
     this.salas_PO = []
-    this.userId = this.userProfileService.obtenerCredenciales().id
+    if(this.userProfileService.obtenerCredenciales()){
+      this.userId = this.userProfileService.obtenerCredenciales().id
+    }else{
+      this.userId="";
+    }
+    this.userId = this.userProfileService.obtenerCredenciales()?.id
     this.form = this.profilepicForm.group({
       profile_pic: File,
       email: '',
